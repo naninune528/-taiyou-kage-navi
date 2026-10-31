@@ -562,7 +562,7 @@ let v6SelectedAxis='knowledge',v6NewAxis='thinking',v6DraftAxis='';
 function v6Category(b){return V6_AXES.find(x=>x.id===b)?.label||V6_AXES.find(x=>x.label===b)?.label||''}
 function v6Data(u){return V6_EXAMPLES.find(x=>u&&x.grade==u.grade&&x.subject===u.subject&&x.publisher===u.publisher&&x.unit===u.unit)}
 function v6Options(value){return V6_AXES.map(x=>'<option value="'+x.id+'" '+(value===x.id?'selected':'')+'>'+x.label+'</option>').join('')}
-function v6BankPut(u,axis,txt){const b={id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,text:txt,criterion:axis,tag:'観点別の文例（要確認）'};S.bank.push(b);return b}
+function v6BankPut(u,axis,txt){const b={id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,domain:u.domain||'',text:txt,criterion:axis,tag:'観点別の文例（要確認）'};S.bank.push(b);return b}
 function v6Prompt(u){
  const raw=Array.isArray(u?.texts)?u.texts.length:0;
  const c=(S.criteria||{})[[u.grade,u.subject,u.publisher,u.unit].join('|')]||u.criteria||'資料未登録';
@@ -638,7 +638,7 @@ document.addEventListener('click',e=>{
  const u=v4SelectedUnit(),text=$('v5-preview')?.value?.trim()||'';
  if(!u||!text){toast('保存する文例を入力してください');return}
  const axis=$('v6-custom-criterion')?.value||v6NewAxis;
- S.bank.push({id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,text,criterion:axis,tag:'学習活動・評価から追加（要確認）',activity:$('v5-act')?.value?.trim()||'',skill:$('v5-skill')?.value?.trim()||''});
+ S.bank.push({id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,domain:u.domain||'',text,criterion:axis,tag:'学習活動・評価から追加（要確認）',activity:$('v5-act')?.value?.trim()||'',skill:$('v5-skill')?.value?.trim()||''});
  v5Pending='';render();toast('「'+v6Category(axis)+'」の文例に追加しました');
 },true);
 document.addEventListener('click',e=>{
@@ -733,7 +733,7 @@ v5MakeText=function(u,activity,skill){
  return v7BaseMaker(u,activity,skill);
 };
 function v7ModeSelector(){
- return '<div class="field"><label>体育の分野</label><select id="v7-pe-mode" aria-label="体育の分野"><option value="実技" '+(v7PeMode==='実技'?'selected':'')+'>実技（学習指導要領）</option><option value="保健" '+(v7PeMode==='保健'?'selected':'')+'>保健（教科書会社）</option></select></div>';
+ return '<div class="field"><label>体育の分野</label><select id="v7-pe-mode" aria-label="体育の分野"><option value="実技" '+(v7PeMode==='実技'?'selected':'')+'>実技（学習指導要領）</option><option value="保健" '+(v7PeMode==='保健'?'selected':'')+(Number(v4Grade)<3?' disabled':'')+'>保健（教科書会社）</option></select></div>';
 }
 function v7SourceNote(){
  return '<div class="notice" style="margin:10px 0">参照元：'+(v7PeMode==='実技'?'文部科学省の学習指導要領・体育編。実技に教科書会社の選択は不要です。':'学校で使用する保健教科書の学習活動と評価規準。出版社ごとの単元データは順次整備します。')+' 出力上の教科は「体育」のままです。</div>';
@@ -769,7 +769,7 @@ v4UnitHTML=function(){
 };
 document.addEventListener('change',e=>{
  if(e.target?.id!=='v7-pe-mode')return;
- v7PeMode=e.target.value==='保健'?'保健':'実技';v4Unit='';v7RefreshPublisherOptions();render();
+ if(e.target.value==='保健'&&Number(v4Grade)<3){toast('保健領域は3年生以上で扱います');v7PeMode='実技'}else{v7PeMode=e.target.value==='保健'?'保健':'実技'}v4Unit='';v7RefreshPublisherOptions();render();
 });
 
 render();
