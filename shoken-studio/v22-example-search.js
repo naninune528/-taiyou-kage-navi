@@ -65,7 +65,7 @@ function v22SearchHTML(){
  (items.length?'<div class="v22-results">'+show.map(x=>
   '<article class="v22-result"><div class="inline v22-tags"><span class="tag">'+x.grade+'年</span><span class="tag">'+E(x.subject)+'</span><span class="tag">'+E(x.axis)+'</span></div>'+
   '<h3>'+E(x.unit)+'</h3><p class="v22-comment">'+E(x.text)+'</p>'+
-  '<p class="v22-source">'+E(x.source)+(x.details?' ／ '+E(x.details):'')+'</p>'+
+  '<p class="v22-source">'+E(x.source)+(x.details?' ／ '+E(x.details):'')+(x.sourceUrl?' ／ <a href="'+E(x.sourceUrl)+'" target="_blank" rel="noopener noreferrer">公式資料</a>':'')+'</p>'+
   '<div class="inline"><button class="btn softbtn" data-v22-action="copy" data-v22-index="'+x.index+'">文章をコピー</button>'+
   '<button class="btn" data-v22-action="save" data-v22-index="'+x.index+'">自分の文例バンクに追加</button></div></article>').join('')+'</div>'+
   (show.length<items.length?'<button class="btn v22-more" data-v22-action="more">さらに表示する</button>':''):
