@@ -110,7 +110,7 @@ tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.step-card,.tab{transition:none}}
 
 
-/* v1.5: shared reuse & save-as-example workspace */
+/* v1.6: shared reuse & save-as-example workspace */
 .quick-backup{border-radius:999px!important;font-size:11px!important;padding:8px 13px!important;white-space:nowrap}@media(max-width:650px){.quick-backup{font-size:10px!important;padding:7px 9px!important}.top-meta{gap:5px}.top-version{display:none}}
 .workflow-banner{display:flex;align-items:center;gap:15px;padding:18px 21px;background:linear-gradient(120deg,#e9f1e7,#fdf4e6);border:1px solid #dce9d9;border-radius:20px;margin-bottom:17px}
 .workflow-banner .symbol{width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#d5e5d5;color:#285c48;display:grid;place-items:center;font-size:23px}
@@ -132,7 +132,7 @@ tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:
 @media(max-width:700px){.share-class-body{grid-template-columns:1fr}.share-number-grid{grid-template-columns:repeat(6,minmax(27px,1fr))}.workflow-banner{padding:14px;gap:10px}}
 </style>
 </head><body>
-<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v1.5</span><button class="btn softbtn quick-backup" data-action="save-json" title="バックアップを保存。自動保存はありません">↓ バックアップ</button></div></div></header>
+<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v1.6</span><button class="btn softbtn quick-backup" data-action="save-json" title="JSONバックアップを保存">↓ バックアップ</button></div></div></header>
 <div class="app"><div id="headline"></div><nav class="tabs" id="tabs"></nav><main id="main"></main><div class="footer">SHOKEN STUDIO · Teacher OS prototype · 外部ライブラリ・広告・アクセス解析・通信なし ／ まずは架空データでお試しください</div></div>
 <input id="importfile" type="file" accept=".json,application/json" hidden>
 <script>
@@ -157,7 +157,7 @@ function header(t,desc=''){return `<div class="page-heading"><div><div class="pa
 function field(lbl,content){return `<div class="field"><label>${E(lbl)}</label>${content}</div>`}
 function bankOpts(){return S.bank.map(b=>`<option value="${b.id}" ${String(b.id)===String(applySelected)?'selected':''}>${E(`${b.subject}｜${b.unit}｜${b.text.slice(0,20)}…`)}</option>`).join('')}
 function stateCount(c,t){let done=0,draft=0,need=0;for(let n=1;n<=c.count;n++){if(c.missing.includes(n))continue;let x=getEnt(c,t,n);if(x.status==='確定')done++;else if(x.status==='要検討')need++;else if(x.text)draft++;}return {done,draft,need}}
-function renderTop(){const tabs=[['home','⌂ ホーム'],['settings','⚙ クラス・設定'],['bank','▤ 文例バンク'],['compose','✧ 文章づくり'],['assign','⇄ 一括割り振り'],['share','⇆ クラス横断配置'],['edit','▦ 一覧編集'],['export','⇩ Excel出力']];$('tabs').innerHTML=tabs.map(([id,n])=>`<button class="tab ${page===id?'active':''}" data-action="page" data-page="${id}">${n}</button>`).join('');$('headline').innerHTML=`<div class="micro-top"><div><strong>MY WORKSPACE</strong><span>　/　文例をためて、少しずつ整える</span></div><div><span class="status-dot"></span>ローカル動作 · 自動保存なし</div></div>`}
+function renderTop(){const tabs=[['home','⌂ ホーム'],['settings','⚙ クラス・設定'],['bank','▤ 文例バンク'],['compose','✧ 文章づくり'],['assign','⇄ 一括割り振り'],['share','⇆ クラス横断配置'],['edit','▦ 一覧編集'],['export','⇩ Excel出力']];$('tabs').innerHTML=tabs.map(([id,n])=>`<button class="tab ${page===id?'active':''}" data-action="page" data-page="${id}">${n}</button>`).join('');$('headline').innerHTML=`<div class="micro-top"><div><strong>MY WORKSPACE</strong><span>　/　文例をためて、少しずつ整える</span></div><div><span class="status-dot"></span>ローカル動作 · 保存状況は上部で確認</div></div>`}
 function render(){renderTop();const view={home:homeHTML,settings:settingsHTML,bank:bankHTML,compose:composeHTML,assign:assignHTML,share:shareHTML,saveexample:saveExampleHTML,edit:editHTML,export:exportHTML}[page]||homeHTML;$('main').innerHTML=view();}
 function homeHTML(){let c=cur(),q=stateCount(c,activeType),total=c.count-c.missing.length,rate=total?Math.round(q.done/total*100):0;return `<section class="hero">
 <div class="hero-copy"><div class="hero-kicker"><span>✦</span> SMALL STEPS, BEAUTIFUL PROGRESS</div>
@@ -187,7 +187,7 @@ function assignHTML(){let c=cur();return header('一括割り振り','1クラス
 function editHTML(){let c=cur(),cnt=stateCount(c,activeType);let html=`<div class="two">${field('対象クラス',`<select data-bind="class">${classOpts()}</select>`)}${field('所見の種類',`<select data-bind="type">${typeOpts()}</select>`)}</div><div class="inline" style="margin-top:12px"><span class="tag done">確定 ${cnt.done}</span><span class="tag draft">下書き ${cnt.draft}</span><span class="tag need">要検討 ${cnt.need}</span><label class="small"><input type="checkbox" id="edit-only" data-bind="editOnly" ${editOnly?'checked':''}> 未完成・要検討だけ</label></div>`;let list=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!editOnly||(!c.missing.includes(n)&&getEnt(c,activeType,n).status!=='確定'));html+=`<div class="tablewrap" style="margin-top:15px"><table><thead><tr><th style="width:60px">仮番号</th>${activeType==='総合所見'?'<th style="width:230px">教科①・②・③</th>':''}<th>所見（直接編集できます）</th><th style="width:110px">状態</th></tr></thead><tbody>${list.map(n=>{let x=getEnt(c,activeType,n),miss=c.missing.includes(n);return `<tr><td class="num">${n}${miss?'<div class="tag need">欠番</div>':''}</td>${activeType==='総合所見'?`<td>${miss?'-':x.subjects.slice(0,S.prefs.mainCount).map((s,i)=>`<select data-bind="row-subject" data-n="${n}" data-index="${i}">${SUBJECTS.map(v=>option(v,s)).join('')}</select>`).join('<div style="height:4px"></div>')}</td>`:''}<td>${miss?'<span class="muted">欠番のため対象外</span>':`<textarea class="celltext" data-bind="row-text" data-n="${n}" placeholder="ここに所見を入力">${E(x.text)}</textarea><div class="textcount">${x.text.length}字</div>${x.text.trim()?`<div class="row-actions"><button class="btn" data-action="save-from-row" data-n="${n}">この文章を文例にする ↗</button></div>`:''}`}</td><td>${miss?'―':`<select data-bind="row-status" data-n="${n}">${['未作成','下書き','要検討','確定'].map(v=>option(v,x.status)).join('')}</select>`}</td></tr>`}).join('')}</tbody></table></div>`;return header('一覧編集','一人ずつタブを開かず、全員分を並べて確認。編集内容はこの画面で保持します。')+`<div class="grid"><div class="panel wide">${html}<div class="warning small" style="margin-top:16px">仮番号が実際の児童と対応する場合、個人情報に当たる可能性があります。学校の承認済み端末・保存先でのみ実運用してください。</div></div></div>`}
 let editOnly=false;
 function exportHTML(){let c=cur();return header('Excel出力','クラスごとに4シートを作成。番号と所見の列を指定できます。')+`<div class="grid"><div class="panel c6"><div class="stack">${field('出力するクラス',`<select data-bind="class">${classOpts()}</select>`)}${field('欠番の出力',`<select data-bind="missingMode"><option value="keep" ${S.prefs.missingMode==='keep'?'selected':''}>番号を残して、所見は空欄</option><option value="skip" ${S.prefs.missingMode==='skip'?'selected':''}>欠番の行を除外（番号は振り直さない）</option></select>`)}<div class="two">${field('番号列',`<select data-bind="numCol">${['A','B','C','D','E','F','G','H'].map(x=>option(x,S.prefs.numCol)).join('')}</select>`)}${field('所見列',`<select data-bind="textCol">${['A','B','C','D','E','F','G','H'].map(x=>option(x,S.prefs.textCol)).join('')}</select>`)}</div><div class="two">${field('開始行（見出しがある場合、番号は次行）',`<input data-bind="startRow" type="number" min="1" max="50" value="${S.prefs.startRow}">`)}${field('見出し',`<label class="inline" style="margin-top:10px"><input data-bind="header" type="checkbox" ${S.prefs.header?'checked':''}> 見出しを出力する</label>`)}</div><button class="btn primary" data-action="download-xlsx">⬇ Excel（.xlsx）で書き出す</button><p class="small muted" style="margin:0">4シート：総合所見／総合的な学習の時間／外国語活動／道徳</p></div></div>
-<div class="panel c6"><h2>出力イメージ</h2><div class="tablewrap" style="max-height:350px"><table style="min-width:0"><thead><tr><th>番号</th><th>総合所見（B列など）</th></tr></thead><tbody>${Array.from({length:Math.min(8,c.count)},(_,i)=>i+1).filter(n=>S.prefs.missingMode==='keep'||!c.missing.includes(n)).map(n=>`<tr><td>${n}</td><td>${c.missing.includes(n)?'<span class="muted">（空欄）</span>':E(getEnt(c,'総合所見',n).text||'（未作成）')}</td></tr>`).join('')}</tbody></table></div><hr class="hr"><div class="warning small">Excelは学校が認めた保存先へ保存してください。文例中の「要検討」や未完成欄がないか、出力前に確認してください。</div><div class="notice" style="margin-top:10px">学校から配付された既存のExcelファイルを読み込み、複雑な書式を維持して転記する機能は次の開発段階です。</div></div><div class="panel wide"><div class="title-row"><h2>バックアップ</h2><span class="tag">手動のみ</span></div><div class="inline"><button class="btn" data-action="save-json">設定・文例・編集内容をJSONで保存</button><button class="btn" data-action="load-json">JSONから復元</button><button class="btn danger" data-action="reset">すべて初期化</button></div><p class="small muted" style="margin:10px 0 0">この試作版はブラウザに自動保存しません。ページを閉じると編集内容が消えます。バックアップファイルも適切に保護してください。</p></div></div>`}
+<div class="panel c6"><h2>出力イメージ</h2><div class="tablewrap" style="max-height:350px"><table style="min-width:0"><thead><tr><th>番号</th><th>総合所見（B列など）</th></tr></thead><tbody>${Array.from({length:Math.min(8,c.count)},(_,i)=>i+1).filter(n=>S.prefs.missingMode==='keep'||!c.missing.includes(n)).map(n=>`<tr><td>${n}</td><td>${c.missing.includes(n)?'<span class="muted">（空欄）</span>':E(getEnt(c,'総合所見',n).text||'（未作成）')}</td></tr>`).join('')}</tbody></table></div><hr class="hr"><div class="warning small">Excelは学校が認めた保存先へ保存してください。文例中の「要検討」や未完成欄がないか、出力前に確認してください。</div><div class="notice" style="margin-top:10px">学校から配付された既存のExcelファイルを読み込み、複雑な書式を維持して転記する機能は次の開発段階です。</div></div><div class="panel wide"><div class="title-row"><h2>バックアップ</h2><span class="tag">手動のみ</span></div><div class="inline"><button class="btn" data-action="save-json">設定・文例・編集内容をJSONで保存</button><button class="btn" data-action="load-json">JSONから復元</button><button class="btn danger" data-action="reset">すべて初期化</button></div><p class="small muted" style="margin:10px 0 0">自動保存は端末ごとに有効化が必要です。端末間の引き継ぎにはJSONバックアップを使用してください。バックアップファイルも適切に保護してください。</p></div></div>`}
 
 // Shared templates stay common. Assignments stay independent per class and number.
 function inferredType(subject){if(subject==='道徳')return '道徳';if(subject==='外国語活動')return '外国語活動';if(subject==='総合的な学習の時間')return '総合的な学習の時間';return '総合所見'}
@@ -265,7 +265,7 @@ document.addEventListener('input',e=>{let b=e.target.dataset.bind;if(b==='share-
 else if(b==='save-unit')reusableDraft.unit=e.target.value;
 else if(b==='save-text')reusableDraft.text=e.target.value;
 else if(b==='draft-unit')draftMeta.unit=e.target.value;else if(b==='draft-keywords')draftMeta.keywords=e.target.value;else if(b==='applyNumbers')applyNumbers=e.target.value;else if(e.target.id==='bank-search'){bankQuery=e.target.value;let caret=e.target.selectionStart;render();let x=$('bank-search');if(x){x.focus();x.setSelectionRange(caret,caret)}}else if(b==='row-text'){let c=cur(),n=Number(e.target.dataset.n),x=getEnt(c,activeType,n);editEnt(c,activeType,n,{text:e.target.value,status:x.status==='未作成'?'下書き':x.status,touched:true});e.target.parentElement.querySelector('.textcount').textContent=e.target.value.length+'字';}});
-window.addEventListener('beforeunload',e=>{if(S.classes.some(c=>Object.keys(c.entries).length)||S.bank.length>INITIAL_BANK.length||S.classes.length>1){e.preventDefault();e.returnValue=''}});
+window.addEventListener('beforeunload',e=>{if(window.SHOKEN_AUTOSAVE_ENABLED&&typeof window.SHOKEN_AUTOSAVE_FLUSH==='function')window.SHOKEN_AUTOSAVE_FLUSH();if(window.SHOKEN_AUTOSAVE_ENABLED&&window.SHOKEN_AUTOSAVE_SYNCED)return;if(S.classes.some(c=>Object.keys(c.entries).length)||S.bank.length>INITIAL_BANK.length||S.classes.length>1){e.preventDefault();e.returnValue=''}});
 
 /* v0.4 improvements: safe drafting, textbook choice and 7 curated examples */
 const V4_PUBLISHERS={
@@ -397,7 +397,7 @@ document.addEventListener('click',e=>{
 });
 
 
-/* v1.5 curriculum-grounded sentence authoring, no external data exchange */
+/* v1.6 curriculum-grounded sentence authoring, no external data exchange */
 const V5_CHII={
  grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
  source:'光村図書 令和6年度版 小学校3年 国語 年間指導計画例',
@@ -502,7 +502,7 @@ document.addEventListener('click',e=>{
 });
 
 
-/* v1.5: Eight examples organized by three Japanese curriculum assessment perspectives */
+/* v1.6: Eight examples organized by three Japanese curriculum assessment perspectives */
 const V6_AXES=[
  {id:'knowledge',label:'知識・技能',short:'知識・技能',count:3},
  {id:'thinking',label:'思考・判断・表現',short:'思考・判断・表現',count:3},
@@ -655,7 +655,7 @@ document.addEventListener('click',e=>{
 },true);
 
 
-/* v1.5 physical education: practical uses MEXT PE commentary, health uses health textbook publisher */
+/* v1.6 physical education: practical uses MEXT PE commentary, health uses health textbook publisher */
 const V7_MEXT="文部科学省（学習指導要領・体育編）";
 const V7_HEALTH_PUBLISHERS=['東京書籍','大日本図書','大修館書店','文教社','光文書院','Gakken'];
 let v7PeMode='実技';
@@ -773,4 +773,4 @@ document.addEventListener('change',e=>{
 });
 
 render();
-</script><script src="v8-progress.js"></script><script src="v8-assign.js"></script><script src="v8-edit.js"></script><script src="v9-paste.js"></script><script src="v10-sequence.js"></script><script src="v11-common.js"></script><script src="v12-guide.js"></script><script src="v13-school-layout.js"></script><script src="v13-composer.js"></script><script src="v14-proofread.js"></script><script src="v15-smart-import.js"></script><script>render();</script></body></html>
+</script><script src="v8-progress.js"></script><script src="v8-assign.js"></script><script src="v8-edit.js"></script><script src="v9-paste.js"></script><script src="v10-sequence.js"></script><script src="v11-common.js"></script><script src="v12-guide.js"></script><script src="v13-school-layout.js"></script><script src="v13-composer.js"></script><script src="v14-proofread.js"></script><script src="v15-smart-import.js"></script><script src="v16-storage.js"></script><script>render();</script></body></html>
