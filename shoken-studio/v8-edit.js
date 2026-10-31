@@ -16,7 +16,7 @@ function v8Subjects(c,t){
 }
 function v8Available(c,subject){
  if(!subject)return [];
- const store=new Map(),publisher=selectedPublisher(c.grade,subject);
+ const store=new Map(),publisher=v4Pub(c.grade,subject);
  function key(u){return [u.publisher||'',u.domain||'',u.unit||'自由文例'].join('┃')}
  function ensure(u){
   const k=key(u);
