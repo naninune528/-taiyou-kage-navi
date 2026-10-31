@@ -24,7 +24,7 @@ function v13Assemble(){
  const c=v13Config(),delim=c.breaks==='blank'?'\n\n':c.breaks==='single'?'\n':'';
  const items=v13Order(c).map(slot=>String(v13Draft.parts[slot.id]||'').trim()).filter(Boolean);
  const legacy=String(v13Draft.legacy||'').trim();if(legacy)items.push(legacy);
- return items.join(delim);
+ return c.breaks==='none'?items.map(x=>x.replace(/[\r\n]+/g,'')).join(''):items.join(delim);
 }
 function v13CharInfo(s,t){const n=v8Length(s);return t?{length:n,delta:n-t}:{length:n,delta:null}}
 function v13ProgressLabel(len,lim){
