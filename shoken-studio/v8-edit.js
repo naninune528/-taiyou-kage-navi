@@ -88,7 +88,7 @@ editHTML=function(){
   const textarea='<textarea class="celltext" data-bind="row-text" data-n="'+n+'" placeholder="文例を選んで配置、または直接入力">'+E(x.text)+'</textarea>'+
   '<div class="textcount">'+len+'字</div><div class="v8-mini" data-v8-flag="'+n+'">'+(valid?'✓ 文字数クリア':'文字数条件未達')+'（'+lengthLimit.min+'〜'+lengthLimit.max+'字）</div>';
   const status='<label class="small">状態 <select data-bind="row-status" data-n="'+n+'">'+['未作成','下書き','要検討','確定'].map(s=>option(s,x.status)).join('')+'</select></label>';
-  return '<section class="v8-row"><div class="inline between" style="margin-bottom:12px"><strong>仮番号 '+n+'</strong><span class="tag '+(x.status==='確定'?'done':x.status==='要検討'?'need':'draft')+'">'+(missing?'欠番':E(x.status))+'</span></div>'+
+  return '<section id="v8-num-'+n+'" class="v8-row"><div class="inline between" style="margin-bottom:12px"><strong>仮番号 '+n+'</strong><span class="tag '+(x.status==='確定'?'done':x.status==='要検討'?'need':'draft')+'">'+(missing?'欠番':E(x.status))+'</span></div>'+
   (missing?'<p class="muted">欠番のため編集・集計の対象外</p>':
    '<div class="v8-row-main"><div>'+sub+v8Picker(c,t,n)+'</div><div><div class="field"><label>所見（選んだ後も修正できます）</label>'+textarea+'</div>'+
    '<div class="v8-row-tools">'+status+(x.text.trim()?'<button class="btn" data-action="save-from-row" data-n="'+n+'">この文章を文例にする ↗</button>':'')+'</div></div></div>')+'</section>';
