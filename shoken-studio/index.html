@@ -110,7 +110,7 @@ tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.step-card,.tab{transition:none}}
 
 
-/* v0.6: shared reuse & save-as-example workspace */
+/* v0.7: shared reuse & save-as-example workspace */
 .quick-backup{border-radius:999px!important;font-size:11px!important;padding:8px 13px!important;white-space:nowrap}@media(max-width:650px){.quick-backup{font-size:10px!important;padding:7px 9px!important}.top-meta{gap:5px}.top-version{display:none}}
 .workflow-banner{display:flex;align-items:center;gap:15px;padding:18px 21px;background:linear-gradient(120deg,#e9f1e7,#fdf4e6);border:1px solid #dce9d9;border-radius:20px;margin-bottom:17px}
 .workflow-banner .symbol{width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#d5e5d5;color:#285c48;display:grid;place-items:center;font-size:23px}
@@ -132,7 +132,7 @@ tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:
 @media(max-width:700px){.share-class-body{grid-template-columns:1fr}.share-number-grid{grid-template-columns:repeat(6,minmax(27px,1fr))}.workflow-banner{padding:14px;gap:10px}}
 </style>
 </head><body>
-<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v0.6</span><button class="btn softbtn quick-backup" data-action="save-json" title="バックアップを保存。自動保存はありません">↓ バックアップ</button></div></div></header>
+<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v0.7</span><button class="btn softbtn quick-backup" data-action="save-json" title="バックアップを保存。自動保存はありません">↓ バックアップ</button></div></div></header>
 <div class="app"><div id="headline"></div><nav class="tabs" id="tabs"></nav><main id="main"></main><div class="footer">SHOKEN STUDIO · Teacher OS prototype · 外部ライブラリ・広告・アクセス解析・通信なし ／ まずは架空データでお試しください</div></div>
 <input id="importfile" type="file" accept=".json,application/json" hidden>
 <script>
@@ -397,7 +397,7 @@ document.addEventListener('click',e=>{
 });
 
 
-/* v0.6 curriculum-grounded sentence authoring, no external data exchange */
+/* v0.7 curriculum-grounded sentence authoring, no external data exchange */
 const V5_CHII={
  grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
  source:'光村図書 令和6年度版 小学校3年 国語 年間指導計画例',
@@ -502,7 +502,7 @@ document.addEventListener('click',e=>{
 });
 
 
-/* v0.6: Eight examples organized by three Japanese curriculum assessment perspectives */
+/* v0.7: Eight examples organized by three Japanese curriculum assessment perspectives */
 const V6_AXES=[
  {id:'knowledge',label:'知識・技能',short:'知識・技能',count:3},
  {id:'thinking',label:'思考・判断・表現',short:'思考・判断・表現',count:3},
@@ -653,6 +653,124 @@ document.addEventListener('click',e=>{
  const u={grade:Number(draftMeta.grade),subject:draftMeta.subject,unit:draftMeta.unit,publisher:v4Pub(Number(draftMeta.grade),draftMeta.subject)};
  v6BankPut(u,v6DraftAxis,draft.trim());v6DraftAxis='';page='bank';render();toast('観点を付けて文例を保存しました');
 },true);
+
+
+/* v0.7 physical education: practical uses MEXT PE commentary, health uses health textbook publisher */
+const V7_MEXT="文部科学省（学習指導要領・体育編）";
+const V7_HEALTH_PUBLISHERS=['東京書籍','大日本図書','大修館書店','文教社','光文書院','Gakken'];
+let v7PeMode='実技';
+const V7_PE_UNITS=[
+ {grade:3,subject:'体育',domain:'実技',publisher:V7_MEXT,unit:'跳び箱運動',
+ source:'文部科学省『小学校学習指導要領（平成29年告示）解説 体育編』第3・4学年 B 器械運動',
+ sourceUrl:'https://www.mext.go.jp/content/20240918-mxt_kyoiku01-100002607.pdf',
+ activities:'切り返し系（開脚跳びなど）／回転系（台上前転など）／課題に応じた練習の場の工夫／友達と動きを確かめる',
+ criteria:'基本的な技の行い方を知り、自己に適した技に取り組む。課題を見付けて練習を工夫し、動きのポイントを友達に伝える。約束・安全・仲間を大切にする。',
+ knowledge:[
+ '体育の「跳び箱運動」では、開脚跳びの行い方を理解し、助走から踏切り、着手、着地までをつなげて行うことができました。',
+ '体育の「跳び箱運動」では、踏切りや手の着き方に気を付け、切り返し系の基本的な技に取り組むことができました。',
+ '体育の「跳び箱運動」では、台上前転の行い方を知り、体を丸めて前方へ回転する動きを身に付けることができました。'],
+ thinking:[
+ '体育の「跳び箱運動」では、自分の技の課題を見付け、踏切りや着手を確かめられる練習の場を選ぶことができました。',
+ '体育の「跳び箱運動」では、友達の動きと自分の動きを比べ、技をよりよくするためのポイントを考えることができました。',
+ '体育の「跳び箱運動」では、練習で気付いたことを基に、跳ぶための体の使い方を友達に伝えることができました。'],
+ attitude:[
+ '体育の「跳び箱運動」では、自分に合った練習の場で技を繰り返し試し、できるようになるための工夫を続けていました。',
+ '体育の「跳び箱運動」では、用具や周囲の安全に気を配り、友達の挑戦を認めながら学習に取り組んでいました。']},
+ {grade:3,subject:'体育',domain:'実技',publisher:V7_MEXT,unit:'ゴール型ゲーム（ハンドボール）',
+ source:'文部科学省『小学校学習指導要領（平成29年告示）解説 体育編』第3・4学年 E ゲーム／ゴール型ゲーム',
+ sourceUrl:'https://www.mext.go.jp/content/20240918-mxt_kyoiku01-100002607.pdf',
+ activities:'ハンドボールを基にした易しいゲーム／パスとシュート／ボールを持たないときの空間への移動／作戦や規則の工夫',
+ criteria:'基本的なボール操作とボールを持たないときの動きで易しいゲームをする。自己やチームの課題を見付け、作戦や規則を工夫して友達に伝える。協力し安全に運動する。',
+ knowledge:[
+ '体育の「ゴール型ゲーム」では、味方にパスをつなぐことやゴールを狙ってシュートすることができました。',
+ '体育の「ゴール型ゲーム」では、相手のいない場所を見つけ、パスを受けられる位置へ動くことができました。',
+ '体育の「ゴール型ゲーム」では、基本的なルールを理解し、ボールを持ったときにゴールへ体を向けてプレーすることができました。'],
+ thinking:[
+ '体育の「ゴール型ゲーム」では、得点につなげるために空いている場所へ動く作戦を考えることができました。',
+ '体育の「ゴール型ゲーム」では、ゲームを振り返ってチームの課題を見つけ、パスのつなぎ方を工夫することができました。',
+ '体育の「ゴール型ゲーム」では、友達の意見を取り入れながら、みんなが参加しやすい作戦やルールを考えることができました。'],
+ attitude:[
+ '体育の「ゴール型ゲーム」では、仲間に声をかけて協力し、ルールを守ってゲームに取り組んでいました。',
+ '体育の「ゴール型ゲーム」では、ゲームの後にチームの動きを振り返り、次の試合で試したい作戦を考えようとしていました。']},
+ {grade:3,subject:'体育',domain:'保健',publisher:'東京書籍',unit:'けんこうな生活',
+ source:'東京書籍『新編 新しい保健』3・4年 年間指導計画作成資料（2024年版）',
+ sourceUrl:'https://ten.tokyo-shoseki.co.jp/text/shou/hoken/data/R6_34_nenkari_2024_1.pdf',
+ activities:'心や体の健康について考える／生活を振り返る／運動・食事・休養・睡眠のバランス／体の清潔と生活環境について考える',
+ criteria:'健康には本人の生活や周囲の環境が関係することを理解する。健康な生活の課題を見付け、改善方法を考え伝える。健康な生活の大切さを考えて学習に取り組む。',
+ knowledge:[
+ '保健の「けんこうな生活」の学習では、毎日の健康には運動・食事・休養・睡眠のバランスが大切であることを理解することができました。',
+ '保健の「けんこうな生活」の学習では、手洗いや身の回りの清潔が健康な生活につながることを理解することができました。',
+ '保健の「けんこうな生活」の学習では、部屋の明るさや換気など、生活環境が健康に関係することを理解することができました。'],
+ thinking:[
+ '保健の「けんこうな生活」の学習では、自分の1日の過ごし方を振り返り、健康のために改善できることを考えることができました。',
+ '保健の「けんこうな生活」の学習では、生活習慣を比べ、健康に過ごすために必要なことを理由とともに説明することができました。',
+ '保健の「けんこうな生活」の学習では、身近な生活環境を振り返り、より健康に過ごすための工夫を考えることができました。'],
+ attitude:[
+ '保健の「けんこうな生活」の学習では、自分の生活を進んで振り返り、健康に関する課題を見つけようとしていました。',
+ '保健の「けんこうな生活」の学習では、健康によい生活の仕方に関心をもち、学んだことを毎日の生活に生かす方法を考えていました。']}
+];
+function v7RefreshPublisherOptions(){
+ V4_PUBLISHERS['体育']=v7PeMode==='実技'?[V7_MEXT]:V7_HEALTH_PUBLISHERS;
+}
+const v7BasePub=v4Pub;
+v4Pub=function(g,subject){
+ if(subject==='体育'&&v7PeMode==='実技')return V7_MEXT;
+ return v7BasePub(g,subject);
+};
+const v7BaseUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ if(v4Subject==='体育'){
+  const pub=v4Pub(v4Grade,v4Subject);
+  return V7_PE_UNITS.filter(u=>u.grade===Number(v4Grade)&&u.domain===v7PeMode&&u.publisher===pub).map(u=>({...u,texts:[...u.knowledge,...u.thinking,...u.attitude]}));
+ }
+ return v7BaseUnitOptions();
+};
+const v7BaseExamples=v6Data;
+v6Data=function(u){return V7_PE_UNITS.find(x=>u&&x.grade===u.grade&&x.subject===u.subject&&x.unit===u.unit&&x.publisher===u.publisher&&x.domain===u.domain)||v7BaseExamples(u)};
+const v7BaseMaker=v5MakeText;
+v5MakeText=function(u,activity,skill){
+ if(u&&u.domain==='保健')return v7BaseMaker({...u,subject:'保健'},activity,skill);
+ return v7BaseMaker(u,activity,skill);
+};
+function v7ModeSelector(){
+ return '<div class="field"><label>体育の分野</label><select id="v7-pe-mode" aria-label="体育の分野"><option value="実技" '+(v7PeMode==='実技'?'selected':'')+'>実技（学習指導要領）</option><option value="保健" '+(v7PeMode==='保健'?'selected':'')+'>保健（教科書会社）</option></select></div>';
+}
+function v7SourceNote(){
+ return '<div class="notice" style="margin:10px 0">参照元：'+(v7PeMode==='実技'?'文部科学省の学習指導要領・体育編。実技に教科書会社の選択は不要です。':'学校で使用する保健教科書の学習活動と評価規準。出版社ごとの単元データは順次整備します。')+' 出力上の教科は「体育」のままです。</div>';
+}
+const v7BaseSettings=v4Settings;
+v4Settings=function(){
+ v7RefreshPublisherOptions();v7BaseSettings();
+ if(v4Subject!=='体育')return;
+ const publisher=document.getElementById('v4-publisher');
+ if(publisher?.parentElement){publisher.parentElement.insertAdjacentHTML('beforebegin',v7ModeSelector());
+  publisher.parentElement.querySelector('label').textContent=v7PeMode==='実技'?'参考資料':'保健教科書会社';
+  publisher.parentElement.insertAdjacentHTML('afterend',v7SourceNote());
+ }
+};
+const v7BaseUnitHtml=v4UnitHTML;
+v4UnitHTML=function(){
+ v7RefreshPublisherOptions();
+ let html=v7BaseUnitHtml();
+ if(v4Subject!=='体育')return html;
+ const look='<div class="field"><label>教科書会社</label>';
+ const newLabel='<div class="field"><label>'+(v7PeMode==='実技'?'参考資料':'保健教科書会社')+'</label>';
+ if(html.includes(look)){html=html.replace(look,v7ModeSelector()+newLabel);}
+ const mark='<p class="hint" style="margin-top:10px">';
+ const i=html.indexOf(mark);
+ if(i>=0)html=html.slice(0,i)+v7SourceNote()+html.slice(i);
+ const u=v4SelectedUnit();
+ if(u?.sourceUrl){
+  const official='<div class="notice" style="margin:12px 0">根拠資料：<a href="'+E(u.sourceUrl)+'" target="_blank" rel="noopener noreferrer">'+E(u.source||'参考資料を開く')+'</a>。所見文例は資料を参考に編集した例で、公式の所見文ではありません。</div>';
+  const needle='<div class="warning small" style="margin-top:13px">';
+  html=html.replace(needle,official+needle);
+ }
+ return html;
+};
+document.addEventListener('change',e=>{
+ if(e.target?.id!=='v7-pe-mode')return;
+ v7PeMode=e.target.value==='保健'?'保健':'実技';v4Unit='';v7RefreshPublisherOptions();render();
+});
 
 render();
 </script></body></html>
