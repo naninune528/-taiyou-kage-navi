@@ -175,6 +175,7 @@ v22MakeIndex=function(){
 const v23OldFind=v22Find;
 v22Find=function(idx){
  let data=v23OldFind(idx);
+ if(V22_SEARCH.subject==='図工')data=[...data].sort((a,b)=>Number(b.publisher==='日本文教出版')-Number(a.publisher==='日本文教出版'));
  if(V22_SEARCH.subject==='図工'&&V23_PUBLISHER_FILTER!=='すべて'){
   data=data.filter(x=>V23_PUBLISHER_FILTER==='日本文教出版'?
    x.publisher==='日本文教出版':!x.publisher);
