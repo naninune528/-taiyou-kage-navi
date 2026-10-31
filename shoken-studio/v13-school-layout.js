@@ -55,7 +55,7 @@ function v13SettingsHTML(){
  '<button class="btn" data-v13="move" data-index="'+i+'" data-delta="-1"'+(i===0?' disabled':'')+'>↑</button>'+
  '<button class="btn" data-v13="move" data-index="'+i+'" data-delta="1"'+(i===c.slots.length-1?' disabled':'')+'>↓</button></div>').join('')+
  '<div class="two" style="margin-top:16px">'+field('項目間の区切り','<select data-v13-select="breaks">'+
- [['none','改行なし'],['single','1回改行'],['blank','空行を入れる（2回改行）']].map(x=>option(x[0],c.breaks).replace(x[0]+'<',x[0]+'<')).join('')+'</select>')+
+ [['none','改行なし'],['single','1回改行'],['blank','空行を入れる（2回改行）']].map(x=>'<option value="'+x[0]+'"'+(x[0]===c.breaks?' selected':'')+'>'+x[1]+'</option>').join('')+'</select>')+
  field('文字数の数え方','<label class="inline" style="margin-top:10px"><input type="checkbox" data-v13-check="countBreaks"'+(c.countBreaks?' checked':'')+'> 改行も1文字として数える</label>')+'</div>'+
  '<details style="margin-top:18px"><summary><strong>国語・算数・理科など、教科ごとの目安字数</strong></summary>'+
  '<p class="v13-mini" style="margin:10px 0">各番号の教科①②③に設定した教科名に応じて、この目安字数を優先して表示します。空欄は上の「教科①②③」の目安を使います。</p>'+
