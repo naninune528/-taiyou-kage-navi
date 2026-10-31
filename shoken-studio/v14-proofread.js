@@ -47,6 +47,14 @@ function v14Checks(text){
    v14Push(out,'end',end.length-1,1,last,'文末の句点「。」が必要か確認してください',null,'句読点');
   }else v14Push(out,'end-comma',end.length-1,1,last,'文末が読点で終わっています',null,'句読点');
  }
+ // 「〜たり、〜たり」の対応を提案として点検する。単独の「たり」も誤りと断定しない。
+ for(const match of s.matchAll(/たり[、，,][^。！？\n]{1,65}(?:[。！？]|$)/g)){
+  const text=match[0],next=text.slice(text.indexOf('たり')+2);
+  if(next.includes('たり'))continue;
+  v14Push(out,'tari-style',match.index,2,'たり',
+   '「〜たり、〜たり」の対応を確認してください。単独の「たり」も誤りとは限りません。',
+   null,'表現の確認');
+ }
  // Some checks could overlap. Report each location once, prioritizing explicit school rules and known typos.
  return out.sort((a,b)=>a.index-b.index).filter((x,i,array)=>!array.some((y,j)=>j<i&&y.index===x.index&&y.length===x.length));
 }
