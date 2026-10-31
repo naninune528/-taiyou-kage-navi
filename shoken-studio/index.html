@@ -266,5 +266,134 @@ else if(b==='save-unit')reusableDraft.unit=e.target.value;
 else if(b==='save-text')reusableDraft.text=e.target.value;
 else if(b==='draft-unit')draftMeta.unit=e.target.value;else if(b==='draft-keywords')draftMeta.keywords=e.target.value;else if(b==='applyNumbers')applyNumbers=e.target.value;else if(e.target.id==='bank-search'){bankQuery=e.target.value;let caret=e.target.selectionStart;render();let x=$('bank-search');if(x){x.focus();x.setSelectionRange(caret,caret)}}else if(b==='row-text'){let c=cur(),n=Number(e.target.dataset.n),x=getEnt(c,activeType,n);editEnt(c,activeType,n,{text:e.target.value,status:x.status==='未作成'?'下書き':x.status,touched:true});e.target.parentElement.querySelector('.textcount').textContent=e.target.value.length+'字';}});
 window.addEventListener('beforeunload',e=>{if(S.classes.some(c=>Object.keys(c.entries).length)||S.bank.length>INITIAL_BANK.length||S.classes.length>1){e.preventDefault();e.returnValue=''}});
+
+/* v0.4 improvements: safe drafting, textbook choice and 7 curated examples */
+const V4_PUBLISHERS={
+ '国語':['光村図書','東京書籍','教育出版'],
+ '算数':['東京書籍','啓林館','教育出版','大日本図書','日本文教出版','学校図書'],
+ '理科':['東京書籍','啓林館','教育出版','大日本図書','学校図書'],
+ '社会':['東京書籍','教育出版','日本文教出版'],
+ '生活':['東京書籍','教育出版','光村図書','啓林館','大日本図書','学校図書'],
+ '音楽':['教育芸術社','教育出版'],
+ '図工':['日本文教出版','開隆堂'],
+ '体育':['東京書籍','学研','光文書院'],
+ '家庭':['東京書籍','開隆堂'],
+ '外国語':['東京書籍','光村図書','開隆堂','教育出版'],
+ '外国語活動':['文部科学省 Let's Try!','自治体教材'],
+ '道徳':['東京書籍','光村図書','教育出版','日本文教出版','光文書院','学研']
+};
+const V4_UNITS=[
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'太陽とかげ',texts:[
+ '「太陽とかげ」では、同じ場所で時刻を変えて影を観察し、影の向きの変化を記録していました。',
+ '「太陽とかげ」では、太陽の位置と影の向きを比べ、その位置関係に気付いていました。',
+ '「太陽とかげ」では、時刻ごとの記録を根拠に、影の向きが変わる理由を説明していました。',
+ '「太陽とかげ」では、友だちの記録と自分の結果を比べ、考えを見直していました。',
+ '「太陽とかげ」では、時刻や方位に気を付け、観察結果を分かりやすく図にまとめていました。',
+ '「太陽とかげ」では、影の向きについて予想を立て、観察で確かめようとしていました。',
+ '「太陽とかげ」では、観察結果を基に、太陽の位置と影の向きの関係を考えていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'電気の通り道',texts:[
+ '「電気の通り道」では、豆電球の明かりがつくつなぎ方を調べ、回路のつながりに着目して考えていました。',
+ '「電気の通り道」では、予想したつなぎ方を試し、結果を基に回路の条件を説明していました。',
+ '「電気の通り道」では、明かりがつく場合とつかない場合を比べ、共通点を探していました。',
+ '「電気の通り道」では、身の回りの物を調べ、電気を通す物と通さない物に分けていました。',
+ '「電気の通り道」では、実験結果を比べ、電気を通す物の材質について考えていました。',
+ '「電気の通り道」では、うまく明かりがつかないときも、つなぎ方を確かめながら試していました。',
+ '「電気の通り道」では、友だちと実験結果を確かめ合い、自分の考えを整理していました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'風とゴムのはたらき',texts:[
+ '「風とゴムのはたらき」では、風の強さを変えて車を動かし、進んだ距離を比べていました。',
+ '「風とゴムのはたらき」では、実験の条件をそろえ、風の強さによる動き方の違いを調べていました。',
+ '「風とゴムのはたらき」では、ゴムを伸ばす長さを変えて実験し、結果を表に整理していました。',
+ '「風とゴムのはたらき」では、実験結果を根拠に、ゴムの伸ばし方と車の動き方の関係を説明していました。',
+ '「風とゴムのはたらき」では、予想と結果の違いに気付き、理由を考えていました。',
+ '「風とゴムのはたらき」では、班の実験結果と自分の結果を比べ、考えを深めていました。',
+ '「風とゴムのはたらき」では、風とゴムの働きの共通点や違いを見つけ、言葉でまとめていました。']}
+];
+let v4Grade=3,v4Subject='理科',v4Unit='',v4BankEdit=0;
+S.textbooks=S.textbooks||{};S.criteria=S.criteria||{};
+function v4Pub(g,s){return (S.textbooks||{})[g+':'+s]||'未設定'}
+function v4Opts(list,current){return list.map(x=>option(x,current)).join('')}
+function v4UnitOptions(){return V4_UNITS.filter(x=>x.grade===v4Grade&&x.subject===v4Subject&&x.publisher===v4Pub(v4Grade,v4Subject))}
+function v4SelectedUnit(){const a=v4UnitOptions();return a.find(x=>x.unit===v4Unit)||a[0]}
+function v4Import(x,i){const b={id:S.nextId++,grade:x.grade,subject:x.subject,unit:x.unit,text:x.texts[i],tag:'編集用見本・要確認'};S.bank.push(b);return b}
+makeDraft=function(){
+ const m=draftMeta,topic=m.unit.trim(),raw=m.keywords.trim();
+ if(!topic){toast('単元名を入力してください');return}
+ const sentence=raw.replace(/[。！？]+$/,'');
+ if(!/(?:ました|ています|でした|です|ます|できた|ことができた|していた|している|した|だった|考えた|気付いた|分かった)$/.test(sentence)){
+  toast('文のつなぎ間違いを防ぐため、学習の様子を「〜していました。」まで入力してください');
+  return;
+ }
+ const natural=sentence.replace(/ことができた$/,'ことができました').replace(/していた$/,'していました').replace(/だった$/,'でした');
+ const intro=(m.subject==='道徳'||m.subject==='総合的な学習の時間'?'':m.subject+'の')+'「'+topic+'」では、';
+ draft=applyRules(intro+natural+'。');v4BankEdit=0;render();
+};
+const v4OldTop=renderTop;
+renderTop=function(){v4OldTop();const tabs=$('tabs');if(!tabs.querySelector('[data-page="unit-bank"]')){const b=document.createElement('button');b.className='tab'+(page==='unit-bank'?' active':'');b.textContent='📚 単元から選ぶ';b.dataset.action='page';b.dataset.page='unit-bank';tabs.insertBefore(b,tabs.querySelector('[data-page="compose"]'))}};
+const v4OldRender=render;
+render=function(){
+ if(page==='unit-bank'){renderTop();$('main').innerHTML=v4UnitHTML();return}
+ v4OldRender();
+ if(page==='settings')v4Settings();
+ if(page==='compose')v4DraftEditor();
+ if(page==='bank')v4BankButtons();
+};
+function v4Settings(){
+ const box=document.createElement('div');box.className='panel';box.style.marginTop='16px';
+ box.innerHTML='<h2>教科書会社の設定</h2><div class="three">'+
+ '<div class="field"><label>学年</label><select id="v4-grade">'+v4Opts([1,2,3,4,5,6],v4Grade)+'</select></div>'+
+ '<div class="field"><label>教科</label><select id="v4-subject">'+v4Opts(Object.keys(V4_PUBLISHERS),v4Subject)+'</select></div>'+
+ '<div class="field"><label>教科書会社</label><select id="v4-publisher">'+v4Opts(['未設定'].concat(V4_PUBLISHERS[v4Subject],['その他']),v4Pub(v4Grade,v4Subject))+'</select></div></div>'+
+ '<div class="notice" style="margin-top:12px">学年・教科別に設定します。会社を選ぶだけで全単元の評価規準を自動取得するわけではありません。<button class="btn" data-v4="show-unit">単元から選ぶ →</button></div>';
+ $('main').appendChild(box);
+}
+function v4UnitHTML(){
+ const examples=v4UnitOptions(),chosen=v4SelectedUnit();if(chosen&&!examples.some(x=>x.unit===v4Unit))v4Unit=chosen.unit;
+ let h=header('単元別の文例','教科書会社を選び、7種類の文例から選ぶ。言葉の修正やクラス横断配置もできます。')+'<div class="grid"><div class="panel wide"><div class="three">'+
+ '<div class="field"><label>学年</label><select id="v4-grade">'+v4Opts([1,2,3,4,5,6],v4Grade)+'</select></div>'+
+ '<div class="field"><label>教科</label><select id="v4-subject">'+v4Opts(Object.keys(V4_PUBLISHERS),v4Subject)+'</select></div>'+
+ '<div class="field"><label>教科書会社</label><select id="v4-publisher">'+v4Opts(['未設定'].concat(V4_PUBLISHERS[v4Subject],['その他']),v4Pub(v4Grade,v4Subject))+'</select></div>'+
+ '</div><p class="hint" style="margin-top:10px">設定はクラス・設定と共通。ほかの会社や単元の文例は準備中です。</p></div>';
+ if(!chosen)return h+'<div class="panel wide"><h2>この教科書会社の単元別文例は準備中</h2><p>操作見本は「3年・理科・東京書籍」で確認できます。評価規準が未登録の単元について公式準拠とは表示しません。</p></div></div>';
+ h+='<div class="panel wide"><h2>単元の7文例</h2><div class="field"><label>単元</label><select id="v4-unit">'+v4Opts(examples.map(x=>x.unit),v4Unit)+'</select></div>'+
+ '<div class="warning" style="margin:12px 0">以下は編集用の見本です。出版社の公式評価規準への照合は未完了。使う際は、児童の実際の学習の姿を確認してください。</div><div class="stack">'+
+ chosen.texts.map((txt,i)=>'<div class="card"><strong>文例 '+(i+1)+'</strong><p style="margin:9px 0">'+E(txt)+'</p><div class="inline"><button class="btn softbtn" data-v4="edit-unit" data-i="'+i+'">言葉を変える</button><button class="btn" data-v4="add-unit" data-i="'+i+'">バンクに追加</button><button class="btn primary" data-v4="share-unit" data-i="'+i+'">クラスへ配置 ↗</button></div></div>').join('')+
+ '</div><hr><button class="btn" data-v4="new-unit">＋ 文例を増やす</button><button class="btn" data-v4="unit-prompt">7文例の追加案をAIに相談する指示をコピー</button>'+
+ '<div class="field" style="margin-top:16px"><label>評価規準・出典のメモ（児童情報は入力しない）</label><textarea id="v4-criteria">'+E((S.criteria||{})[[chosen.grade,chosen.subject,chosen.publisher,chosen.unit].join('|')]||'')+'</textarea></div></div></div>';
+ return h;
+}
+function v4DraftEditor(){
+ const prev=$('draft-preview');if(!prev)return;
+ const area=document.createElement('textarea');area.id='v4-editor';area.className='review-textarea';area.style.cssText='min-height:180px;width:100%;background:#f8fbf8;border:1px solid #bfd2c2;border-radius:12px;padding:15px';area.value=draft;
+ prev.replaceWith(area);
+ area.addEventListener('input',()=>{draft=area.value;const n=area.parentElement.querySelector('.textcount');if(n)n.textContent=draft.length+'字 ／ 目安上限'+S.prefs.maxChars+'字'});
+ if(v4BankEdit){const b=document.createElement('button');b.className='btn';b.dataset.v4='save-bank';b.textContent='元の文例を更新';const bar=area.parentElement.querySelector('.inline');if(bar)bar.appendChild(b)}
+}
+function v4BankButtons(){
+ const cards=Array.from($('main').querySelectorAll('.bankcard'));
+ const entries=S.bank.filter(x=>(bankFilter==='すべて'||x.subject===bankFilter)&&(String(x.grade)+x.subject+x.unit+x.text).toLowerCase().includes(bankQuery.toLowerCase()));
+ cards.forEach((card,i)=>{if(!entries[i])return;const bar=card.querySelectorAll('.inline');const actions=bar[bar.length-1];if(!actions)return;const b=document.createElement('button');b.className='btn';b.dataset.v4='edit-bank';b.dataset.id=entries[i].id;b.textContent='文章を編集';actions.appendChild(b)});
+}
+function v4StartEdit(txt,meta,id){draft=txt;draftMeta={grade:meta.grade,subject:meta.subject,unit:meta.unit,keywords:''};v4BankEdit=id||0;page='compose';render()}
+document.addEventListener('change',e=>{
+ const el=e.target;
+ if(el.id==='v4-grade'){v4Grade=Number(el.value);v4Unit='';render()}
+ else if(el.id==='v4-subject'){v4Subject=el.value;v4Unit='';render()}
+ else if(el.id==='v4-publisher'){S.textbooks=S.textbooks||{};S.textbooks[v4Grade+':'+v4Subject]=el.value;v4Unit='';render()}
+ else if(el.id==='v4-unit'){v4Unit=el.value;render()}
+ else if(el.id==='v4-criteria'){const u=v4SelectedUnit();if(u){S.criteria=S.criteria||{};S.criteria[[u.grade,u.subject,u.publisher,u.unit].join('|')]=el.value}}
+});
+document.addEventListener('input',e=>{if(e.target.id==='v4-criteria'){const u=v4SelectedUnit();if(u){S.criteria=S.criteria||{};S.criteria[[u.grade,u.subject,u.publisher,u.unit].join('|')]=e.target.value}}});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v4]');if(!b)return;const a=b.dataset.v4,u=v4SelectedUnit();
+ if(a==='show-unit'){v4Unit='';page='unit-bank';render()}
+ else if(a==='edit-unit'){v4StartEdit(u.texts[Number(b.dataset.i)],u,0)}
+ else if(a==='add-unit'){v4Import(u,Number(b.dataset.i));toast('文例を保存しました');render()}
+ else if(a==='share-unit'){const x=v4Import(u,Number(b.dataset.i));startShare(x.id)}
+ else if(a==='new-unit'){v4StartEdit('',u,0)}
+ else if(a==='edit-bank'){const x=S.bank.find(z=>z.id===Number(b.dataset.id));if(x)v4StartEdit(x.text,x,x.id)}
+ else if(a==='save-bank'){const x=S.bank.find(z=>z.id===v4BankEdit);if(x&&draft.trim()&&confirm('元の文例を更新しますか？ すでに番号へ割り振った文章は変わりません。')){x.text=draft.trim();v4BankEdit=0;page='bank';render();toast('更新しました')}}
+ else if(a==='unit-prompt'){copyText('個人を特定できる情報は含めず、次の単元について異なる観点から所見文例7種類を自然な日本語で提案してください。推測した児童の様子を断定せず、評価規準が不明なら公式準拠と表現しないでください。学年：'+u.grade+'年、教科：'+u.subject+'、教科書会社：'+u.publisher+'、単元：'+u.unit+'。')}
+});
+
 render();
 </script></body></html>
