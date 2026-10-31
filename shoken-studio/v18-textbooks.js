@@ -2,7 +2,7 @@
 let v18Grade=3,v18ExtraSubject='国語',v18ExtraName='',v18FreeRows={};
 const V18_GRADES=[1,2,3,4,5,6];
 function v18SubjectsForGrade(g){
- const s=['国語','算数',...(g<=2?['生活']:['社会','理科']),'音楽','図工','体育',...(g>=5?['家庭','外国語']:g>=3?['外国語活動']:[]),'道徳'];
+ const s=['国語','算数',...(g<=2?['生活']:['社会','理科']),'音楽','図工',...(g>=3?['体育']:[]),...(g>=5?['家庭','外国語']:g>=3?['外国語活動']:[]),'道徳'];
  return s;
 }
 function v18Publishers(subject){
