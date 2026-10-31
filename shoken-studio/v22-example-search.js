@@ -38,10 +38,15 @@ function v22Find(index){
  if(V22_SEARCH.subject)items=items.filter(x=>x.subject===V22_SEARCH.subject);
  if(V22_SEARCH.axis)items=items.filter(x=>x.rawAxis===V22_SEARCH.axis);
  const terms=String(V22_SEARCH.query||'').split(/[／/、,・　\s]+/).map(v22Norm).filter(Boolean);
- if(terms.length)items=items.filter(x=>{
-  const hay=v22Norm([x.subject,x.unit,x.text,x.source,x.details].join(' '));
-  return terms.every(term=>hay.includes(term));
- });
+ if(terms.length){
+  // A full unit title takes priority over a mention of that title in another lesson's comment.
+  const exact=terms.length===1?items.filter(x=>v22Norm(x.unit)===terms[0]):[];
+  if(exact.length)items=exact;
+  else items=items.filter(x=>{
+   const hay=v22Norm([x.subject,x.unit,x.text,x.source,x.details].join(' '));
+   return terms.every(term=>hay.includes(term));
+  });
+ }
  return items;
 }
 function v22SearchHTML(){
