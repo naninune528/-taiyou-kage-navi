@@ -1,4 +1,4 @@
-/* 所見メーカー STUDIO v2.2: all-subject, all-grade search of approved built-in examples.
+/* 所見メーカー STUDIO v2.3: all-subject, all-grade search of approved built-in examples.
  * Search is distinct from the user's editable bank; adding a result is an explicit action. */
 const V22_SEARCH={grade:3,subject:'国語',query:'',axis:'',limit:20};
 const V22_AXIS={knowledge:'知識・技能',thinking:'思考・判断・表現',attitude:'主体的に学習に取り組む態度',custom:'自作文例'};
@@ -163,3 +163,256 @@ document.addEventListener('click',e=>{
 const v22CSS=document.createElement('style');
 v22CSS.textContent='.v22-search{padding:19px}.v22-controls{display:grid;grid-template-columns:1fr 1.3fr 1.4fr;gap:12px}.v22-query{margin:12px 0}.v22-query input{width:100%;padding:12px}.v22-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}.v22-result{border:1px solid #d9e5d9;border-radius:14px;background:#fffdfa;padding:14px;min-width:0}.v22-result h3{margin:8px 0;font-size:15px}.v22-tags{gap:6px;flex-wrap:wrap}.v22-comment{line-height:1.85;white-space:pre-wrap}.v22-source{font-size:11px;color:#688070;line-height:1.6}.v22-more{display:block;margin:14px auto}.v22-quick{margin-bottom:14px}.v22-pickerlink{margin:10px 0}.v22-edited input{outline-color:#87ab96}@media(max-width:740px){.v22-results{grid-template-columns:1fr}.v22-controls{grid-template-columns:1fr 1fr}.v22-controls>.field:nth-child(3){grid-column:1/-1}}';
 document.head.appendChild(v22CSS);
+
+/* STUDIO v2.3 - Art education: source-aware, original teacher-editable examples.
+ * Publisher materials: Nihon Bunkyo Shuppan R6 3-4 upper annual plan / assessment criteria.
+ * These are NOT official publisher-issued report comments; pupil evidence must be checked.
+ */
+const V23_ART_SOURCE='https://www.nichibun-g.co.jp/textbooks/zuko/download/r6/r6_zuko_nenkei_hyouka_34jo.pdf';
+const V23_ART=[];
+function v23Art(unit,activity,page,examples){
+ const prefix='図工の「'+unit+'」の学習では、';
+ for(const [axis,rows] of Object.entries(examples)){
+  for(const text of rows){
+   V23_ART.push({grade:3,subject:'図工',publisher:'日本文教出版',unit,axis,text:prefix+text,
+    activity,sourceUrl:V23_ART_SOURCE,sourceLabel:'日本文教出版 令和6年度版「3・4上」年間指導計画・評価規準（'+page+'）／文例は独自作成'});
+  }
+ }
+}
+// 3・4上：学校で使う出版社と、実施した活動を必ず照合する。
+v23Art('絵のぐ＋水＋ふで＝いいかんじ！','水彩絵の具・水の量・筆の動き・色づくり・鑑賞','p.10–11',{
+ knowledge:[
+ '水の量を変えると色の濃さが変わることに気付き、絵の具の濃淡を使い分けて描くことができました。',
+ '筆先や筆の側面を使い分け、細い線や幅の広い線を描くことができました。',
+ '絵の具を混ぜて色をつくり、色の組合せによって違う感じになることを確かめることができました。'],
+ thinking:[
+ '水を多く含ませたときの色の広がり方から表したい形を見付け、筆の動かし方を工夫して描いていました。',
+ '明るい色と暗い色を組み合わせ、表したい雰囲気が伝わるように色を選んでいました。',
+ '友だちがつくった色や筆の跡を見て、自分とは異なる表し方のよさを具体的に伝えていました。'],
+ attitude:[
+ '絵の具と水の割合を繰り返し変えながら、気に入った色や形を探していました。',
+ '色の混ぜ方や筆の動かし方を試し、自分が表したい感じに近付くように描き進めていました。']
+});
+v23Art('うごいて楽しいわりピンワールド','割りピンで動く仕組み・形・色・鑑賞','p.12–13',{
+ knowledge:[
+ '割りピンを使った動く仕組みを理解し、紙の部品を組み合わせて動かすことができました。',
+ 'はさみで切った形を割りピンでつなぎ、部品が動くことを確かめながら作品をつくることができました。',
+ '形の重なり方や割りピンを留める位置によって、動き方が変わることに気付くことができました。'],
+ thinking:[
+ '部品を動かして生まれる形から発想を広げ、動きを生かした作品を考えていました。',
+ '表したい動きに近付けるため、割りピンを留める位置や部品の大きさを工夫していました。',
+ '友だちの作品を実際に動かし、自分の作品とは違う仕組みや動きの面白さを伝えていました。'],
+ attitude:[
+ '部品をつなぐ位置を変えて何度も動かし、より面白い動きになるよう試していました。',
+ '思いどおりに動かない場面でも部品の形や重ね方を調整しながら、作品づくりを進めていました。']
+});
+v23Art('ひもでつないで','ひもで場所や物をつなぐ・形や色を考える','p.14–15',{
+ knowledge:[
+ 'ひもを結んだりつないだりして、身近な場所に新しい形をつくることができました。',
+ 'ひもの張り方や結ぶ位置によって形の見え方が変わることに気付き、場所に合わせて活動できました。',
+ 'ひもの長さや結び方を確かめ、つないだ形が保たれるようにすることができました。'],
+ thinking:[
+ '教室や校庭の形を生かし、ひもをどこにつなぐと面白い形になるか考えていました。',
+ 'ひもを交差させたり高さを変えたりして、空間の見え方が変わるよう工夫していました。',
+ '友だちとつくった空間をいろいろな方向から見て、形の重なりの面白さを伝えていました。'],
+ attitude:[
+ '場所を変えてひもをつなぎ直し、思い付いた形を進んで試していました。',
+ '友だちとつなぐ場所を相談しながら、できた形をさらに広げようとしていました。']
+});
+v23Art('立ち上がった絵のせかい','紙を立たせて表と裏の世界を表す','p.16–17',{
+ knowledge:[
+ '紙に折り目を付けたり切り込みを入れたりして、絵が立つ形をつくることができました。',
+ '絵の具やペンを使い、立たせた紙の表と裏に違う場面を描くことができました。',
+ '紙の形や折り方を工夫し、自分で立つように組み立てることができました。'],
+ thinking:[
+ '紙を立たせることで見える表と裏の違いから発想し、二つの場面をつなぐ作品を考えていました。',
+ '見る方向によって絵の印象が変わるように、紙の向きや配置を工夫していました。',
+ '友だちの作品を回り込んで鑑賞し、表と裏を生かした表現の面白さに気付いていました。'],
+ attitude:[
+ 'さまざまな紙の立たせ方を試し、思い付いた場面を形にしようとしていました。',
+ '立てた紙が倒れたときも折り方や置き方を見直しながら、表したい世界をつくり続けていました。']
+});
+v23Art('空きようきのへんしん','空き容器と紙粘土で使えるものを考える','p.18–19',{
+ knowledge:[
+ '空き容器の形を生かし、紙粘土を付けて表面の形を変えながら作品をつくることができました。',
+ '紙粘土と絵の具を使い、使い道に合った形や色に仕上げることができました。',
+ '容器の形や大きさを確かめ、安定して置けるように作品をつくることができました。'],
+ thinking:[
+ '何を入れて使うかを考え、空き容器の特徴に合った作品を発想していました。',
+ '手で触れたときの感じや使いやすさを考え、紙粘土の厚みや形を調整していました。',
+ '友だちの作品を見たり使い方を聞いたりして、形と使い道を結び付けた工夫に気付いていました。'],
+ attitude:[
+ '紙粘土を付ける量や位置を変えながら、思い描いた形に近付けようとしていました。',
+ '実際に使う場面を想像し、必要な部分を付け足すなどして作品をつくり進めていました。']
+});
+v23Art('あの日あの時の気もち','心に残った出来事・その時の気持ち・色と構図','p.20–21',{
+ knowledge:[
+ '絵の具やクレヨンを使い分け、表したい場面に合わせた色や線で描くことができました。',
+ '色の明るさや塗り方を工夫し、そのときの気持ちが伝わる画面に仕上げることができました。',
+ '人物や周囲の物の大きさを考え、場面の様子が分かるように描くことができました。'],
+ thinking:[
+ '心に残っている出来事を振り返り、特に伝えたい場面を選んで絵に表していました。',
+ 'うれしかったときの様子が伝わるよう、人物の表情や体の動きを工夫して描いていました。',
+ '友だちの作品を見て、色や人物の描き方からどのような気持ちが伝わるか話していました。'],
+ attitude:[
+ '思い出の場面を何度も振り返り、気持ちに合う色や描き方を考えながら取り組んでいました。',
+ '表したい様子に近付けようと、人物の位置や周りの描き方を見直しながら描き進めていました。']
+});
+v23Art('お気に入りの葉','葉の形・色・葉脈などの鑑賞、表現は実施した場合のみ','p.27–28',{
+ knowledge:[
+ '葉の形や色を比べ、縁の形や葉脈の違いに気付くことができました。',
+ '集めた葉を並べて観察し、同じように見える葉にも形や色の違いがあることを捉えていました。'],
+ thinking:[
+ 'お気に入りの葉を選んだ理由を、形や色の特徴と結び付けて友だちに伝えることができました。',
+ '葉の重なり方や色の組合せから面白さを見つけ、自分の感じたことを説明していました。',
+ 'ほかの葉と比べることで、自分が選んだ葉の特徴をさらに詳しく捉えていました。'],
+ attitude:[
+ '形や色の異なる葉を進んで探し、気に入った葉の特徴を確かめていました。',
+ '友だちが選んだ葉にも目を向け、自分では気付かなかった形や色のよさを見付けようとしていました。']
+});
+v23Art('クミクミックス','段ボールの板と切り込み・形の組合せ','p.40–41',{
+ knowledge:[
+ '段ボールの板に切り込みを入れ、接着剤を使わずに形を組み合わせることができました。',
+ '段ボールを切る用具を安全に扱い、板の向きや切り込みを調整して組み立てることができました。',
+ '切り込みの深さや向きによって、組み合わせた形の立ち方が変わることを確かめていました。'],
+ thinking:[
+ '組み合わせてできた形をいろいろな方向から見て、次につなげたい形を考えていました。',
+ '思い付いた形を立たせるため、段ボールの組み合わせ方や支え方を工夫していました。',
+ '友だちとつくった形を見合い、板の重なりや高さによる面白さを具体的に伝えていました。'],
+ attitude:[
+ '板が倒れたときに切り込みの位置を変え、組み合わせ方を何度も試していました。',
+ '友だちと協力して段ボールを組み合わせ、思い付いた形をさらに広げようとしていました。']
+});
+v23Art('いろいろうつして','版の材料・写す手順・色と配置','p.44–45',{
+ knowledge:[
+ '版に使う材料の形を生かし、絵の具を付けて紙に写すことができました。',
+ '写すときの絵の具の量や押さえ方を調整し、形がはっきり出るように工夫できました。',
+ '材料の表面によって写る模様が変わることに気付き、違いを生かして表していました。'],
+ thinking:[
+ '写してできた形を見て発想を広げ、次に写す位置や色を考えていました。',
+ '模様を重ねたときの見え方を確かめ、色や形の組合せを工夫していました。',
+ '友だちの作品を鑑賞し、版の材料の使い方や模様の重ね方のよさを見付けていました。'],
+ attitude:[
+ '同じ材料でも絵の具の量や写し方を変え、いろいろな模様を試していました。',
+ '思い付いた表し方を確かめるために繰り返し試し刷りをし、配置を見直していました。']
+});
+v23Art('マグネットマジック','磁石で動かす仕組み・工作・遊びながら鑑賞','p.46–47',{
+ knowledge:[
+ '磁石の引き合う性質を使い、紙の上の飾りを動かす工作をつくることができました。',
+ '磁石を取り付ける位置や厚紙の厚さを確かめ、思いどおりに動く仕組みをつくることができました。',
+ '紙や段ボールを切って形を組み合わせ、動きを生かした作品に仕上げることができました。'],
+ thinking:[
+ '磁石の動きから発想を広げ、動くと面白いものを考えて形や色を工夫していました。',
+ '思い描いた動きに近付けるため、磁石の位置や動かし方を試しながら作品を調整していました。',
+ '友だちの作品を動かして遊び、仕組みや表現の工夫を見付けて伝えていました。'],
+ attitude:[
+ 'うまく動かないときも磁石の向きや位置を変え、繰り返し動きを確かめていました。',
+ '遊ぶ人が楽しめるように、動き方や飾り方を見直しながら作品を仕上げていました。']
+});
+v23Art('絵を見て話そう','絵画の鑑賞・形や色を根拠に伝える','p.48–49',{
+ knowledge:[
+ '絵に使われている形や色の違いに気付き、気になった部分を指し示して伝えることができました。',
+ '絵の中の色の組合せや描き方による印象の違いに気付くことができました。'],
+ thinking:[
+ '絵の中で気に入ったところを選び、色や形を根拠に感じたことを話していました。',
+ '友だちの見方を聞いて、同じ絵にも異なる面白さがあることに気付いていました。',
+ '絵の中の人物や物の位置関係から、どのような場面か想像して伝えていました。'],
+ attitude:[
+ '気になる部分を繰り返し見直し、色や形の特徴を探していました。',
+ '友だちの発言を聞いて絵を見直し、新たに見付けたことを伝えようとしていました。']
+});
+
+
+// Search index is extended without mutating the learner's saved comments.
+let V23_PUBLISHER_FILTER='すべて';
+const v23OldSearchIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const all=v23OldSearchIndex(),seen=new Set(all.map(x=>[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|')));
+ for(const a of V23_ART){
+  const key=[a.grade,a.subject,v22Norm(a.unit),v22Norm(a.text)].join('|');
+  if(seen.has(key))continue;
+  seen.add(key);
+  all.push({grade:a.grade,subject:a.subject,unit:a.unit,axis:V22_AXIS[a.axis],criterion:V22_AXIS[a.axis],
+   rawAxis:a.axis,text:a.text,source:'公式資料を参照した独自文例',details:a.activity,
+   publisher:a.publisher,sourceUrl:a.sourceUrl,sourceLabel:a.sourceLabel,index:all.length});
+ }
+ return all;
+};
+const v23OldFind=v22Find;
+v22Find=function(idx){
+ let data=v23OldFind(idx);
+ if(V22_SEARCH.subject==='図工')data=[...data].sort((a,b)=>Number(b.publisher==='日本文教出版')-Number(a.publisher==='日本文教出版'));
+ if(V22_SEARCH.subject==='図工'&&V23_PUBLISHER_FILTER!=='すべて'){
+  data=data.filter(x=>V23_PUBLISHER_FILTER==='日本文教出版'?
+   x.publisher==='日本文教出版':!x.publisher);
+ }
+ return data;
+};
+function v23PublisherChoices(){
+ return '<div class="v23-source"><strong>図工の出版社・資料</strong>'+
+ '<label class="field">検索対象'+
+ '<select data-v23-publisher>'+
+ ['すべて','日本文教出版','過去の所見・出版社未確認'].map(x=>option(x,V23_PUBLISHER_FILTER)).join('')+
+ '</select></label>'+
+ '<p class="small muted">「日本文教出版」は令和6年度版3・4上の題材別指導計画・評価規準をもとに作成。過去の文例は出版社未照合なので区別して表示します。</p>'+
+ '<a href="'+V23_ART_SOURCE+'" target="_blank" rel="noopener noreferrer">出版社の年間指導計画・評価規準（公式PDF）を確認</a>'+
+ '</div>';
+}
+const v23OldSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ const html=v23OldSearchHTML();
+ if(V22_SEARCH.subject!=='図工')return html;
+ const marker='<div class="panel wide v22-search">';
+ return html.replace(marker,marker+v23PublisherChoices());
+};
+document.addEventListener('change',e=>{
+ if(!e.target?.dataset?.v23Publisher)return;
+ V23_PUBLISHER_FILTER=e.target.value;
+ V22_SEARCH.limit=20;render();
+});
+// Non-PE picker: retain freehand/saved examples and offer textbook-labelled unit examples.
+const v23OldAvailable=v8Available;
+v8Available=function(c,subject){
+ const current=v23OldAvailable(c,subject);
+ if(subject!=='図工'||Number(c.grade)!==3)return current;
+ const set=(S.textbooks||{})['3:図工']||'未設定';
+ if(set!=='未設定'&&set!=='日本文教出版')return current;
+ const groups=new Map();
+ for(const a of V23_ART){
+  if(!groups.has(a.unit))groups.set(a.unit,[]);
+  groups.get(a.unit).push(a);
+ }
+ for(const [unit,rows] of groups){
+  const old=current.find(x=>v22Norm(x.unit)===v22Norm(unit));
+  const saved=old?.choices.filter(x=>String(x.id).startsWith('bank:'))||[];
+  const target=old||{id:'v23|日本文教出版|'+unit,unit,publisher:'日本文教出版',domain:'出版社資料に基づく参考',choices:[]};
+  target.publisher='日本文教出版';target.domain='日本文教出版・3／4上';
+  target.choices=rows.map((x,i)=>({id:'v23:'+x.axis+':'+i,axis:V22_AXIS[x.axis]+'｜資料照合例',text:x.text})).concat(saved);
+  if(!old)current.push(target);
+ }
+ return current;
+};
+const v23OldUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ const old=v23OldUnitOptions();
+ if(v4Subject!=='図工'||Number(v4Grade)!==3||v4Pub(3,'図工')!=='日本文教出版')return old;
+ const units=[...new Set(V23_ART.map(x=>x.unit))];
+ for(const unit of units){
+  if(old.some(x=>v22Norm(x.unit)===v22Norm(unit)))continue;
+  old.push({grade:3,subject:'図工',unit,publisher:'日本文教出版',texts:[],domain:'出版社資料に基づく参考'});
+ }
+ return old;
+};
+const v23OldData=v6Data;
+v6Data=function(u){
+ if(u?.subject==='図工'&&Number(u.grade)===3&&u.publisher==='日本文教出版'){
+  const rows=V23_ART.filter(x=>v22Norm(x.unit)===v22Norm(u.unit));
+  if(rows.length)return {knowledge:rows.filter(x=>x.axis==='knowledge').map(x=>x.text),
+   thinking:rows.filter(x=>x.axis==='thinking').map(x=>x.text),
+   attitude:rows.filter(x=>x.axis==='attitude').map(x=>x.text)};
+ }
+ return v23OldData(u);
+};
+const v23Style=document.createElement('style');
+v23Style.textContent='.v23-source{padding:12px 14px;background:#f6faf3;border:1px solid #dce9da;border-radius:13px;margin-bottom:14px}.v23-source .field{display:inline-flex;flex-direction:column;gap:4px;max-width:340px;width:100%;margin:8px 0}.v23-source p{margin:6px 0 10px}.v23-source a{font-size:12px;color:#366a58;text-decoration:underline}';
+document.head.appendChild(v23Style);
