@@ -44,6 +44,7 @@ function v15GuessUnit(body,subject){
  if(subject==='生活・特別活動'){
   const m=s.match(/^(誕生日係|[一-龥ぁ-んァ-ンー]{1,10}係|当番活動|委員会活動)/);if(m)return m[1];
  }
+ if(subject==='体育'){const m=s.match(/^(?:体育の)?(サッカー|ハンドボール|跳び箱運動|跳び箱|マット運動|鉄棒運動|プレルボール|ベースボール|短なわ|長なわ|リレー|走り幅跳び)(?:の学習|の授業|では|で|に)/);if(m)return m[1]}
  if(['国語','算数','理科','社会','体育','音楽','図工','家庭'].includes(subject)){
   const match=s.match(new RegExp('^'+subject+'(?:科)?の([^。！？、]{1,26}?)の(?:授業|学習|活動)では'));if(match)return match[1];
  }
