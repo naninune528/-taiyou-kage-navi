@@ -53,7 +53,7 @@ function v22SearchHTML(){
  field('学年','<select data-v22-filter="grade">'+[1,2,3,4,5,6].map(v=>option(v,V22_SEARCH.grade)).join('')+'</select>')+
  field('教科','<select data-v22-filter="subject">'+['',...subjects].map(v=>'<option value="'+E(v)+'"'+(v===V22_SEARCH.subject?' selected':'')+'>'+E(v||'すべての教科')+'</option>').join('')+'</select>')+
  field('評価観点','<select data-v22-filter="axis">'+[['','すべて'],...Object.entries(V22_AXIS)].map(([v,t])=>'<option value="'+E(v)+'"'+(V22_SEARCH.axis===v?' selected':'')+'>'+E(t)+'</option>').join('')+'</select>')+
- '</div><div class="field v22-query"><label>単元名・技・キーワード</label><input data-v22-query="1" value="'+E(V22_SEARCH.query)+'" placeholder="例：すがたをかえる大豆／電気／友だちとの比較"></div>'+
+ '</div><div class="field v22-query"><label>単元名・技・キーワード</label><input data-v22-query="1" value="'+E(V22_SEARCH.query)+'" placeholder="例：すがたをかえる大豆／電気／友だちとの比較"><button class="btn primary" type="button" data-v22-action="search" style="margin-top:8px">検索する</button></div>'+
  '<div class="inline between"><span class="small muted">検索結果：'+items.length+'件　（表示 '+show.length+'件）</span>'+
  '<button class="btn softbtn" type="button" data-v22-action="reset">検索条件を戻す</button></div>'+
  (V22_SEARCH.subject==='体育'?'<div class="notice small">体育はさらに「領域 → 種目 → 技」で探せます。 <button class="btn softbtn" type="button" data-v22-action="pe">体育の種目別検索へ</button></div>':'')+
@@ -138,6 +138,7 @@ document.addEventListener('click',e=>{
   page='examples-search';render();return;
  }
  if(action==='pe'){v4Subject='体育';v7PeMode='実技';v4Grade=Number(V22_SEARCH.grade);page='unit-bank';render();return}
+ if(action==='search'){V22_SEARCH.query=document.querySelector('[data-v22-query]')?.value||V22_SEARCH.query;V22_SEARCH.limit=20;render();return}
  if(action==='reset'){V22_SEARCH.subject='国語';V22_SEARCH.query='';V22_SEARCH.axis='';V22_SEARCH.limit=20;render();return}
  if(action==='more'){V22_SEARCH.limit+=20;render();return}
  const entry=v22MakeIndex()[Number(b.dataset.v22Index)];
