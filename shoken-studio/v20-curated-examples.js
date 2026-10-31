@@ -211,7 +211,7 @@ const v20OldUnitOptions=v4UnitOptions;
 v4UnitOptions=function(){
  const out=v20OldUnitOptions(),seen=new Set(out.map(u=>v20Normalize(u.unit)));
  for(const row of V20_CURATED){
-  if(row.grade!==v4Grade||row.subject!==v4Subject)continue;
+  if(row.grade!==v4Grade||row.subject!==v4Subject||(row.subject==='体育'&&typeof v7PeMode!=='undefined'&&v7PeMode==='保健'))continue;
   const unit=v20Normalize(row.unit);if(seen.has(unit))continue;
   seen.add(unit);out.push({grade:row.grade,subject:row.subject,publisher:v4Pub(v4Grade,v4Subject),unit:row.unit,texts:[]});
  }
