@@ -110,7 +110,7 @@ tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.step-card,.tab{transition:none}}
 
 
-/* v0.5: shared reuse & save-as-example workspace */
+/* v0.6: shared reuse & save-as-example workspace */
 .quick-backup{border-radius:999px!important;font-size:11px!important;padding:8px 13px!important;white-space:nowrap}@media(max-width:650px){.quick-backup{font-size:10px!important;padding:7px 9px!important}.top-meta{gap:5px}.top-version{display:none}}
 .workflow-banner{display:flex;align-items:center;gap:15px;padding:18px 21px;background:linear-gradient(120deg,#e9f1e7,#fdf4e6);border:1px solid #dce9d9;border-radius:20px;margin-bottom:17px}
 .workflow-banner .symbol{width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#d5e5d5;color:#285c48;display:grid;place-items:center;font-size:23px}
@@ -132,7 +132,7 @@ tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:
 @media(max-width:700px){.share-class-body{grid-template-columns:1fr}.share-number-grid{grid-template-columns:repeat(6,minmax(27px,1fr))}.workflow-banner{padding:14px;gap:10px}}
 </style>
 </head><body>
-<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v0.5</span><button class="btn softbtn quick-backup" data-action="save-json" title="バックアップを保存。自動保存はありません">↓ バックアップ</button></div></div></header>
+<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v0.6</span><button class="btn softbtn quick-backup" data-action="save-json" title="バックアップを保存。自動保存はありません">↓ バックアップ</button></div></div></header>
 <div class="app"><div id="headline"></div><nav class="tabs" id="tabs"></nav><main id="main"></main><div class="footer">SHOKEN STUDIO · Teacher OS prototype · 外部ライブラリ・広告・アクセス解析・通信なし ／ まずは架空データでお試しください</div></div>
 <input id="importfile" type="file" accept=".json,application/json" hidden>
 <script>
@@ -397,7 +397,7 @@ document.addEventListener('click',e=>{
 });
 
 
-/* v0.5 curriculum-grounded sentence authoring, no external data exchange */
+/* v0.6 curriculum-grounded sentence authoring, no external data exchange */
 const V5_CHII={
  grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
  source:'光村図書 令和6年度版 小学校3年 国語 年間指導計画例',
@@ -500,6 +500,159 @@ document.addEventListener('click',e=>{
   copyText(prompt);
  }
 });
+
+
+/* v0.6: Eight examples organized by three Japanese curriculum assessment perspectives */
+const V6_AXES=[
+ {id:'knowledge',label:'知識・技能',short:'知識・技能',count:3},
+ {id:'thinking',label:'思考・判断・表現',short:'思考・判断・表現',count:3},
+ {id:'attitude',label:'主体的に学習に取り組む態度',short:'主体的な態度',count:2}
+];
+const V6_EXAMPLES=[
+ {grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
+ knowledge:[
+ '国語の「ちいちゃんのかげおくり」の学習では、場面の様子を表す言葉の意味を確かめ、物語の内容を理解することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、時や場所の変化を表す言葉に着目し、物語の出来事を順序よく整理することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、人物の行動や様子を表す語句を捉え、情景が伝わる表現に気付くことができました。'],
+ thinking:[
+ '国語の「ちいちゃんのかげおくり」の学習では、場面ごとの出来事や行動を根拠に、ちいちゃんの気持ちの変化を考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、二つのかげおくりの場面を比べ、ちいちゃんの気持ちと結び付けて意味の違いを説明することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、本文の言葉を根拠に、物語を読んで感じたことを理由とともにまとめることができました。'],
+ attitude:[
+ '国語の「ちいちゃんのかげおくり」の学習では、自分の考えと友だちの読み取りを比べ、根拠となる言葉を見直しながら考えを深めていました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、場面を読み返して新たな気付きを探し、感想をより具体的に書き直そうとしていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'太陽とかげ',
+ knowledge:[
+ '理科の「太陽とかげ」の学習では、影が太陽と反対側にできることを、観察結果から理解することができました。',
+ '理科の「太陽とかげ」の学習では、方位磁針を使って向きを確かめ、時刻ごとの影の向きを正確に記録することができました。',
+ '理科の「太陽とかげ」の学習では、太陽の位置を調べる際の安全な観察方法を理解し、決めた方法で観察することができました。'],
+ thinking:[
+ '理科の「太陽とかげ」の学習では、時刻ごとの観察結果を比べ、太陽の位置と影の向きの関係を考えることができました。',
+ '理科の「太陽とかげ」の学習では、影の向きについて予想し、複数の観察結果を根拠に説明することができました。',
+ '理科の「太陽とかげ」の学習では、自分の記録と友だちの記録を比べ、共通点を基に考えをまとめることができました。'],
+ attitude:[
+ '理科の「太陽とかげ」の学習では、予想を確かめるために時刻を変えて観察し、結果を続けて記録しようとしていました。',
+ '理科の「太陽とかげ」の学習では、観察結果が予想と違ったときも記録を確かめ直し、理由を考えようとしていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'電気の通り道',
+ knowledge:[
+ '理科の「電気の通り道」の学習では、乾電池と豆電球を輪のようにつなぐと明かりがつくことを理解することができました。',
+ '理科の「電気の通り道」の学習では、導線や乾電池を正しくつなぎ、豆電球がつくかどうかを調べることができました。',
+ '理科の「電気の通り道」の学習では、実験を通して金属には電気を通す性質があることを理解することができました。'],
+ thinking:[
+ '理科の「電気の通り道」の学習では、明かりがつくつなぎ方とつかないつなぎ方を比べ、回路の共通点を考えることができました。',
+ '理科の「電気の通り道」の学習では、身の回りの物の実験結果を比べ、電気を通す材質の特徴を考えることができました。',
+ '理科の「電気の通り道」の学習では、予想と実験結果を照らし合わせ、結果を根拠に自分の考えを説明することができました。'],
+ attitude:[
+ '理科の「電気の通り道」の学習では、豆電球がつかないときも導線のつなぎ方を確かめ、試し直そうとしていました。',
+ '理科の「電気の通り道」の学習では、友だちの実験結果と比べ、疑問に思ったことを進んで確かめようとしていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'風とゴムのはたらき',
+ knowledge:[
+ '理科の「風とゴムのはたらき」の学習では、風の強さによって車の進む距離が変わることを、実験結果から理解することができました。',
+ '理科の「風とゴムのはたらき」の学習では、ゴムを伸ばす長さによって車の動きが変わることを理解することができました。',
+ '理科の「風とゴムのはたらき」の学習では、実験の条件をそろえて距離を測り、結果を表やグラフに整理することができました。'],
+ thinking:[
+ '理科の「風とゴムのはたらき」の学習では、風の強さと車が進んだ距離を比べ、結果を根拠に関係を説明することができました。',
+ '理科の「風とゴムのはたらき」の学習では、ゴムの伸ばし方を変えた実験結果を比べ、車の動き方の違いを考えることができました。',
+ '理科の「風とゴムのはたらき」の学習では、風とゴムの働きの共通点や違いを見つけ、実験結果を基にまとめることができました。'],
+ attitude:[
+ '理科の「風とゴムのはたらき」の学習では、予想を確かめるために実験を繰り返し、結果を丁寧に記録しようとしていました。',
+ '理科の「風とゴムのはたらき」の学習では、班で結果が異なると測り方や条件を確かめ直し、理由を考えようとしていました。']}
+];
+let v6SelectedAxis='knowledge',v6NewAxis='thinking',v6DraftAxis='';
+function v6Category(b){return V6_AXES.find(x=>x.id===b)?.label||V6_AXES.find(x=>x.label===b)?.label||''}
+function v6Data(u){return V6_EXAMPLES.find(x=>u&&x.grade==u.grade&&x.subject===u.subject&&x.publisher===u.publisher&&x.unit===u.unit)}
+function v6Options(value){return V6_AXES.map(x=>'<option value="'+x.id+'" '+(value===x.id?'selected':'')+'>'+x.label+'</option>').join('')}
+function v6BankPut(u,axis,txt){const b={id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,text:txt,criterion:axis,tag:'観点別の文例（要確認）'};S.bank.push(b);return b}
+function v6Prompt(u){
+ const raw=Array.isArray(u?.texts)?u.texts.length:0;
+ const c=(S.criteria||{})[[u.grade,u.subject,u.publisher,u.unit].join('|')]||u.criteria||'資料未登録';
+ const a=u.activities||'資料未登録';
+ return '【個人情報なしの汎用所見文例を作成】\\n学年：'+u.grade+'年\\n教科：'+u.subject+'\\n教科書会社：'+u.publisher+'\\n単元：'+u.unit+
+ '\\n主な学習活動：'+a+'\\n評価の視点：'+c+
+ '\\n学習活動と評価の視点を結び付けて、次の計8文例を作成してください。\\n①知識・技能：3文例\\n②思考・判断・表現：3文例\\n③主体的に学習に取り組む態度：2文例'+
+ '\\n各文例は異なる具体的な学習の姿を示す。主体的な態度は、見通し・粘り強さ・振り返り・調整など観察できる行動を用いる。本文にない活動を創作しない。資料不明の箇所は確認が必要と明記し、教科書会社の正式文例とは呼ばない。児童名・児童番号・個別の所見を一切含めない。\\n各文例を独立した自然な日本語の完結文にしてください。';
+}
+const v6OldUnitHTML=v4UnitHTML;
+v4UnitHTML=function(){
+ let html=v6OldUnitHTML();
+ const u=v4SelectedUnit();
+ if(!u)return html;
+ const start=html.indexOf('<div class="panel wide"><h2>単元の7文例</h2>');
+ const end=html.indexOf('<div class="panel wide v5-panel">');
+ if(start<0||end<=start)return html;
+ const dataset=v6Data(u);
+ const existing=S.bank.filter(b=>b.grade==u.grade&&b.subject===u.subject&&b.unit===u.unit&&(!b.publisher||b.publisher===u.publisher));
+ const groups=V6_AXES.map(axis=>{
+  const samples=dataset?dataset[axis.id]:[];
+  const custom=existing.filter(x=>x.criterion===axis.id);
+  const buttons=samples.map((txt,i)=>'<div class="card"><div class="inline between"><strong>'+axis.short+' '+(i+1)+'</strong><span class="tag">編集用文例</span></div>'+
+   '<p style="margin:8px 0 10px">'+E(txt)+'</p><div class="inline"><button class="btn softbtn" data-v6="edit" data-axis="'+axis.id+'" data-index="'+i+'">言葉を変える</button>'+
+   '<button class="btn" data-v6="add" data-axis="'+axis.id+'" data-index="'+i+'">バンクへ追加</button>'+
+   '<button class="btn primary" data-v6="share" data-axis="'+axis.id+'" data-index="'+i+'">クラスへ配置 ↗</button></div></div>').join('');
+  const extra=custom.map((b,i)=>'<div class="card"><span class="tag">追加文例 '+(i+1)+'</span><p style="margin:8px 0 10px">'+E(b.text)+'</p>'+
+   '<button class="btn softbtn" data-v6="edit-own" data-id="'+b.id+'">修正</button> '+
+   '<button class="btn" data-v6="share-own" data-id="'+b.id+'">クラスへ配置</button></div>').join('');
+  return '<section class="soft" style="margin-top:15px;background:#f3f7f1"><div class="inline between"><h3 style="margin:0">'+axis.label+'</h3><span class="tag">'+samples.length+'/'+axis.count+' 基本文例</span></div>'+
+   '<div class="stack" style="margin-top:12px">'+(buttons||'<div class="notice">出版社の学習活動・評価の視点を確認後、基本文例を準備します。下の作成欄から、この観点の文例を追加できます。</div>')+extra+'</div></section>';
+ }).join('');
+ const title='<div class="panel wide"><div class="section-head"><div><div class="section-kicker">ASSESSMENT PERSPECTIVES</div><h2>観点別の文例｜基本は8種類</h2></div><span class="tag">知3・思3・態2</span></div>'+
+ '<div class="field"><label>単元</label><select id="v4-unit">'+v4Opts(v4UnitOptions().map(x=>x.unit),v4Unit)+'</select></div>'+
+ '<div class="warning small" style="margin-top:13px">文例は所見を作るための編集例で、出版社発行の所見文ではありません。学習活動・評価の視点と実際の児童の姿を必ず照らし合わせて使ってください。</div>'+
+ groups+
+ '<div class="inline" style="margin-top:16px"><button class="btn" data-v6="prompt">観点別8文例をAIに相談する指示をコピー</button></div></div>';
+ html=html.slice(0,start)+title+html.slice(end);
+ html=html.replace('<h3>自分の文例を追加</h3>','<h3>自分の文例を追加</h3><div class="field" style="margin-bottom:12px"><label>この文例の評価の観点</label><select id="v6-custom-criterion">'+v6Options(v6NewAxis)+'</select></div>');
+ html=html.replace('同じ活動・評価から7案を相談する指示をコピー','観点別8文例の案を相談する指示をコピー');
+ return html;
+};
+// Correct the preview label for newly saved comments, without altering pupil assignments
+const v6OldBankButtons=v4BankButtons;
+v4BankButtons=function(){
+ v6OldBankButtons();
+ const cards=Array.from($('main')?.querySelectorAll('.bankcard')||[]);
+ const entries=S.bank.filter(b=>(bankFilter==='すべて'||b.subject===bankFilter)&&(String(b.grade)+b.subject+b.unit+b.text).toLowerCase().includes(bankQuery.toLowerCase()));
+ cards.forEach((card,i)=>{
+  if(!entries[i]||!entries[i].criterion)return;
+  const label=document.createElement('span');label.className='tag';label.textContent=v6Category(entries[i].criterion);
+  const parent=card.querySelector('.inline');if(parent)parent.appendChild(label);
+ });
+};
+document.addEventListener('change',e=>{if(e.target.id==='v6-custom-criterion')v6NewAxis=e.target.value});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v6]');if(!b)return;
+ const action=b.dataset.v6,u=v4SelectedUnit(),d=v6Data(u),axis=b.dataset.axis,idx=Number(b.dataset.index);
+ if(action==='prompt'){if(u)copyText(v6Prompt(u));return}
+ if(action==='edit'||action==='add'||action==='share'){
+  if(!u||!d||!d[axis]||!d[axis][idx])return;
+  const txt=d[axis][idx];
+  if(action==='edit'){v6DraftAxis=axis;v4StartEdit(txt,u,0)}
+  else{const entry=v6BankPut(u,axis,txt);if(action==='add'){toast('「'+v6Category(axis)+'」に文例を追加しました');render()}else startShare(entry.id)}
+ }else if(action==='edit-own'){const x=S.bank.find(y=>y.id===Number(b.dataset.id));if(x){v6DraftAxis=x.criterion||'';v4StartEdit(x.text,x,x.id)}}
+ else if(action==='share-own'){startShare(b.dataset.id)}
+});
+/* Capture the existing save command to attach a perspective to the custom example. */
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v5="save-example"]');
+ if(!b)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const u=v4SelectedUnit(),text=$('v5-preview')?.value?.trim()||'';
+ if(!u||!text){toast('保存する文例を入力してください');return}
+ const axis=$('v6-custom-criterion')?.value||v6NewAxis;
+ S.bank.push({id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,text,criterion:axis,tag:'学習活動・評価から追加（要確認）',activity:$('v5-act')?.value?.trim()||'',skill:$('v5-skill')?.value?.trim()||''});
+ v5Pending='';render();toast('「'+v6Category(axis)+'」の文例に追加しました');
+},true);
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v5="ai-help"]');if(!b)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const u=v4SelectedUnit();if(u)copyText(v6Prompt(u));
+},true);
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-action="draft-to-bank"]');if(!b||!v6DraftAxis)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ if(!draft.trim()){toast('文章を入力してください');return}
+ const u={grade:Number(draftMeta.grade),subject:draftMeta.subject,unit:draftMeta.unit,publisher:v4Pub(Number(draftMeta.grade),draftMeta.subject)};
+ v6BankPut(u,v6DraftAxis,draft.trim());v6DraftAxis='';page='bank';render();toast('観点を付けて文例を保存しました');
+},true);
 
 render();
 </script></body></html>
