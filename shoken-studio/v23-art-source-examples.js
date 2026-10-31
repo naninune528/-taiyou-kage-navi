@@ -155,3 +155,97 @@ v23Art('絵を見て話そう','絵画の鑑賞・形や色を根拠に伝える
  '気になる部分を繰り返し見直し、色や形の特徴を探していました。',
  '友だちの発言を聞いて絵を見直し、新たに見付けたことを伝えようとしていました。']
 });
+
+
+// Search index is extended without mutating the learner's saved comments.
+let V23_PUBLISHER_FILTER='すべて';
+const v23OldSearchIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const all=v23OldSearchIndex(),seen=new Set(all.map(x=>[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|')));
+ for(const a of V23_ART){
+  const key=[a.grade,a.subject,v22Norm(a.unit),v22Norm(a.text)].join('|');
+  if(seen.has(key))continue;
+  seen.add(key);
+  all.push({grade:a.grade,subject:a.subject,unit:a.unit,axis:V22_AXIS[a.axis],criterion:V22_AXIS[a.axis],
+   rawAxis:a.axis,text:a.text,source:'公式資料を参照した独自文例',details:a.activity,
+   publisher:a.publisher,sourceUrl:a.sourceUrl,sourceLabel:a.sourceLabel,index:all.length});
+ }
+ return all;
+};
+const v23OldFind=v22Find;
+v22Find=function(idx){
+ let data=v23OldFind(idx);
+ if(V22_SEARCH.subject==='図工'&&V23_PUBLISHER_FILTER!=='すべて'){
+  data=data.filter(x=>V23_PUBLISHER_FILTER==='日本文教出版'?
+   x.publisher==='日本文教出版':!x.publisher);
+ }
+ return data;
+};
+function v23PublisherChoices(){
+ return '<div class="v23-source"><strong>図工の出版社・資料</strong>'+
+ '<label class="field">検索対象'+
+ '<select data-v23-publisher>'+
+ ['すべて','日本文教出版','過去の所見・出版社未確認'].map(x=>option(x,V23_PUBLISHER_FILTER)).join('')+
+ '</select></label>'+
+ '<p class="small muted">「日本文教出版」は令和6年度版3・4上の題材別指導計画・評価規準をもとに作成。過去の文例は出版社未照合なので区別して表示します。</p>'+
+ '<a href="'+V23_ART_SOURCE+'" target="_blank" rel="noopener noreferrer">出版社の年間指導計画・評価規準（公式PDF）を確認</a>'+
+ '</div>';
+}
+const v23OldSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ const html=v23OldSearchHTML();
+ if(V22_SEARCH.subject!=='図工')return html;
+ const marker='<div class="panel wide v22-search">';
+ return html.replace(marker,marker+v23PublisherChoices());
+};
+document.addEventListener('change',e=>{
+ if(!e.target?.dataset?.v23Publisher)return;
+ V23_PUBLISHER_FILTER=e.target.value;
+ V22_SEARCH.limit=20;render();
+});
+// Non-PE picker: retain freehand/saved examples and offer textbook-labelled unit examples.
+const v23OldAvailable=v8Available;
+v8Available=function(c,subject){
+ const current=v23OldAvailable(c,subject);
+ if(subject!=='図工'||Number(c.grade)!==3)return current;
+ const set=(S.textbooks||{})['3:図工']||'未設定';
+ if(set!=='未設定'&&set!=='日本文教出版')return current;
+ const groups=new Map();
+ for(const a of V23_ART){
+  if(!groups.has(a.unit))groups.set(a.unit,[]);
+  groups.get(a.unit).push(a);
+ }
+ for(const [unit,rows] of groups){
+  const old=current.find(x=>v22Norm(x.unit)===v22Norm(unit));
+  const saved=old?.choices.filter(x=>String(x.id).startsWith('bank:'))||[];
+  const target=old||{id:'v23|日本文教出版|'+unit,unit,publisher:'日本文教出版',domain:'出版社資料に基づく参考',choices:[]};
+  target.publisher='日本文教出版';target.domain='日本文教出版・3／4上';
+  target.choices=rows.map((x,i)=>({id:'v23:'+x.axis+':'+i,axis:V22_AXIS[x.axis]+'｜資料照合例',text:x.text})).concat(saved);
+  if(!old)current.push(target);
+ }
+ return current;
+};
+const v23OldUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ const old=v23OldUnitOptions();
+ if(v4Subject!=='図工'||Number(v4Grade)!==3||v4Pub(3,'図工')!=='日本文教出版')return old;
+ const units=[...new Set(V23_ART.map(x=>x.unit))];
+ for(const unit of units){
+  if(old.some(x=>v22Norm(x.unit)===v22Norm(unit)))continue;
+  old.push({grade:3,subject:'図工',unit,publisher:'日本文教出版',texts:[],domain:'出版社資料に基づく参考'});
+ }
+ return old;
+};
+const v23OldData=v6Data;
+v6Data=function(u){
+ if(u?.subject==='図工'&&Number(u.grade)===3&&u.publisher==='日本文教出版'){
+  const rows=V23_ART.filter(x=>v22Norm(x.unit)===v22Norm(u.unit));
+  if(rows.length)return {knowledge:rows.filter(x=>x.axis==='knowledge').map(x=>x.text),
+   thinking:rows.filter(x=>x.axis==='thinking').map(x=>x.text),
+   attitude:rows.filter(x=>x.axis==='attitude').map(x=>x.text)};
+ }
+ return v23OldData(u);
+};
+const v23Style=document.createElement('style');
+v23Style.textContent='.v23-source{padding:12px 14px;background:#f6faf3;border:1px solid #dce9da;border-radius:13px;margin-bottom:14px}.v23-source .field{display:inline-flex;flex-direction:column;gap:4px;max-width:340px;width:100%;margin:8px 0}.v23-source p{margin:6px 0 10px}.v23-source a{font-size:12px;color:#366a58;text-decoration:underline}';
+document.head.appendChild(v23Style);
