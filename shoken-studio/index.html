@@ -279,7 +279,7 @@ const V4_PUBLISHERS={
  '体育':['東京書籍','学研','光文書院'],
  '家庭':['東京書籍','開隆堂'],
  '外国語':['東京書籍','光村図書','開隆堂','教育出版'],
- '外国語活動':['文部科学省 Let's Try!','自治体教材'],
+ '外国語活動':["文部科学省 Let’s Try!",'自治体教材'],
  '道徳':['東京書籍','光村図書','教育出版','日本文教出版','光文書院','学研']
 };
 const V4_UNITS=[
@@ -425,7 +425,8 @@ v4UnitOptions=function(){
 const v5OldUnitHTML=v4UnitHTML;
 v4UnitHTML=function(){
  const chosen=v4SelectedUnit();
- const old=v5OldUnitHTML();
+ let old=v5OldUnitHTML();
+ if(chosen&&chosen.unit==='ちいちゃんのかげおくり')old=old.replace('以下は編集用の見本です。出版社の公式評価規準への照合は未完了。使う際は、児童の実際の学習の姿を確認してください。','光村図書の学習活動と評価の視点を参考にした所見の編集用文例です。出版社が発行した所見文例ではありません。実際の学習の姿を確認してください。');
  const at=old.lastIndexOf('</div></div>');
  const available=!!chosen;
  const own=available?S.bank.filter(x=>x.grade===chosen.grade&&x.subject===chosen.subject&&x.unit===chosen.unit):[];
