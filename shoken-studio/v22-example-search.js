@@ -37,7 +37,7 @@ function v22Find(index){
  let items=index.filter(x=>x.grade===Number(V22_SEARCH.grade));
  if(V22_SEARCH.subject)items=items.filter(x=>x.subject===V22_SEARCH.subject);
  if(V22_SEARCH.axis)items=items.filter(x=>x.rawAxis===V22_SEARCH.axis);
- const q=v22Norm(V22_SEARCH.query),terms=q.split(/[／/、,・　\s]+/).filter(Boolean);
+ const terms=String(V22_SEARCH.query||'').split(/[／/、,・　\s]+/).map(v22Norm).filter(Boolean);
  if(terms.length)items=items.filter(x=>{
   const hay=v22Norm([x.subject,x.unit,x.text,x.source,x.details].join(' '));
   return terms.every(term=>hay.includes(term));
@@ -102,11 +102,9 @@ v8Subjects=function(c,t){
  if(t==='総合所見'&&c.grade>=3&&c.grade<=4&&!o.includes('外国語活動'))o.push('外国語活動');
  return o;
 };
-const v22PriorPicker=v8Picker;
-v8Picker=function(c,t,n){
- const h=v22PriorPicker(c,t,n);
- if(t==='総合的な学習の時間'||t==='道徳')return h;
- return h+'<div class="v22-pickerlink"><button class="btn softbtn" data-action="page" data-page="examples-search">ほかの教科・単元の文例も検索する</button></div>';
+const v22PriorEditHTML=editHTML;
+editHTML=function(){
+ return '<div class="notice v22-quick"><strong>文例が探せない場合</strong>　国語・算数・理科なども、校正済みの文例を横断検索できます。 <button class="btn primary" data-action="page" data-page="examples-search">文例検索へ</button></div>'+v22PriorEditHTML();
 };
 document.addEventListener('change',e=>{
  const field=e.target.dataset?.v22Filter;if(!field)return;
