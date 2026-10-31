@@ -87,7 +87,7 @@ v21Pe('high','ボール運動','ネット型（ソフトバレーボール）','
 v21Pe('high','ボール運動','ベースボール型（ティーボール）','打撃・守備',{knowledge:['ボールの位置を見て打ち、塁へ進むことができました。'],thinking:['走者や打球の位置に応じて、守備の動きを判断していました。']});
 v21Pe('high','表現運動','表現','動きの構成',{thinking:['伝えたい場面の変化に合わせ、動きの強弱や隊形を工夫して表現していました。']});
 v21Pe('high','表現運動','フォークダンス','隊形・踊り',{knowledge:['音楽と踊りの特徴を捉え、友だちとタイミングを合わせて踊ることができました。']});
-const V21_AXIS={knowledge:'知識・技能',thinking:'思考・判断・表現',attitude:'主体的に学習に取り組む態度'};
+const V21_AXIS={knowledge:'知識・技能',thinking:'思考・判断・表現',attitude:'主体的に学習に取り組む態度',custom:'保存した文例'};
 function v21PeUnits(grade){
  const band=v21Band(grade),groups=new Map();
  for(const x of V21_PE_ROWS){
@@ -101,7 +101,7 @@ function v21PeUnits(grade){
  for(const b of S.bank.filter(x=>Number(x.grade)===Number(grade)&&x.subject==='体育')){
   const id='v21my¦'+b.id;
   groups.set(id,{id,unit:b.unit||'自由文例',domain:'自分の文例',publisher:'自作',sport:b.unit||'自由文例',skill:'登録済み文例',
-   choices:[{id:'bank:'+b.id,axis:v6Category(b.criterion)||'自作・保存済み',category:'custom',text:b.text}]});
+   choices:[{id:'bank:'+b.id,axis:v6Category(b.criterion)||'自作・保存済み',category:(['knowledge','thinking','attitude'].includes(b.criterion)?b.criterion:'custom'),text:b.text}]});
  }
  return [...groups.values()];
 }
@@ -113,7 +113,7 @@ v8Available=function(c,subject){
  const rows=v21PeUnits(c.grade);
  const old=v21OriginalAvailable(c,subject);
  for(const u of old.filter(x=>x.domain==='保健')){
-  rows.push({...u,sport:u.unit,skill:'保健の学習',domain:'保健'});
+  rows.push({...u,sport:u.unit,skill:'保健の学習',domain:'保健',choices:u.choices.map(x=>({...x,category:['knowledge','thinking','attitude'].find(k=>x.id.startsWith(k+':'))||'custom'}))});
  }
  return rows;
 };
@@ -140,7 +140,7 @@ function v21Fields(grade,filter,n,context){
  const d=v21FilterData(grade,filter);
  return '<div class="v21-band">'+E(V21_BANDS[d.band])+' ｜ 体育実技は学習指導要領に基づく分類</div>'+
  '<div class="v21-grid">'+
- field('領域',v21Select(n,context,'domain',d.domains,filter.domain,'領域を選ぶ'))+
+ field('領域',v21Select(n,context,'domain',context==='library'?d.domains.filter(x=>x!=='保健'):d.domains,filter.domain,'領域を選ぶ'))+
  field('種目・教材',v21Select(n,context,'sport',d.sports,filter.sport,'種目を選ぶ'))+
  field('技・具体的な動き',v21Select(n,context,'skill',d.skills,filter.skill,'動きを選ぶ'))+
  field('評価観点',v21Select(n,context,'axis',Object.keys(V21_AXIS).filter(axis=>d.current?.choices.some(x=>x.category===axis)).map(axis=>V21_AXIS[axis]),V21_AXIS[filter.axis]||'','観点を選ぶ'))+
