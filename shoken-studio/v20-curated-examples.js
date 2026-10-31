@@ -172,12 +172,6 @@ v20Pack(6,'外国語',"Let's go to Italy",{
  thinking:['自分の行きたい国とその理由について、英語で尋ねたり伝えたりすることができました。'],
  attitude:['自分の行きたい国とその理由を、外国人講師に英語で詳しく伝えることができました。']
 },'校正済み所見.xlsx');
-// Retain the original set only when explicitly confirmed as 6th grade and avoid inventing how the textbook unit runs.
-v20Pack(6,'外国語','How is your school life?',{
- thinking:['自分の宝物について、英語で尋ね合ったり伝え合ったりすることができました。',
- '自分の宝物や普段の生活について、写真を提示しながら相手に伝わるよう話し方を工夫していました。'],
- attitude:['英文を書き写したり自分のことを英語で書こうとしたりする際に、分からない語句を進んで調べていました。']
-},'校正済み所見.xlsx・題材の照合が必要');
 // Add category-based, non-curricular classroom observations from the user's own source, not from outside PDF.
 v20Pack(3,'生活・特別活動','学級活動',{
  attitude:['★学級会では、友だちの意見を聞いて自分の考えと比べ、話合いの内容を整理しながら発言していました。']
