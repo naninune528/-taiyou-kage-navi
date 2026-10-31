@@ -365,6 +365,7 @@ function v4DraftEditor(){
  const prev=$('draft-preview');if(!prev)return;
  const area=document.createElement('textarea');area.id='v4-editor';area.className='review-textarea';area.style.cssText='min-height:180px;width:100%;background:#f8fbf8;border:1px solid #bfd2c2;border-radius:12px;padding:15px';area.value=draft;
  prev.replaceWith(area);
+ const saveDraftButton=document.querySelector('[data-action="draft-to-bank"]');if(saveDraftButton)saveDraftButton.disabled=false;
  area.addEventListener('input',()=>{draft=area.value;const n=area.parentElement.querySelector('.textcount');if(n)n.textContent=draft.length+'字 ／ 目安上限'+S.prefs.maxChars+'字'});
  if(v4BankEdit){const b=document.createElement('button');b.className='btn';b.dataset.v4='save-bank';b.textContent='元の文例を更新';const bar=area.parentElement.querySelector('.inline');if(bar)bar.appendChild(b)}
 }
