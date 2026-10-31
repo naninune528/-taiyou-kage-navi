@@ -1,5 +1,5 @@
 /* Shoken STUDIO v1.1: common-activity text -> many pupils -> individualized adjustment */
-let v11Type='総合的な学習の時間',v11Category='係',v11Activity='',v11Text='',v11Numbers='全員',v11Mode='append',v11BankId='',v11Preview=null;
+let v11Type='総合的な学習の時間',v11Category='係',v11Activity='',v11Text='',v11Numbers='全員',v11Mode='append',v11BankId='',v11Preview=null,v11SaveBank=true;
 const v11Categories=['友達との関わり','行動','クラブ','委員会','係','当番','実行委員','代表委員会','その他'];
 const v11Style=document.createElement('style');
 v11Style.textContent='.v11-box{background:#fafcf9;border:1px solid #e0e9de;border-radius:14px;padding:13px}.v11-toolbar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:12px 0}.v11-chips{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:7px}.v11-chips .share-chip{min-width:0;padding:10px 0}.v11-preview{background:white;border:1px solid #dbe5d8;border-radius:12px;padding:12px;max-height:380px;overflow:auto}.v11-preview-row{display:grid;grid-template-columns:62px 100px minmax(0,1fr);gap:10px;padding:8px 0;font-size:12px;border-bottom:1px solid #e7ece5;align-items:start}.v11-preview-row:last-child{border-bottom:0}.v11-preview-row span{overflow-wrap:anywhere}.v11-preview-row .skip{color:#a26851}.v11-textarea{width:100%;min-height:155px;background:#fffefb;border:1px solid #c7dacb;border-radius:11px;padding:13px;font-size:14px;line-height:1.9;resize:vertical}@media(max-width:690px){.v11-chips{grid-template-columns:repeat(5,minmax(0,1fr))}.v11-preview-row{grid-template-columns:48px 74px minmax(0,1fr);gap:5px}}';
@@ -75,7 +75,7 @@ function v11CommonHTML(){
  '<div class="field" style="margin-top:13px"><label>共通の文章（ここをコピーして配置）</label>'+
  '<textarea class="v11-textarea" data-v11-field="text" placeholder="'+(base?'係活動では、友だちと協力して取り組み、学級のために自分の役割を果たしていました。':'総合的な学習の時間では、地域の特色について資料を集め、調べたことを分かりやすく整理していました。')+'">'+E(v11Text)+'</textarea></div>'+
  '<div class="notice" style="margin-top:9px">文章は自動で不自然につなぎません。書いた内容をそのまま配置し、各番号の一覧から修正できます。</div>'+
- '<label class="inline small" style="margin-top:14px"><input type="checkbox" id="v11-save-bank" checked> 共通文を文例バンクにも保存する（同じ活動で再利用）</label>'+
+ '<label class="inline small" style="margin-top:14px"><input type="checkbox" id="v11-save-bank"'+(v11SaveBank?' checked':'')+'> 共通文を文例バンクにも保存する（同じ活動で再利用）</label>'+ 
  '<hr class="hr"><h2 style="margin-bottom:5px">配置する番号を選ぶ</h2>'+
  field('番号指定（カンマやハイフンも使えます）','<input data-v11-field="numbers" value="'+E(v11Numbers)+'" placeholder="例：1,3,5-12 または 全員">')+
  v11Buttons()+
@@ -108,6 +108,7 @@ document.addEventListener('change',e=>{
  else if(field==='numbers'){v11Numbers=e.target.value;v11Preview=null;render()}
  else if(field==='bank'){v11BankId=e.target.value;const b=S.bank.find(x=>String(x.id)===v11BankId);if(b){v11Text=b.text;v11Activity=b.unit||v11Activity}v11Preview=null;render()}
 });
+document.addEventListener('change',e=>{if(e.target?.id==='v11-save-bank')v11SaveBank=!!e.target.checked});
 document.addEventListener('click',e=>{
  const b=e.target.closest('[data-v11]');if(!b)return;
  const action=b.dataset.v11;
@@ -131,7 +132,7 @@ document.addEventListener('click',e=>{
  if(!allowed.length){toast('配置できる番号はありません');return}
  if(!confirm(allowed.length+'名へ共通文を仮配置します。配置後に一人ひとりの学習の姿を確認しますか？'))return;
  const text=v11Text.trim(),unit=v11Activity.trim(),key=v11UnitKey();
- if($('v11-save-bank')?.checked){
+ if(v11SaveBank){
   const subject=type==='総合所見'?'生活・特別活動':'総合的な学習の時間';
   if(!S.bank.some(x=>x.grade===c.grade&&x.subject===subject&&x.unit===unit&&x.text===text)){
    S.bank.push({id:S.nextId++,grade:c.grade,subject,unit,text,tag:'共通活動の文例（確認・微調整用）',activityCategory:type==='総合所見'?v11Category:'総合的な学習の時間'});
