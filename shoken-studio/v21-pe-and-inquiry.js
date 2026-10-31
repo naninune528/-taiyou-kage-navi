@@ -187,6 +187,11 @@ v4UnitHTML=function(){
  '<div class="warning small">文例は公式文ではなく編集用の参考例です。すべての技・種目に文例がそろっているわけではありません。</div></div></div>';
 };
 document.addEventListener('change',e=>{
+ if(e.target?.id==='v4-grade'||e.target?.id==='v7-pe-mode'){
+  v21LibraryFilter={domain:'',sport:'',skill:'',axis:''};
+  if(page==='unit-bank'&&v4Subject==='体育'&&v7PeMode==='実技'){const y=window.scrollY||0;render();window.scrollTo?.(0,y)}
+  return;
+ }
  const field=e.target.dataset?.v21Filter;
  if(!field)return;
  const lib=e.target.dataset.v21Context==='library',filter=lib?v21LibraryFilter:v21For(cur(),activeType,Number(e.target.dataset.n));
