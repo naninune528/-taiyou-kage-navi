@@ -245,3 +245,99 @@ v24Add('理科','じしゃくのせいしつ','磁石に付く物・極の性質
  thinking:['磁石を近づける前後の物の動きを比べ、磁石が離れていても力を及ぼすことを説明できました。'],
  attitude:['予想と違った物の材質を確かめ、ほかの物でも同じ結果になるか試していました。']
 });
+
+
+/* Integration: distinct source-backed suggestions, searchable and selectable without mutating saved comments. */
+function v24MatchesPublisher(subject,grade=3){
+ if(grade!==3||!V24_SOURCE[subject])return false;
+ const current=(S.textbooks||{})[grade+':'+subject]||'未設定';
+ return current==='未設定'||current===V24_SOURCE[subject].publisher;
+}
+function v24Matching(grade,subject){return Number(grade)===3?V24_UNITS.filter(x=>x.subject===subject&&v24MatchesPublisher(subject,grade)):[]}
+const v24OldMakeIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const old=v24OldMakeIndex();
+ const replaced=new Set(V24_UNITS.map(x=>'3|'+x.subject+'|'+v22Norm(x.unit)));
+ const kept=old.filter(x=>{
+  if(x.source==='保存済みの文例')return true;
+  if(!['国語','算数','理科'].includes(x.subject)||x.grade!==3||!v24MatchesPublisher(x.subject))return true;
+  return !replaced.has('3|'+x.subject+'|'+v22Norm(x.unit));
+ });
+ for(const u of V24_UNITS){
+  if(!v24MatchesPublisher(u.subject))continue;
+  for(const x of u.examples){
+   kept.push({grade:3,subject:u.subject,unit:u.unit,axis:V22_AXIS[x.axis],
+    criterion:V22_AXIS[x.axis],rawAxis:x.axis,text:x.text,source:'教科書会社の評価計画を参照した独自文例',
+    details:u.focus,publisher:u.publisher,sourceUrl:u.sourceUrl,sourceLabel:u.sourceLabel});
+  }
+ }
+ const seen=new Set(),out=[];
+ for(const x of kept){
+  const key=[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|');
+  if(seen.has(key))continue;
+  seen.add(key);out.push({...x,index:out.length});
+ }
+ return out;
+};
+const v24OldFind=v22Find;
+v22Find=function(idx){
+ const data=v24OldFind(idx);
+ if(!['国語','算数','理科'].includes(V22_SEARCH.subject)||Number(V22_SEARCH.grade)!==3)return data;
+ return [...data].sort((a,b)=>{
+  const rank=x=>x.source==='教科書会社の評価計画を参照した独自文例'?0:
+   x.source==='保存済みの文例'?1:2;
+  return rank(a)-rank(b);
+ });
+};
+const v24OldAvailable=v8Available;
+v8Available=function(c,subject){
+ const out=v24OldAvailable(c,subject);
+ const official=v24Matching(c.grade,subject);
+ for(const u of official){
+  let target=out.find(x=>v22Norm(x.unit)===v22Norm(u.unit));
+  if(!target){target={id:'v24|'+subject+'|'+u.unit,unit:u.unit,publisher:u.publisher,domain:'出版社資料を参照',choices:[]};out.push(target)}
+  const stored=target.choices.filter(x=>String(x.id).startsWith('bank:'));
+  target.domain=u.publisher+'・評価計画参照';
+  target.publisher=u.publisher;
+  target.choices=u.examples.map((x,i)=>({id:'v24:'+x.axis+':'+i,axis:V22_AXIS[x.axis]+'｜資料照合例',text:x.text})).concat(stored);
+ }
+ return out;
+};
+const v24OldUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ const out=v24OldUnitOptions();
+ if(Number(v4Grade)!==3||!v24MatchesPublisher(v4Subject))return out;
+ for(const u of v24Matching(v4Grade,v4Subject)){
+  if(out.some(x=>v22Norm(x.unit)===v22Norm(u.unit)))continue;
+  out.push({grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,focus:u.focus,
+   sourceUrl:u.sourceUrl,source:u.sourceLabel,domain:'出版社資料を参照',texts:[]});
+ }
+ return out;
+};
+const v24OldData=v6Data;
+v6Data=function(u){
+ const unit=V24_UNITS.find(x=>Number(u?.grade)===3&&x.subject===u.subject&&
+   v22Norm(x.unit)===v22Norm(u.unit)&&x.publisher===u.publisher);
+ if(unit&&v24MatchesPublisher(unit.subject)){
+  return {knowledge:unit.examples.filter(x=>x.axis==='knowledge').map(x=>x.text),
+   thinking:unit.examples.filter(x=>x.axis==='thinking').map(x=>x.text),
+   attitude:unit.examples.filter(x=>x.axis==='attitude').map(x=>x.text)};
+ }
+ return v24OldData(u);
+};
+function v24SourceBar(){
+ if(!v24MatchesPublisher(V22_SEARCH.subject,V22_SEARCH.grade))return '';
+ const subject=V22_SEARCH.subject,source=V24_SOURCE[subject];
+ return '<div class="v24-source"><strong>'+E(source.publisher)+'・3年の公式評価計画に基づく独自文例</strong>'+
+ '<p class="small muted">教材名と学習活動に基づく例です。出版社が作った所見文ではありません。使用した授業と実際の児童の姿を確認してください。</p>'+
+ '<a href="'+E(source.url)+'" target="_blank" rel="noopener noreferrer">公式の年間指導計画・評価計画を確認</a></div>';
+}
+const v24OldSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ const base=v24OldSearchHTML();
+ if(!V24_SOURCE[V22_SEARCH.subject])return base;
+ return base.replace('<div class="panel wide v22-search">','<div class="panel wide v22-search">'+v24SourceBar());
+};
+const v24Style=document.createElement('style');
+v24Style.textContent='.v24-source{margin-bottom:14px;padding:12px 14px;background:#f3f8f2;border:1px solid #dae8d8;border-radius:13px}.v24-source p{margin:5px 0 8px}.v24-source a{font-size:12px;color:#356958;text-decoration:underline}';
+document.head.appendChild(v24Style);
