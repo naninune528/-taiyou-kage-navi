@@ -56,6 +56,7 @@ function v16Flush(){
  if(v16Timer!==null){clearTimeout(v16Timer);v16Timer=null}
  if(v16Enabled&&v16Dirty)v16Write();
 }
+window.SHOKEN_AUTOSAVE_FLUSH=v16Flush;
 function v16RestoreLocal(){
  if(!v16StorageAvailable)return;
  try{
