@@ -396,5 +396,109 @@ document.addEventListener('click',e=>{
  else if(a==='unit-prompt'){copyText('個人を特定できる情報は含めず、次の単元について異なる観点から所見文例7種類を自然な日本語で提案してください。推測した児童の様子を断定せず、評価規準が不明なら公式準拠と表現しないでください。学年：'+u.grade+'年、教科：'+u.subject+'、教科書会社：'+u.publisher+'、単元：'+u.unit+'。')}
 });
 
+
+/* v0.5 curriculum-grounded sentence authoring, no external data exchange */
+const V5_CHII={
+ grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
+ source:'光村図書 令和6年度版 小学校3年 国語 年間指導計画例',
+ sourceUrl:'https://www.mitsumura-tosho.co.jp/kyokasho/s-kokugo/keikaku',
+ activities:'第1場面と第4場面のかげおくりを比べる／出来事や行動を表す言葉を基に気持ちを想像する／読後の感想を理由とともにまとめる',
+ criteria:'場面の移り変わりと結び付けて登場人物の気持ちや情景を想像する。読んで理解したことに基づき、感想や考えをもつ。',
+ texts:[
+ '国語の「ちいちゃんのかげおくり」の学習では、第1場面と第4場面のかげおくりを比べ、その意味の違いについて考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、場面ごとの出来事や登場人物の行動を根拠に、ちいちゃんの気持ちの変化を考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、行動や様子を表す言葉に着目し、ちいちゃんの願いや思いを具体的に想像することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、二つのかげおくりの共通点と相違点を見つけ、場面の移り変わりと結び付けて考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、本文の言葉を手がかりに場面の様子を捉え、登場人物の心情を読み深めることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、第5場面とそれまでの場面を比べ、物語を読んで感じたことを理由とともにまとめることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、友だちと感想を読み合い、それぞれの感じ方の共通点や違いに気付くことができました。'
+ ]};
+S.customUnitsV5=S.customUnitsV5||[];
+let v5Pending='',v5EditText='';
+const v5OldUnits=v4UnitOptions;
+v4UnitOptions=function(){
+ const official=v4Grade===3&&v4Subject==='国語'&&v4Pub(3,'国語')==='光村図書'?[V5_CHII]:[];
+ const old=v5OldUnits();
+ const custom=(S.customUnitsV5||[]).filter(x=>Number(x.grade)===Number(v4Grade)&&x.subject===v4Subject&&x.publisher===v4Pub(v4Grade,v4Subject)).map(x=>({...x,texts:[]}));
+ return official.concat(old,custom);
+};
+const v5OldUnitHTML=v4UnitHTML;
+v4UnitHTML=function(){
+ const chosen=v4SelectedUnit();
+ const old=v5OldUnitHTML();
+ const at=old.lastIndexOf('</div></div>');
+ const available=!!chosen;
+ const own=available?S.bank.filter(x=>x.grade===chosen.grade&&x.subject===chosen.subject&&x.unit===chosen.unit):[];
+ const prior=(chosen&&chosen.criteria)||(chosen&&chosen.source?'上記の学習活動と評価の視点を参照':'');
+ const block='<div class="panel wide v5-panel">'+
+ '<div class="section-kicker">CURRICULUM → LEARNING → REPORT</div><h2>学習活動と評価の視点から文例を作る</h2>'+
+ (available?'<div class="soft"><strong>単元：'+E(chosen.unit)+'</strong>'+
+ '<p style="margin:8px 0 4px"><b>主な学習活動：</b>'+E(chosen.activities||'未登録。実際に行う学習活動を確認してください。')+'</p>'+
+ '<p style="margin:0"><b>評価の視点：</b>'+E(chosen.criteria||'未登録。学校の評価規準を確認してください。')+'</p>'+
+ '<p class="small muted" style="margin:8px 0 0">'+E(chosen.source||'編集用サンプル・資料未照合')+'</p></div>':'<p class="muted">単元がまだ選ばれていません。下のフォームから登録できます。</p>')+
+ '<div class="warning small" style="margin:13px 0">文章は「その児童に実際に見られた学習の姿」を選んで使います。出版社の評価規準をそのまま児童の実績として断定しません。</div>'+
+ (available?'<h3>自分の文例を追加</h3><div class="two">'+
+ '<div class="field"><label>実際の学習活動（例：場面ごとの行動を比べ）</label><input id="v5-act" placeholder="例：場面ごとの出来事や行動に着目し"></div>'+
+ '<div class="field"><label>見取った力（例：気持ちの変化を考える）</label><input id="v5-skill" placeholder="例：ちいちゃんの気持ちの変化を考える"></div></div>'+
+ '<div class="inline" style="margin:14px 0 10px"><button class="btn primary" data-v5="assemble">活動＋評価から文例を組み立てる</button><button class="btn" data-v5="ai-help">同じ活動・評価から7案を相談する指示をコピー</button></div>'+
+ '<div class="field"><label>完成した文章（自由に直せます）</label><textarea id="v5-preview" rows="5" placeholder="ここに文章を表示します。直接書いてもOKです。">'+E(v5Pending)+'</textarea></div>'+
+ '<div class="inline"><button class="btn softbtn" data-v5="save-example">この単元の文例として保存</button><span class="hint">保存した文例は文例バンクで共有できます。</span></div>'+
+ '<hr class="hr"><h3>自分で追加した文例　'+own.length+'件</h3>'+
+ (own.map(b=>'<div class="card"><p>'+E(b.text)+'</p><div class="inline"><button class="btn" data-v5="edit-existing" data-id="'+b.id+'">文章を修正</button><button class="btn softbtn" data-v5="assign-existing" data-id="'+b.id+'">クラスへ配置</button></div></div>').join('')||'<p class="muted small">まだありません。</p>'):'')+
+ '<hr class="hr"><h3>新しい単元を自分で登録する</h3><p class="hint">学年・教科・教科書会社は上の選択を使います。実際の学習活動と評価規準を確認して登録してください。</p>'+
+ '<div class="two"><div class="field"><label>追加する単元名</label><input id="v5-unit-name" placeholder="例：まいごのかぎ"></div>'+
+ '<div class="field"><label>資料名・出典（任意）</label><input id="v5-unit-source" placeholder="例：年間指導計画例／学校の指導計画"></div></div>'+
+ '<div class="field"><label>この単元の主な学習活動</label><textarea id="v5-unit-activities" placeholder="例：場面を比べ、登場人物の行動を読み取る"></textarea></div>'+
+ '<div class="field"><label>この単元の評価規準・評価の視点</label><textarea id="v5-unit-criteria" placeholder="例：叙述を根拠に、登場人物の気持ちの変化を具体的に想像する"></textarea></div>'+
+ '<button class="btn softbtn" data-v5="register-unit">＋ 学習活動・評価規準とともに単元を登録</button></div>';
+ if(at>=0)return old.slice(0,at)+block+old.slice(at);
+ return old+block;
+};
+function v5MakeText(u,act,skill){
+ const a=act.trim().replace(/[、。]+$/g,'');
+ const k=skill.trim().replace(/[。]+$/g,'');
+ if(!a||!k)return '';
+ if(/(?:ました|でした|していました|しています)$/.test(a))return '';
+ if(/(?:ました|でした|していました|しています|できました)$/.test(k))return '';
+ if(!/(?:る|す|む|ぶ|く|ぐ|つ|う|ぬ|える|いる)$/.test(k))return '';
+ const category=(u.subject==='道徳'||u.subject==='総合的な学習の時間'||u.subject==='外国語活動');
+ const prefix=category?'「'+u.unit+'」の学習では、':u.subject+'の「'+u.unit+'」の学習では、';
+ const text=category?prefix+a+'、'+k+'姿が見られました。':prefix+a+'、'+k+'ことができました。';
+ return text.replace('、、','、');
+}
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-v5]');if(!el)return;
+ const action=el.dataset.v5, u=v4SelectedUnit();
+ if(action==='assemble'){
+  if(!u){toast('先に単元を選択してください');return}
+  const a=$('v5-act')?.value||'',b=$('v5-skill')?.value||'';
+  const text=v5MakeText(u,a,b);
+  if(!text){toast('学習活動は「〜を比べ」、見取った力は「〜を考える」などの形で入力してください');return}
+  v5Pending=applyRules(text);$('v5-preview').value=v5Pending;toast('文章を作りました。表現を調整して保存できます');
+ }else if(action==='save-example'){
+  if(!u)return;const val=$('v5-preview')?.value?.trim();
+  if(!val){toast('文例を入力してください');return}
+  const a=$('v5-act')?.value?.trim()||'',b=$('v5-skill')?.value?.trim()||'';
+  S.bank.push({id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,text:val,tag:'活動・評価から追加（要確認）',publisher:u.publisher,activity:a,skill:b});
+  v5Pending='';render();toast('文例を保存しました');
+ }else if(action==='register-unit'){
+  const name=$('v5-unit-name')?.value?.trim(),a=$('v5-unit-activities')?.value?.trim(),c=$('v5-unit-criteria')?.value?.trim(),src=$('v5-unit-source')?.value?.trim()||'自分で確認した教材資料';
+  if(!name||!a||!c){toast('単元名・学習活動・評価規準の3つを入力してください');return}
+  if(v4Pub(v4Grade,v4Subject)==='未設定'){toast('まず教科書会社を選んでください');return}
+  S.customUnitsV5=S.customUnitsV5||[];
+  if(v4UnitOptions().some(x=>x.unit===name)){toast('同じ単元名が登録されています');return}
+  S.customUnitsV5.push({grade:v4Grade,subject:v4Subject,publisher:v4Pub(v4Grade,v4Subject),unit:name,source:src,activities:a,criteria:c});
+  v4Unit=name;v5Pending='';render();toast('単元を登録しました。学習活動から文例を追加できます');
+ }else if(action==='edit-existing'){const b=S.bank.find(x=>x.id===Number(el.dataset.id));if(b)v4StartEdit(b.text,b,b.id)}
+ else if(action==='assign-existing')startShare(el.dataset.id);
+ else if(action==='ai-help'){
+  if(!u)return;
+  const prompt='学年：'+u.grade+'年／教科：'+u.subject+'／教科書会社：'+u.publisher+'／単元：'+u.unit+
+  '\n主な学習活動：'+(u.activities||'資料未確認')+'\n評価規準の視点：'+(u.criteria||'資料未確認')+
+  '\nこの学習活動と評価規準の範囲内で、所見として自然な日本語の例文を7案提案してください。各案は異なる学習の姿に着目し、学習活動と評価が具体的に結び付く文にする。単元にない活動や児童の行動を勝手に追加しない。資料未確認なら出版社準拠と断定しない。児童名・番号・個別の実績は含めない。普通教科は原則「〜ことができました。」で終える。道徳・総合は到達度を断定しない。';
+  copyText(prompt);
+ }
+});
+
 render();
 </script></body></html>
