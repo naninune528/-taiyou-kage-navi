@@ -8,6 +8,7 @@ const V13_TEMPLATE=[
  {id:'activity',label:'係・当番・特別活動',on:false,target:55}
 ];
 let v13Draft=null;
+let v13DetailsOpen=false;
 const v13Style=document.createElement('style');
 v13Style.textContent='.v13-config-row{display:grid;grid-template-columns:2fr 1fr 76px 34px 34px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #e4ebe2}.v13-config-row input[type=number]{width:100%}.v13-config-row input[type=checkbox]{width:17px;height:17px}.v13-config-row button{padding:6px;min-width:30px}.v13-subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.v13-subject-grid .field{margin:0}.v13-row-extra{font-size:11px;color:#597465;margin-left:5px}.v13-layout-card{padding:14px;border:1px solid #dbe6dd;border-radius:14px;background:#f8faf7;margin:0 0 11px}.v13-layout-card textarea{width:100%;min-height:100px;border:1px solid #c8d9cc;border-radius:10px;padding:12px;background:#fff;line-height:1.85}.v13-preview{white-space:pre-wrap;line-height:1.95;background:#fff;border:1px solid #d5e4d7;padding:14px;border-radius:12px;min-height:85px;overflow-wrap:anywhere}.v13-highlight{font-size:25px;font-weight:800;color:#315c4d}.v13-draft-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.v13-meter{height:7px;border-radius:7px;background:#e7eee6;overflow:hidden;margin-top:5px}.v13-meter>div{height:100%;background:#7d9f87}.v13-mini{font-size:12px;color:#5c7666}.v13-stale{background:#fff1e9;border:1px solid #ecd0be;padding:12px;border-radius:12px;color:#8f5541;margin:10px 0}.v13-good{color:#316f50}.v13-warning{color:#a45d49}@media(max-width:700px){.v13-config-row{grid-template-columns:minmax(0,1.6fr) 45px 63px 26px 26px;gap:5px}.v13-config-row button{padding:5px;min-width:23px}.v13-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}';
 document.head.appendChild(v13Style);
@@ -57,7 +58,7 @@ function v13SettingsHTML(){
  '<div class="two" style="margin-top:16px">'+field('項目間の区切り','<select data-v13-select="breaks">'+
  [['none','改行なし'],['single','1回改行'],['blank','空行を入れる（2回改行）']].map(x=>'<option value="'+x[0]+'"'+(x[0]===c.breaks?' selected':'')+'>'+x[1]+'</option>').join('')+'</select>')+
  field('文字数の数え方','<label class="inline" style="margin-top:10px"><input type="checkbox" data-v13-check="countBreaks"'+(c.countBreaks?' checked':'')+'> 改行も1文字として数える</label>')+'</div>'+
- '<details style="margin-top:18px"><summary><strong>国語・算数・理科など、教科ごとの目安字数</strong></summary>'+
+ '<details id="v13-subject-details" style="margin-top:18px"'+(v13DetailsOpen?' open':'')+'><summary><strong>国語・算数・理科など、教科ごとの目安字数</strong></summary>'+
  '<p class="v13-mini" style="margin:10px 0">各番号の教科①②③に設定した教科名に応じて、この目安字数を優先して表示します。空欄は上の「教科①②③」の目安を使います。</p>'+
  '<div class="v13-subject-grid">'+subjects.map(subject=>field(subject,'<input type="number" min="0" max="1000" data-v13-subject="'+E(subject)+'" value="'+(c.subjectTargets[subject]??'')+'" placeholder="共通目安">')).join('')+'</div></details>'+
  '<div class="warning small" style="margin-top:15px">構成や改行を変更しても、すでに入力・確定した文章は自動で書き換えません。各番号の「構成別に編集」で確認し、明示的に配置したときだけ本文が更新されます。</div></div>';
@@ -66,6 +67,9 @@ const v13OldSettings=v4Settings;
 v4Settings=function(){v13OldSettings();const root=document.createElement('div');root.innerHTML=v13SettingsHTML();$('main').appendChild(root)};
 const v13OldLen=v8Length;
 v8Length=function(s){let x=String(s||'').trim();if(!v13Config().countBreaks)x=x.replace(/\r\n|\r|\n/g,'');return Array.from(x).length};
+document.addEventListener('click',e=>{
+ if(e.target.closest('#v13-subject-details > summary'))v13DetailsOpen=!v13DetailsOpen;
+});
 document.addEventListener('change',e=>{
  const node=e.target,conf=v13Config();
  if(node.dataset.v13Limit){
