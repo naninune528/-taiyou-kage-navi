@@ -33,9 +33,10 @@ function v16Write(){
  try{
   const current=v16Snapshot();
   const existing=localStorage.getItem(V16_KEY);
-  // Keep the previous successful version as a recovery slot.
+  // Retain the last complete snapshot; never erase it when a write fails.
   if(existing&&existing!==current)localStorage.setItem(V16_PREV,existing);
   localStorage.setItem(V16_KEY,current);
+  if(localStorage.getItem(V16_KEY)!==current)throw Error('保存後の確認に失敗しました');
   v16Dirty=false;v16State='saved';v16Last=new Date().toLocaleString('ja-JP',{hour:'2-digit',minute:'2-digit'});
   window.SHOKEN_AUTOSAVE_SYNCED=true;
   v16UpdateBanner();
@@ -54,7 +55,8 @@ function v16Schedule(){
 }
 function v16Flush(){
  if(v16Timer!==null){clearTimeout(v16Timer);v16Timer=null}
- if(v16Enabled&&v16Dirty)v16Write();
+ if(v16Enabled&&(v16Dirty||v16State==='failed'))return v16Write();
+ return !v16Enabled||(v16StorageAvailable&&!v16Broken&&v16State!=='failed');
 }
 window.SHOKEN_AUTOSAVE_FLUSH=v16Flush;
 function v16RestoreLocal(){
@@ -123,27 +125,83 @@ restoreJSON=function(file){
  const rd=new FileReader();
  rd.onload=()=>{
   try{
-   if(rd.result.length>20*1024*1024)throw Error('バックアップが大きすぎます（20MB超）');
+   if(typeof rd.result!=='string'||rd.result.length>20*1024*1024)throw Error('ファイルが大きすぎるか読み取れません（上限20MB）');
    const obj=JSON.parse(rd.result),state=obj?.state;
    if(![1,2].includes(obj?.version)||!v16ValidState(state))throw Error('JSONファイルの形式が不正です');
-   if(!confirm('JSONを読み込むと現在の作業内容に置き換わります。必要なら先に現在のJSONバックアップを保存してください。続けますか？'))return;
-   if(v16Enabled&&!v16Broken){
-    // Preserve previous work before importing.
-    v16Flush();
+   if(!confirm('JSONを読み込むと現在の画面の作業内容に置き換わります。必要なら先にJSONバックアップを保存してください。続けますか？'))return;
+   if(v16Enabled&&!v16Broken&&!v16Flush()){
+    alert('現在の作業を端末に保存できません。先にJSONバックアップを保存してから、もう一度読み込んでください。');
+    return;
    }
+   const largestId=state.bank.reduce((max,b)=>Math.max(max,Number(b.id)||0),0);
+   if(!Number.isSafeInteger(state.nextId)||state.nextId<=largestId)state.nextId=largestId+1;
    S=state;
-   S.nextId=Math.max(Number(S.nextId)||1,...S.bank.map(b=>Number(b.id)||0).slice(0,50000))+1;
-   activeClass=S.classes[0].id;activeType='総合所見';page='home';v16Broken=false;v16State='pending';
+   activeClass=S.classes[0].id;activeType='総合所見';page='home';
+   v16Broken=false;v16State='pending';
    render();
-   v16Flush();
-   toast('JSONから復元しました'+(v16Enabled?'。端末にも保存しました':'。JSONバックアップを保管してください'));
+   if(v16Enabled){
+    if(v16Flush()&&v16State==='saved'&&!v16Dirty){
+     toast('JSONから復元し、端末への保存も確認しました');
+    }else{
+     alert('JSONは画面に復元しましたが、端末への保存に失敗しました。画面を閉じずに「JSON保存」でバックアップを保存してください。');
+    }
+   }else{
+    toast('JSONから復元しました。自動保存はオフです。JSONバックアップを保存してください');
+   }
   }catch(e){alert('復元できませんでした：'+e.message)}
  };
- rd.onerror=()=>alert('ファイルを読み取れませんでした');
- rd.readAsText(file);
+ rd.onerror=()=>alert('ファイルを読み取れませんでした。元の作業内容は変更していません。');
+ try{rd.readAsText(file)}catch(e){alert('ファイルを読み取れませんでした：'+e.message)}
 };
-const v16OldBackup=jsonBackup;
-jsonBackup=function(){v16Flush();v16OldBackup()};
+jsonBackup=function(){
+ // Even when autosave fails, a manual backup must remain possible.
+ v16Flush();
+ try{
+  const data=JSON.stringify({version:1,state:S},null,2);
+  const now=new Date(),pad=n=>String(n).padStart(2,'0');
+  const stamp=now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'_'+pad(now.getHours())+pad(now.getMinutes())+pad(now.getSeconds());
+  downloadBlob(new Blob([data],{type:'application/json'}),'所見メーカー_バックアップ_'+stamp+'.json');
+  toast('JSONのダウンロードを開始しました。保存先を確認してください');
+ }catch(e){alert('JSONバックアップを開始できませんでした：'+e.message)}
+};
+function v16SafeReset(){
+ if(!confirm('すべての編集内容を初期化します。必要なJSONバックアップを保存してから続けてください。初期化しますか？'))return;
+ if(v16Enabled&&!v16Broken&&!v16Flush()){
+  alert('保存に失敗しているため初期化を中止しました。先にJSONバックアップを保存してください。');return;
+ }
+ const before={state:S,activeClass,activeType,page};
+ S=newState();activeClass=S.classes[0].id;activeType='総合所見';page='home';
+ v16Broken=false;v16State='pending';
+ render();
+ if(v16Enabled){
+  if(!v16Flush()){
+   S=before.state;activeClass=before.activeClass;activeType=before.activeType;page=before.page;
+   render();
+   alert('初期化内容を端末に保存できなかったため、画面のデータを元に戻しました。JSONバックアップを保存してください。');
+   return;
+  }
+ }
+ // Reset must not leave the old class data in the recovery slot.
+ if(v16StorageAvailable){
+  try{
+   localStorage.removeItem(V16_PREV);
+   if(!v16Enabled)localStorage.removeItem(V16_KEY);
+   if(localStorage.getItem(V16_PREV)!==null||(!v16Enabled&&localStorage.getItem(V16_KEY)!==null))throw Error('削除後の確認に失敗しました');
+  }catch(e){
+   alert('画面は初期化しましたが、端末内の旧データの削除を確認できませんでした。ブラウザのサイトデータを確認してください。');
+   return;
+  }
+ }
+ toast('初期化が完了しました');
+}
+window.SHOKEN_SAFE_RESET=v16SafeReset;
+document.addEventListener('click',e=>{
+ const button=e.target.closest?.('[data-action="reset"]');
+ if(!button)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ v16SafeReset();
+},true);
+
 document.addEventListener('input',()=>v16Schedule());
 document.addEventListener('change',()=>v16Schedule());
 document.addEventListener('click',e=>{
