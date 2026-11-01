@@ -109,7 +109,7 @@ function v14ProofHTML(){
  '<button class="btn" data-v14="back">所見の編集へ戻る</button></div>'+
  (show.length?show.map((r)=>{
   const actual=records.findIndex(x=>x===r),n=r.number;
-  return '<div class="v14-row"><div class="inline between"><strong>仮番号 '+n+'｜'+E(r.type)+'</strong><span class="tag '+(r.reviewed?'done':r.issues.length?'need':'draft')+'">'+(r.reviewed?'目視確認済み':r.issues.length+'件の候補')+'</span></div>'+
+  return '<div class="v14-row"><div class="inline between"><strong>作業番号 '+n+'｜'+E(r.type)+'</strong><span class="tag '+(r.reviewed?'done':r.issues.length?'need':'draft')+'">'+(r.reviewed?'目視確認済み':r.issues.length+'件の候補')+'</span></div>'+
   '<div class="v14-text">'+v14Marked(r.text,r.issues)+'</div>'+
   r.issues.map((p,i)=>'<div class="v14-warning"><strong>'+E(p.title)+'</strong><div class="v14-small">対象：「'+E(p.found)+'」'+(p.replacement?' → 候補：「'+E(p.replacement)+'」':'')+'</div>'+
    (p.replacement?'<div style="margin-top:5px"><button class="btn softbtn small" data-v14="fix" data-record="'+actual+'" data-issue="'+i+'"'+(r.status==='確定'?' disabled':'')+'>この候補に修正</button></div>':'')+
