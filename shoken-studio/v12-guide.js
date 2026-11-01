@@ -128,12 +128,12 @@ render=function(){
  v12PreviousRender();
 };
 function v12HTML(){
- const g=v12Guide;if(!g)return header('質問から文章を作る','一覧編集から仮番号を選んでください。');
+ const g=v12Guide;if(!g)return header('質問から文章を作る','一覧編集から作業番号を選んでください。');
  const c=S.classes.find(x=>x.id===g.classId),src=getEnt(c,g.type,g.number);
  const a=v12GetAction(),choices=v12ActionChoices();
  const subjectList=v8Subjects(c,g.type),detailSelected=!!g.detail;
  return header('その子らしい文章を考える','ちょうどよい文例がなくても大丈夫。3つの問いから、実際に見られた姿を文章にします。')+
- '<div class="inline" style="margin:0 0 15px"><span class="tag">'+E(labelClass(c))+'</span><span class="tag">仮番号 '+g.number+'</span><span class="tag">'+E(g.type)+'</span><button class="btn" data-v12="back">一覧へ戻る</button></div>'+
+ '<div class="inline" style="margin:0 0 15px"><span class="tag">'+E(labelClass(c))+'</span><span class="tag">作業番号 '+g.number+'</span><span class="tag">'+E(g.type)+'</span><button class="btn" data-v12="back">一覧へ戻る</button></div>'+
  '<div class="grid"><div class="panel c7"><div class="stack">'+
  '<div class="v12-panel"><div class="v12-heading">質問 1｜どの単元・活動での姿？</div>'+
  '<div class="two"><div class="field"><label>教科・領域</label><select data-v12-field="subject"'+(g.type==='総合所見'?'':' disabled')+'>'+
@@ -160,7 +160,7 @@ function v12HTML(){
  '<div class="field" style="margin-top:12px"><label>今の文章への配置方法</label><select data-v12-field="mode">'+
  '<option value="append"'+(g.mode==='append'?' selected':'')+'>後ろに追加する</option>'+
  '<option value="replace"'+(g.mode==='replace'?' selected':'')+'>この下書きで置き換える</option></select></div>'+
- '<div class="v12-actions"><button class="btn primary" data-v12="insert"'+(!g.draft.trim()?' disabled':'')+'>仮番号'+g.number+'に配置</button><button class="btn" data-v12="back">キャンセル</button></div>'+
+ '<div class="v12-actions"><button class="btn primary" data-v12="insert"'+(!g.draft.trim()?' disabled':'')+'>作業番号'+g.number+'に配置</button><button class="btn" data-v12="back">キャンセル</button></div>'+
  '<div class="warning small" style="margin-top:15px">文例の自動生成AIではなく、観察した姿から文章を組み立てるオフライン補助機能です。配置後は「要検討」とし、個別に事実を確認してから確定してください。確定済みの所見は変更しません。</div>'+
  '</div></div>';
 }
@@ -193,7 +193,7 @@ document.addEventListener('click',e=>{
   if(c.missing.includes(g.number)){toast('欠番には配置できません');return}
   if(row.status==='確定'){toast('確定済みの文章はこの機能では変更できません');return}
   if(row.text.includes(text)){toast('同じ文章がすでに入っています');return}
-  if(g.mode==='replace'&&row.text.trim()&&!confirm('仮番号'+g.number+'の文章を置き換えますか？'))return;
+  if(g.mode==='replace'&&row.text.trim()&&!confirm('作業番号'+g.number+'の文章を置き換えますか？'))return;
   const result=g.mode==='append'&&row.text.trim()?row.text.trimEnd()+'\n'+text:text;
   editEnt(c,g.type,g.number,{text:result,status:'要検討',touched:true,guideUsed:true});
   activeClass=c.id;activeType=g.type;page='edit';render();toast('下書きを配置しました。観察した姿と合うか確認してください');
