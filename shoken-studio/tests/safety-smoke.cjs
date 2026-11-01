@@ -24,7 +24,7 @@ const sandbox={
  alert:(m)=>calls.alerts.push(m),toast:(m)=>calls.toasts.push(m),
  renderTop:()=>{},render:()=>{},editEnt:()=>{},restoreJSON:()=>{},jsonBackup:()=>{},
  downloadBlob:(blob,name)=>{calls.downloads.push({blob,name})},
- E:x=>String(x),$:()=>({innerHTML:''}),
+ E:x=>String(x),$:id=>id==='v16-save-indicator'?null:({innerHTML:''}),
  window:{addEventListener:()=>{}},
  document:{
   head:{appendChild:()=>{}},visibilityState:'visible',
