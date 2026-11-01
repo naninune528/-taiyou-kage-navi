@@ -29,7 +29,7 @@ function v10PlanHTML(){
  if(!p.templates.length)return '<p class="hint">配置する文例を選んでね。文例が少ない場合は「まとめて登録」で追加できます。</p>';
  if(!num)return '<div class="notice">対象の未配置番号はありません。必要なら一覧編集で個別に修正できます。</div>';
  return '<div class="v10-plan"><div class="inline between"><strong>仮配置のプレビュー</strong><span class="tag">'+num+'名・'+p.templates.length+'文例を順番に利用</span></div>'+
- p.assignments.slice(0,40).map((x,i)=>'<div class="v10-plan-line"><strong>仮番号'+x.number+'</strong><span>文例'+(i%p.templates.length+1)+'</span><span>'+E(x.bank.text.slice(0,65))+(x.bank.text.length>65?'…':'')+'</span></div>').join('')+'</div>'+
+ p.assignments.slice(0,40).map((x,i)=>'<div class="v10-plan-line"><strong>作業番号'+x.number+'</strong><span>文例'+(i%p.templates.length+1)+'</span><span>'+E(x.bank.text.slice(0,65))+(x.bank.text.length>65?'…':'')+'</span></div>').join('')+'</div>'+
  '<p class="hint" style="margin:8px 0 0">ここに表示した番号と文例の対応で仮配置します。割り振った文章は「要検討」になり、後から変更できます。</p>';
 }
 function v10Panel(){
