@@ -1,0 +1,4 @@
+# GitHub Pages (Jekyll): publish the teaching tools but not the retired report-comment maker.
+# The source is kept in the repository for Cloudflare ZIP builds.
+exclude:
+  - shoken-studio
