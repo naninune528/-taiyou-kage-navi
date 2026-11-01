@@ -1306,6 +1306,10 @@ document.addEventListener('change',e=>{
 document.addEventListener('keydown',e=>{
  if(e.target?.dataset?.v27Query&&e.key==='Enter'&&!e.isComposing){v27Query=e.target.value;v27Limit=20;render()}
 });
+// A jump from the subject unit picker should always open that subject, not the previous life category.
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-v22-action="jump-search"]'))v27Category='';
+},true);
 const v27Style=document.createElement('style');
 v27Style.textContent='.v27-chooser{margin:0 0 18px;padding:14px;background:#f6faf4;border:1px solid #dae7d9;border-radius:14px}.v27-chooser>strong{font-size:16px;color:#315743}.v27-chooser p{margin:6px 0 13px}.v27-catgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:11px}.v27-catbtn{border:1px solid #cfdfd1;border-radius:11px;background:#fff;padding:14px 8px;font-size:13px;font-weight:bold;color:#365a45;cursor:pointer}.v27-catbtn.chosen,.v27-tag.chosen{background:#dbece0;border-color:#709d80}.v27-chooser>.btn{margin-right:7px;margin-top:3px}.v27-fields{display:grid;grid-template-columns:1fr 1.5fr;gap:12px}.v27-subtitle{margin:16px 0 10px}.v27-tags{display:flex;flex-wrap:wrap;gap:7px}.v27-tag{border:1px solid #d3e1d5;background:#fff;border-radius:20px;padding:7px 12px;font-size:12px;color:#345644;cursor:pointer}.v27-searchfield{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.v27-searchfield label{width:100%}.v27-searchfield input{min-width:210px;flex:1;padding:10px;border:1px solid #cad8cc;border-radius:9px}.v27-searchfield .btn{white-space:nowrap}@media(max-width:700px){.v27-catgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.v27-fields{grid-template-columns:1fr 1fr}}';
 document.head.appendChild(v27Style);
