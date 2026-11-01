@@ -1,0 +1,1870 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'self'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<title>所見メーカー STUDIO | Teacher OS</title><meta name="robots" content="noindex,nofollow">
+<style>
+:root{--bg:#f7f6f0;--panel:#fffdf8;--sage:#6f9285;--sage-deep:#416c5e;--sage-light:#eaf3ec;--ink:#273932;--muted:#718079;--line:#dfe6df;--gold:#dbb66d;--bad:#b65e59;--bad-bg:#fff0ed;--radius:17px;--shadow:0 8px 32px rgba(53,72,57,.07);font-family:"BIZ UDPGothic","BIZ UDゴシック","Noto Sans JP","Yu Gothic",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.65}button,input,textarea,select{font:inherit}button{cursor:pointer}h1,h2,h3,p{margin-top:0}h1{font-size:25px;letter-spacing:.025em;line-height:1.4;margin-bottom:4px}h2{font-size:18px;margin-bottom:14px}h3{font-size:14px;margin-bottom:9px}.muted{color:var(--muted)}small,.small{font-size:12px}.brandbar{background:#fdfdf9;border-bottom:1px solid var(--line)}.brandinner{max-width:1300px;margin:auto;padding:16px 26px;display:flex;align-items:center;justify-content:space-between;gap:12px}.mark{display:inline-flex;align-items:center;justify-content:center;background:var(--sage-light);color:var(--sage-deep);font-size:21px;border-radius:14px;width:45px;height:45px}.logo{display:flex;align-items:center;gap:12px}.logo strong{display:block;font-size:18px;letter-spacing:.01em}.logo span{font-size:11px;color:var(--muted)}.pill{border:1px solid #c8d9cb;background:#f2f7f0;color:var(--sage-deep);border-radius:999px;padding:5px 11px;font-size:11px;font-weight:700;white-space:nowrap}.app{max-width:1300px;padding:26px;margin:auto}.tabs{display:flex;gap:7px;overflow:auto;padding-bottom:8px;margin:14px 0 20px}.tab{border:1px solid transparent;background:transparent;color:#67776e;font-weight:700;border-radius:12px;padding:11px 16px;white-space:nowrap}.tab.active{background:#e8f0e9;color:#315d50;border-color:#c9dace}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.panel{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:20px}.wide{grid-column:span 12}.c8{grid-column:span 8}.c7{grid-column:span 7}.c6{grid-column:span 6}.c5{grid-column:span 5}.c4{grid-column:span 4}.c3{grid-column:span 3}.soft{background:#f1f5f0;border-radius:12px;padding:13px}.warning{background:#faf5e9;border-left:3px solid var(--gold);padding:12px 14px;border-radius:8px;color:#70582c}.alert{background:var(--bad-bg);color:#8c4c47;border-radius:10px;padding:10px 12px}.ok{background:var(--sage-light);border-radius:10px;padding:10px 12px;color:var(--sage-deep)}.inline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.between{justify-content:space-between}.stack{display:flex;flex-direction:column;gap:13px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field label{font-size:12px;font-weight:700;color:#52685d}.field input,.field select,.field textarea,textarea.celltext,.field .input{width:100%;border:1px solid #d4dfd7;background:white;color:var(--ink);border-radius:10px;padding:10px 12px;outline:0;min-height:42px}.field input:focus,.field select:focus,.field textarea:focus,textarea.celltext:focus{border-color:#6e9d89;box-shadow:0 0 0 3px #e1efe6}.field textarea{resize:vertical;min-height:100px}.btn{border:1px solid #cbdacf;border-radius:11px;padding:9px 14px;font-weight:700;background:#fff;color:#496356;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-align:center}.btn.primary{background:var(--sage-deep);color:white;border-color:var(--sage-deep)}.btn.softbtn{background:#ecf5ed;border-color:#d3e6d8;color:#386a56}.btn.danger{color:#9a4b43;border-color:#ead0ca}.btn:disabled{opacity:.45;cursor:not-allowed}.btn:hover:not(:disabled){filter:brightness(.98)}.stat{background:#f2f6f1;border:1px solid #e1ebe1;padding:18px;border-radius:14px}.stat .n{font-size:27px;font-weight:800;line-height:1.2;color:var(--sage-deep)}.stat .k{font-size:12px;color:var(--muted)}.tag{display:inline-flex;align-items:center;background:#eef3ed;border-radius:7px;font-size:11px;padding:3px 8px;color:#61746a}.tag.need{color:#9b6840;background:#faf0dd}.tag.done{color:#416b57;background:#e2f1e6}.tag.draft{color:#5b6f86;background:#edf1f8}.hr{border:0;border-top:1px solid var(--line);margin:16px 0}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.mini{font-size:11px}.card{background:#fff;border:1px solid var(--line);padding:14px;border-radius:12px}.bankcard{display:flex;flex-direction:column;gap:9px}.banktxt{white-space:pre-wrap;overflow-wrap:anywhere}.navselect{padding:7px 10px;border-radius:9px;background:#f5f7f3;border:1px solid #d9e2d9;color:#314c40}.dot{width:8px;height:8px;background:var(--sage);border-radius:50%;display:inline-block}.tablewrap{overflow:auto;max-height:580px;border:1px solid var(--line);border-radius:12px;background:white}table{border-collapse:collapse;width:100%;min-width:690px;font-size:12px}th{background:#f0f5f0;color:#3b5b4c;text-align:left;position:sticky;top:0;z-index:1}td,th{padding:9px;border-bottom:1px solid #edf0ec;vertical-align:top}tr:nth-child(even) td{background:#fffefb}td.num{font-weight:800;color:#587b6b;white-space:nowrap}td select{width:100%;border-radius:8px;border:1px solid #dbe4dc;padding:8px;background:white;color:#344e41}textarea.celltext{resize:vertical;min-width:250px;min-height:70px;padding:9px;font-size:12px}.numgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:7px}.numchip{border:1px solid #d6e2d8;background:white;padding:8px 2px;border-radius:8px;text-align:center;font-size:12px;font-weight:700}.numchip.missing{background:#f8e7e3;color:#ae5f53;border-color:#eebbb5}.exborder{border:1px dashed #bfd2c2;border-radius:12px;padding:16px;background:#f8fbf8}.title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.footer{text-align:center;color:#849088;font-size:11px;padding:20px}.textcount{text-align:right;color:#748177;font-size:11px}.hint{color:#657b6c;font-size:12px}.island{display:flex;gap:8px;flex-wrap:wrap}.filter{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.filter>.field{min-width:150px;flex:1}.notice{font-size:12px;padding:9px 12px;border:1px solid #e2eade;border-radius:9px;background:#f4f7f3}.hidden{display:none!important}
+@media(max-width:920px){.app{padding:14px}.panel{padding:15px}.brandinner{padding:13px 16px}.c8,.c7,.c6,.c5,.c4,.c3{grid-column:span 12}.numgrid{grid-template-columns:repeat(8,1fr)}.tabs{margin:7px 0 14px}.tab{padding:9px 12px}.two,.three,.four{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){h1{font-size:22px}.two,.three,.four{grid-template-columns:1fr}.numgrid{grid-template-columns:repeat(5,1fr)}.brandinner .pill{display:none}.btn{font-size:12px}.panel{padding:14px}.app{padding:12px}.filter>.field{flex:1 1 100%}}
+
+/* ─── SHOKEN STUDIO / Botanical Editorial ───────────────────── */
+:root{
+  --bg:#f6f4ee;--panel:#fffefb;--sage:#719284;--sage-deep:#2c584a;
+  --sage-light:#edf4ed;--ink:#233d33;--muted:#728078;--line:#e6e7dc;
+  --gold:#dba76b;--bad:#b75e54;--bad-bg:#fff1ed;--radius:21px;
+  --shadow:0 12px 35px rgba(35,61,51,.045),0 2px 6px rgba(35,61,51,.02);
+  font-family:"BIZ UDPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+}
+html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-size:14px;line-height:1.75}
+body::before{content:"";position:fixed;pointer-events:none;inset:0 0 auto;height:560px;z-index:-1;background:radial-gradient(circle at 86% 3%,#e9eee33f 0,transparent 47%),radial-gradient(circle at 6% 32%,#fbece05c 0,transparent 37%)}
+button,input,textarea,select{font:inherit}
+:focus-visible{outline:3px solid #c6ab7e;outline-offset:2px}
+h1,h2,h3{color:#223e32}h1{font-size:clamp(25px,2.7vw,38px);font-weight:650;letter-spacing:.005em}h2{font-size:18px;letter-spacing:-.02em}
+.brandbar{background:#fffefaed;border-bottom:1px solid #e8ebdf;backdrop-filter:blur(12px)}
+.brandinner{max-width:1330px;padding:18px 34px;min-height:90px}
+.logo{gap:13px}.mark{width:48px;height:48px;border-radius:16px;color:#fff;background:#315c4c;box-shadow:0 7px 15px #244d3b21}
+.logo-words{display:flex;flex-direction:column}.logo-overline{font:700 9px/1.5 "Noto Sans CJK JP",sans-serif;letter-spacing:.23em;color:#789183;margin-bottom:2px}
+.logo strong{font-size:20px;font-weight:800;letter-spacing:.01em;color:#244a3d}.logo-small{font-size:9px;color:#ba966e;letter-spacing:.22em;font-weight:700;margin-left:5px}
+.top-meta{display:flex;align-items:center;gap:12px}.pill{padding:7px 13px;letter-spacing:.09em;color:#3f7360;background:#eef5ef;border:1px solid #dbe7db;font-size:10px}.top-version{font-size:11px;color:#9a9d91}
+.app{max-width:1330px;padding:23px 34px 34px}.tabs{gap:4px;margin:16px 0 24px;padding:4px;border-bottom:1px solid #e5e9e0;overflow:auto;scrollbar-width:thin}
+.tab{padding:12px 16px;border:0;border-bottom:2px solid transparent;border-radius:11px 11px 2px 2px;color:#7a867c;font-weight:700;letter-spacing:.015em;transition:background .2s,color .2s,border-color .2s;flex-shrink:0}
+.tab.active{background:#e6eee5;color:#225a46;border:0;border-bottom:2px solid #5c8972}.tab:hover:not(.active){background:#fefdfa;color:#3d6252}
+#headline .micro-top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#8b978c;font-size:11px;letter-spacing:.05em}
+#headline .micro-top strong{color:#496e5a;letter-spacing:.14em;font-weight:800}
+.status-dot{display:inline-block;width:7px;height:7px;background:#88ac94;border-radius:50%;margin-right:7px;box-shadow:0 0 0 4px #e7f0e7}
+.hero{position:relative;min-height:300px;display:flex;align-items:center;overflow:hidden;border-radius:27px;background:linear-gradient(120deg,#294d3f 2%,#315d4d 51%,#517666 100%);box-shadow:0 24px 45px rgba(30,67,51,.10);margin:0 0 29px;padding:38px 46px;color:#fcfdf8;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-60px -50px auto auto;width:430px;height:430px;border-radius:50%;border:1px solid #ffffff26;z-index:-1}
+.hero::after{content:"";position:absolute;top:-210px;right:-210px;width:560px;height:560px;border-radius:50%;border:1px solid #ffffff18;z-index:-1}
+.hero-copy{position:relative;max-width:610px;z-index:2}.hero-kicker{font-size:11px;font-weight:800;letter-spacing:.18em;color:#c8ddce;margin-bottom:13px}
+.hero-kicker span{color:#e9bd82;font-size:17px;vertical-align:-1px;margin-right:5px}
+.hero h1{color:#fdfcf8;margin:0 0 14px;font-size:clamp(30px,3.4vw,44px);line-height:1.42;font-weight:660;letter-spacing:.03em}
+.hero h1 em{font-family:"Noto Serif CJK JP","Yu Mincho",serif;color:#f5d4aa;font-style:normal;font-weight:500}
+.hero p{font-size:13px;color:#e3eee5;margin:0;max-width:500px;line-height:1.9}
+.hero-actions{display:flex;gap:17px;align-items:center;margin-top:23px;flex-wrap:wrap}
+.hero .btn.primary{background:#f5e5c9;border-color:#f5e5c9;color:#305a48;box-shadow:0 6px 15px #142f2b30;font-size:13px;border-radius:999px;padding:12px 22px}
+.hero-action-hint{font-size:11px;color:#d2e1d5}
+.hero-art{position:absolute;right:0;top:0;bottom:0;width:40%;min-width:365px;pointer-events:none}
+.hero-aura{position:absolute;right:-42px;top:-110px;width:380px;height:380px;border-radius:50%;background:#e0bb7a19;filter:blur(2px)}
+.hero-sprig{position:absolute;width:170px;height:250px;right:50px;bottom:-55px;transform:rotate(26deg);opacity:.4}
+.hero-sprig .stem{position:absolute;top:0;left:80px;height:245px;width:2px;background:#d7dfb9;border-radius:3px;transform:rotate(7deg)}
+.hero-sprig .leaf{position:absolute;width:37px;height:75px;background:#b6cca8;border-radius:2px 75% 3px 75%;transform:rotate(-39deg)}
+.hero-sprig .l1{top:11px;left:41px}.hero-sprig .l2{top:58px;left:79px;transform:scaleX(-1) rotate(-39deg)}.hero-sprig .l3{top:103px;left:41px}.hero-sprig .l4{top:152px;left:86px;transform:scaleX(-1) rotate(-39deg)}
+.paper-sheet{position:absolute;background:#fffcf3;border-radius:12px;box-shadow:0 16px 38px #112e2866}
+.paper-back{top:57px;right:64px;width:220px;height:205px;transform:rotate(12deg);background:#dae8d8;opacity:.78}
+.paper-front{top:41px;right:106px;width:220px;height:205px;transform:rotate(-10deg);padding:22px;box-shadow:0 18px 32px #152f2855}
+.paper-kicker{font:700 9px/1.2 Georgia,serif;letter-spacing:.18em;color:#789484}.paper-title{font:600 21px/1.5 "Noto Serif CJK JP","Yu Mincho",serif;color:#365a49;margin-top:14px}
+.paper-rule{display:block;height:4px;border-radius:10px;background:#e3e9dc;margin-top:13px}.paper-rule.short{width:71%}.paper-rule.middle{width:88%}
+.paper-badge{position:absolute;right:29px;bottom:28px;border-radius:50%;width:83px;height:83px;transform:rotate(13deg);display:flex;flex-direction:column;align-items:center;justify-content:center;background:#ecd29c;color:#42604a;box-shadow:0 10px 20px #12382844;font-family:Georgia,serif;letter-spacing:.01em;font-style:italic;font-size:13px;line-height:1.3}
+.paper-badge strong{font:600 24px/1.2 Georgia,serif}
+.page-heading{display:flex;align-items:end;justify-content:space-between;margin:8px 0 19px;padding:0 4px}
+.page-kicker,.section-kicker{font:700 10px/1.6 "Noto Sans CJK JP",sans-serif;color:#8b9f8e;letter-spacing:.17em;text-transform:uppercase}
+.page-heading h1{font-size:29px;margin:4px 0 5px}.page-heading p{font-size:12px;line-height:1.8}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 3px 14px}.section-head h2{font:600 23px/1.45 "Noto Serif CJK JP","Yu Mincho",serif;margin:2px 0 0}
+.section-side{font-size:11px;color:#8e988c}
+.grid{gap:17px}.panel{border:1px solid #e6e8df;border-radius:21px;padding:23px;box-shadow:var(--shadow);background:var(--panel)}
+.panel h2{font-size:17px}.panel .title-row{margin-bottom:19px}
+.workspace-panel{background:#fffefb;border-color:#e1e8de}.workspace-panel .title-row h2{font:600 20px/1.5 "Noto Serif CJK JP","Yu Mincho",serif;margin:0}
+.workspace-panel .eyebrow{font-size:10px;letter-spacing:.17em;color:#89a08e;font-weight:800;margin-bottom:6px}
+.workspace-panel .stat{position:relative;background:#f5f7f2;border-color:#e5ece3;min-height:101px;padding:16px 17px}
+.workspace-panel .stat .n{font-family:Georgia,"Noto Sans CJK JP",sans-serif;font-size:32px;color:#385e4d;letter-spacing:-.03em}
+.workspace-panel .stat .k{font-size:11px;font-weight:600;margin-top:6px}
+.workspace-panel .stat:first-child{background:#f7f2e9;border-color:#efe7db}.workspace-panel .stat:first-child .n{color:#aa825e}
+.workspace-panel .stat:nth-child(2){background:#edf5ed}
+.workspace-panel .stat:nth-child(4){background:#f9f2ea}
+.workspace-panel .btn{border-radius:12px}
+.progress-panel{background:#f4f4ed;padding:23px 25px;border-color:#e7eade;display:flex;flex-direction:column;justify-content:space-between}
+.progress-panel h2{font:600 20px/1.5 "Noto Serif CJK JP",serif}
+.progress-top{display:flex;justify-content:center;padding:15px 0 12px}
+.progress-ring{width:142px;height:142px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(#6c9c85 calc(var(--percent)*1%),#e3e7dc 0)}
+.progress-ring:before{content:"";position:absolute;inset:13px;border-radius:50%;background:#f4f4ed}
+.progress-value{position:relative;display:flex;flex-direction:column;align-items:center;line-height:1.18;color:#2c5d49}
+.progress-value strong{font:600 43px/1 Georgia,serif;letter-spacing:-.06em}.progress-value span{font-size:10px;letter-spacing:.12em;margin-top:10px;color:#849589}
+.progress-panel .progress-note{text-align:center;font-size:12px;color:#677f6c;margin:3px auto 18px}
+.progress-legend{border-top:1px solid #dbe5d8;padding-top:15px;display:flex;flex-direction:column;gap:9px;font-size:12px;color:#63776b}
+.progress-legend span{display:flex;justify-content:space-between}.progress-legend b{color:#3c5f4b}
+.quick-panel{background:#fffdf8}.quick-panel h2{font:600 19px/1.45 "Noto Serif CJK JP",serif}.step-card{background:#f7f7f1;padding:17px;border-radius:14px;border:1px solid #ecefe5;min-height:132px;transition:transform .18s,border-color .18s}
+.step-card:hover{transform:translateY(-2px);border-color:#b3ccba}.step-num{font:700 11px/1 Georgia,serif;color:#a88a65;letter-spacing:.1em;margin-bottom:13px}.step-card strong{display:block;color:#365c49;margin-bottom:5px;font-size:14px}.step-card p{font-size:11px;line-height:1.75;color:#7b877c;margin:0}
+.safety-card{background:#fffdfb}.safety-card h2{font-size:17px}.safety-card .warning{border:0;border-left:3px solid #e1ba83;background:#faf5e9;color:#796e5b;padding:13px 15px;font-size:11px;line-height:1.85}
+.safety-card .muted{font-size:11px}
+.action-link{color:#45785e;font-size:12px;font-weight:700}
+.soft{background:#f4f6f1;border-radius:13px}.warning{background:#faf4e8;color:#7c684d;border-left:3px solid #d8ad75}
+.notice{border-color:#e9ece3;background:#f8f9f5;color:#65786a}
+.card{border-radius:15px;border-color:#e5e9df;box-shadow:0 2px 8px rgba(34,65,44,.025)}.bankcard{padding:18px;background:#fffefb}
+.field label{font-size:11px;color:#617665;font-weight:800;letter-spacing:.025em}
+.field input,.field select,.field textarea,textarea.celltext,.field .input{background:#fff;border-color:#dbe4dc;border-radius:12px;min-height:44px;padding:10px 13px}
+.field input:hover,.field select:hover,.field textarea:hover,textarea.celltext:hover{border-color:#b9cdbb}
+.field input:focus,.field select:focus,.field textarea:focus,textarea.celltext:focus{border-color:#88ae8c;box-shadow:0 0 0 4px #e5f0e5}
+.btn{border-radius:12px;padding:11px 16px;border-color:#d5e1d7;color:#406850;background:#fff;font-size:12px;transition:transform .15s,box-shadow .15s,background .15s}
+.btn.primary{background:#355f4b;color:#fff;border-color:#355f4b}.btn.softbtn{background:#eaf3e9;color:#3a6a4d;border-color:#deeadb}
+.btn:hover:not(:disabled){filter:none;transform:translateY(-1px);box-shadow:0 4px 12px #2b553315}
+.stat{border-radius:15px}.tag{border-radius:999px;padding:3px 10px}
+.tablewrap{border-radius:15px;border-color:#e0e6dd}table{font-size:12px}th{background:#eaf0e8;color:#466451}td,th{padding:11px;border-bottom:1px solid #e9eee5}
+tr:nth-child(even) td{background:#fdfdf9}.numchip{border-radius:11px;min-height:42px}.numchip:hover{border-color:#87aa8e}
+.footer{font-size:10px;padding:28px 0;color:#919c8e;letter-spacing:.04em}
+@media(max-width:1050px){.hero-art{opacity:.75;right:-80px}.hero-copy{max-width:65%}.hero{padding:35px}.app{padding:22px 20px}.brandinner{padding:15px 20px}}
+@media(max-width:760px){.hero{min-height:295px;padding:30px 25px}.hero-copy{max-width:100%}.hero-art{opacity:.17;right:-120px}.hero p{max-width:420px}.hero h1{font-size:33px}.paper-badge{display:none}.top-version{display:none}.tabs{gap:3px}.tab{padding:10px 13px}.progress-ring{width:138px;height:138px}}
+@media(max-width:560px){.brandinner{min-height:76px;padding:12px 14px}.mark{width:42px;height:42px}.logo strong{font-size:17px}.logo-small{display:none}.brandinner .pill{display:inline-flex;font-size:8px;padding:5px 8px}.app{padding:15px 12px}.hero{min-height:293px;padding:25px 22px;border-radius:21px}.hero h1{font-size:29px}.hero p{font-size:12px;line-height:1.85}.hero-action-hint{display:none}.hero .btn.primary{padding:11px 18px}.hero-art{opacity:.11;right:-195px}.panel{padding:18px}.workspace-panel .four{grid-template-columns:repeat(2,1fr)}.workspace-panel .stat{min-height:84px;padding:13px}.workspace-panel .stat .n{font-size:28px}.progress-top{padding:5px 0 10px}.section-head h2{font-size:20px}.section-side{display:none}.step-card{min-height:105px}.page-heading h1{font-size:26px}#headline .micro-top{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.step-card,.tab{transition:none}}
+
+
+/* v1.7: shared reuse & save-as-example workspace */
+.quick-backup{border-radius:999px!important;font-size:11px!important;padding:8px 13px!important;white-space:nowrap}@media(max-width:650px){.quick-backup{font-size:10px!important;padding:7px 9px!important}.top-meta{gap:5px}.top-version{display:none}}
+.workflow-banner{display:flex;align-items:center;gap:15px;padding:18px 21px;background:linear-gradient(120deg,#e9f1e7,#fdf4e6);border:1px solid #dce9d9;border-radius:20px;margin-bottom:17px}
+.workflow-banner .symbol{width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#d5e5d5;color:#285c48;display:grid;place-items:center;font-size:23px}
+.workflow-banner strong{font-size:15px}.workflow-banner p{margin:4px 0 0;font-size:12px;color:#62766b}
+.share-class{border:1px solid #e1e9dd;border-radius:18px;padding:17px;margin-top:12px;background:#fffefa}
+.share-class-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:9px}
+.share-class-head strong{font-size:15px}.share-class-head span{font-size:11px;color:#819187}
+.share-class-body{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:10px;align-items:end}
+.share-number-grid{display:grid;grid-template-columns:repeat(10,minmax(27px,1fr));gap:6px;padding:13px;margin-top:12px;background:#f6f8f3;border-radius:12px}
+.share-chip{border:1px solid #dee8de;background:white;border-radius:10px;min-height:31px;color:#587469;font-size:12px}
+.share-chip.is-selected{background:#35694f;color:white;border-color:#35694f}
+.share-chip.is-missing{background:#f5eeec;color:#b3a19b;opacity:.72;text-decoration:line-through;cursor:default}
+.share-class .share-target{min-width:0}
+.review-textarea{min-height:180px;line-height:1.9}
+.assist-note{padding:11px 14px;border-radius:12px;background:#f1f5ef;color:#4b6658;font-size:12px;border:1px solid #e2eae0}
+.bank-row-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row-actions{margin-top:5px;display:flex;justify-content:flex-start}
+.row-actions .btn{font-size:11px;padding:4px 9px}
+@media(max-width:700px){.share-class-body{grid-template-columns:1fr}.share-number-grid{grid-template-columns:repeat(6,minmax(27px,1fr))}.workflow-banner{padding:14px;gap:10px}}
+</style>
+</head><body>
+<header class="brandbar"><div class="brandinner"><div class="logo"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2C14.5 8 18 11.5 24 13C18 14.5 14.5 18 13 24C11.5 18 8 14.5 2 13C8 11.5 11.5 8 13 2Z" fill="#FAE7C6"/><circle cx="20.5" cy="4.7" r="1.6" fill="#BFD4B7"/></svg></div><div class="logo-words"><span class="logo-overline">TEACHER OS / SHOKEN STUDIO</span><strong>所見メーカー<span class="logo-small">STUDIO</span></strong></div></div><div class="top-meta"><span class="pill">✳ OFFLINE EDITION</span><span class="top-version">prototype v2.8.2</span><button class="btn softbtn quick-backup" data-action="save-json" title="JSONバックアップを保存">↓ バックアップ</button><button type="button" class="btn softbtn v28-toggle" id="v28-theme-toggle" aria-label="テーマカラーを選ぶ" aria-haspopup="true" aria-controls="v28-theme-menu" aria-expanded="false" title="テーマカラーを選ぶ">🎨 <span class="v28-text">カラー</span></button></div></div></header>
+<div class="app"><div id="headline"></div><nav class="tabs" id="tabs"></nav><main id="main"></main><div class="footer">SHOKEN STUDIO · Teacher OS prototype · 外部ライブラリ・広告・アクセス解析・通信なし ／ まずは架空データでお試しください</div></div>
+<input id="importfile" type="file" accept=".json,application/json" hidden>
+<script>
+'use strict';
+const TYPES=['総合所見','総合的な学習の時間','外国語活動','道徳'];
+const SUBJECTS=['要検討','国語','算数','生活','社会','理科','音楽','図工','体育','家庭','外国語'];
+const INITIAL_BANK=[{"id":1,"grade":3,"subject":"理科","unit":"風とゴムの力のはたらき","text":"「風とゴムの力のはたらき」では、実験結果を比べながら、風の強さと車が動いた距離の関係について考えました。","tag":"架空の文例"},{"id":2,"grade":3,"subject":"外国語活動","unit":"Let's Try! 1 Unit 7","text":"「This is for you.」では、形の言い方に親しみ、友だちとカードを交換する活動に進んで取り組んでいました。","tag":"架空の文例"},{"id":3,"grade":5,"subject":"家庭","unit":"調理の学習","text":"調理の学習では、作業の手順を確認しながら、安全な用具の使い方を意識して取り組んでいました。","tag":"架空の文例"},{"id":4,"grade":6,"subject":"道徳","unit":"規則の尊重","text":"「規則の尊重」では、決まりがある理由を考え、互いに安心して生活するために大切なことについて意見を深めていました。","tag":"架空の文例"}];
+const newState=()=>({classes:[{id:1,grade:3,count:34,missing:[],entries:{}}],bank:INITIAL_BANK.map(x=>({...x})),rules:[{from:'友達',to:'友だち',on:true},{from:'一人一人',to:'一人ひとり',on:true}],prefs:{period:'前期',system:'2学期制',maxChars:300,numCol:'A',textCol:'B',startRow:2,header:true,missingMode:'keep',schoolType:'標準テンプレート',mainCount:3},nextId:6});
+let S=newState(),page='home',activeClass=1,activeType='総合所見',bankQuery='',bankFilter='すべて',draft='',draftMeta={subject:'理科',unit:'',keywords:'',grade:3},odd=['算数','社会','図工'],even=['国語','理科','音楽'],applySelected='',applyNumbers='',applyMode='append',shareBankId=1,shareType='外国語活動',shareMode='empty',shareTargets={},shareExpanded={},shareResult='',saveRowContext=null,reusableDraft={subject:'',unit:'',text:'',grade:3};
+const $=id=>document.getElementById(id);
+const E=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const attr=E;const option=(s,v)=>`<option value="${attr(s)}" ${String(v)===String(s)?'selected':''}>${E(s)}</option>`;
+const cur=()=>S.classes.find(c=>c.id===activeClass)||S.classes[0];
+const key=(t,n)=>`${t}:${n}`;
+function getEnt(c,t,n){return c.entries[key(t,n)]||{subjects:['要検討','要検討','要検討'],text:'',status:'未作成',touched:false}}
+function editEnt(c,t,n,patch){c.entries[key(t,n)]={...getEnt(c,t,n),...patch};}
+function toast(s){let t=$('notice-toast');if(!t){t=document.createElement('div');t.id='notice-toast';document.body.appendChild(t);t.style.cssText='position:fixed;bottom:20px;right:20px;background:#315d50;color:white;padding:11px 17px;border-radius:12px;z-index:999;box-shadow:0 7px 20px #0002;max-width:90vw'}t.textContent=s;setTimeout(()=>{if(t&&t.parentNode)t.remove()},2800)}
+function labelClass(c){return `クラス${c.id} · ${c.grade}年 · ${c.count}名`}
+function classOpts(){return S.classes.map(c=>`<option value="${c.id}" ${c.id===activeClass?'selected':''}>${E(labelClass(c))}</option>`).join('')}
+function typeOpts(){return TYPES.map(t=>option(t,activeType)).join('')}
+function header(t,desc=''){return `<div class="page-heading"><div><div class="page-kicker">SHOKEN STUDIO / YOUR WORKSPACE</div><h1>${E(t)}</h1>${desc?`<p class="muted" style="margin:0">${E(desc)}</p>`:''}</div></div>`}
+function field(lbl,content){return `<div class="field"><label>${E(lbl)}</label>${content}</div>`}
+function bankOpts(){return S.bank.map(b=>`<option value="${b.id}" ${String(b.id)===String(applySelected)?'selected':''}>${E(`${b.subject}｜${b.unit}｜${b.text.slice(0,20)}…`)}</option>`).join('')}
+function stateCount(c,t){let done=0,draft=0,need=0;for(let n=1;n<=c.count;n++){if(c.missing.includes(n))continue;let x=getEnt(c,t,n);if(x.status==='確定')done++;else if(x.status==='要検討')need++;else if(x.text)draft++;}return {done,draft,need}}
+function renderTop(){const tabs=[['home','⌂ ホーム'],['settings','⚙ クラス・設定'],['bank','▤ 文例バンク'],['compose','✧ 文章づくり'],['assign','⇄ 一括割り振り'],['share','⇆ クラス横断配置'],['edit','▦ 一覧編集'],['export','⇩ Excel出力']];$('tabs').innerHTML=tabs.map(([id,n])=>`<button class="tab ${page===id?'active':''}" data-action="page" data-page="${id}">${n}</button>`).join('');$('headline').innerHTML=`<div class="micro-top"><div><strong>MY WORKSPACE</strong><span>　/　文例をためて、少しずつ整える</span></div><div><span class="status-dot"></span>ローカル動作 · 保存状況は上部で確認</div></div>`}
+function render(){renderTop();const view={home:homeHTML,settings:settingsHTML,bank:bankHTML,compose:composeHTML,assign:assignHTML,share:shareHTML,saveexample:saveExampleHTML,edit:editHTML,export:exportHTML}[page]||homeHTML;$('main').innerHTML=view();}
+function homeHTML(){let c=cur(),q=stateCount(c,activeType),total=c.count-c.missing.length,rate=total?Math.round(q.done/total*100):0;return `<section class="hero">
+<div class="hero-copy"><div class="hero-kicker"><span>✦</span> SMALL STEPS, BEAUTIFUL PROGRESS</div>
+<h1>所見づくりを、<br><em>ちょっと心地よく。</em></h1>
+<p>書くことに追われる日も、ここでは自分のペースで。<br>ためた文例を味方にして、必要な文章を一つずつ。</p>
+<div class="hero-actions"><button class="btn primary" data-action="page" data-page="edit">続きを編集する ↗</button><span class="hero-action-hint">今日も、できるところまでで大丈夫。</span></div></div>
+<div class="hero-art" aria-hidden="true"><div class="hero-aura"></div><div class="hero-sprig"><span class="stem"></span><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i></div><div class="paper-sheet paper-back"></div><div class="paper-sheet paper-front"><div class="paper-kicker">WORDS TO REMEMBER</div><div class="paper-title">一人ひとりの<br>よさを、言葉に。</div><i class="paper-rule"></i><i class="paper-rule middle"></i><i class="paper-rule short"></i></div><div class="paper-badge">little by<br><strong>little.</strong></div></div></section>
+<div class="section-head"><div><div class="section-kicker">WORKSPACE / TODAY</div><h2>作業のつづきから</h2></div><span class="section-side">考える時間は大切に。操作は軽やかに。</span></div>
+<div class="grid">
+<div class="panel c8 workspace-panel"><div class="title-row"><div><div class="eyebrow">YOUR CURRENT PROJECT</div><h2>いまのワークスペース</h2></div><span class="tag">オフライン試作版</span></div>
+<div class="two">${field('クラス',`<select id="home-class" data-bind="class">${classOpts()}</select>`)}${field('作成する所見',`<select data-bind="type">${typeOpts()}</select>`)}</div>
+<div class="four" style="margin-top:17px"><div class="stat"><div class="n">${c.count}</div><div class="k">作業番号枠</div></div><div class="stat"><div class="n">${q.done}</div><div class="k">確定した文章</div></div><div class="stat"><div class="n">${q.draft}</div><div class="k">下書き中</div></div><div class="stat"><div class="n">${q.need}</div><div class="k">要検討</div></div></div>
+<div class="inline" style="margin-top:20px"><button class="btn primary" data-action="page" data-page="assign">一括で割り振る ↗</button><button class="btn" data-action="page" data-page="edit">一覧で編集する</button></div></div>
+<div class="panel c4 progress-panel"><div><div class="section-kicker">YOUR PROGRESS</div><h2 style="margin:5px 0 0">少しずつ、前へ。</h2></div><div class="progress-top"><div class="progress-ring" style="--percent:${rate}"><div class="progress-value"><strong>${rate}%</strong><span>COMPLETE</span></div></div></div><div class="progress-note">確定した所見が、ここに積み重なります。</div><div class="progress-legend"><span>対象の作業番号 <b>${total}件</b></span><span>確定済み <b>${q.done}件</b></span><span>未確定 <b>${total-q.done}件</b></span></div></div>
+<div class="panel c8 quick-panel"><div class="title-row"><div><div class="section-kicker">HOW IT WORKS</div><h2 style="margin:3px 0 0">書き始めるまで、3ステップ。</h2></div></div><div class="three"><div class="step-card"><div class="step-num">01 / COLLECT</div><strong>文例をためる</strong><p>以前の文章を、必要なときに探せる場所へ。</p><button class="btn" style="margin-top:12px;padding:6px 11px;font-size:11px" data-action="page" data-page="bank">文例バンク ↗</button></div><div class="step-card"><div class="step-num">02 / ARRANGE</div><strong>まとめて配置する</strong><p>同じ文例を、複数クラスの違う番号にも一括で。</p><button class="btn" style="margin-top:12px;padding:6px 11px;font-size:11px" data-action="page" data-page="assign">一括割り振り ↗</button></div><div class="step-card"><div class="step-num">03 / FINISH</div><strong>整えて書き出す</strong><p>確認できた文章から、Excelへ。</p><button class="btn" style="margin-top:12px;padding:6px 11px;font-size:11px" data-action="page" data-page="export">Excel出力 ↗</button></div></div><div class="notice" style="margin-top:17px">この版の「文章づくり」はオフラインの簡易テンプレートです。AI直接生成・学校指定Excel様式の読み込み・教科書データ連携は未実装です。</div></div>
+<div class="panel c4 safety-card"><div class="section-kicker">A THOUGHTFUL DESIGN</div><h2 style="margin:5px 0 16px">安心して使うために</h2><div class="warning">児童名や出席番号を入力せず、作業用の番号で管理します。出席番号とは別の番号を使ってください。なお、作業番号でも、実際の児童と対応させると個人情報に当たり得ます。まずは架空データで試し、実運用では学校の承認済み端末とルールを確認してください。</div><p class="muted" style="margin:15px 0 0">このHTMLは外部通信をしない構成です。ただし端末・保存先・バックアップの安全管理は別途必要です。</p></div>
+</div>`}
+function settingsHTML(){let c=cur();return header('学校・クラス設定','実際の学校名・組名は不要。「クラス1〜9」で管理できます。')+`<div class="grid"><div class="panel c7"><div class="title-row"><h2>担当クラス</h2><button class="btn softbtn" data-action="add-class" ${S.classes.length>=9?'disabled':''}>＋ クラス追加（${S.classes.length}/9）</button></div><div class="stack">${S.classes.map(x=>`<div class="card"><div class="inline between"><strong>クラス${x.id}</strong><button class="btn danger small" data-action="delete-class" data-id="${x.id}" ${S.classes.length===1?'disabled':''}>削除</button></div><div class="three" style="margin-top:9px">${field('学年',`<select data-bind="class-grade" data-id="${x.id}">${Array.from({length:6},(_,i)=>option(i+1,x.grade)).join('')}</select>`)}${field('番号枠数',`<select data-bind="class-count" data-id="${x.id}">${Array.from({length:40},(_,i)=>option(i+1,x.count)).join('')}</select>`)}${field('欠番',`<button class="btn" data-action="open-missing" data-id="${x.id}">${x.missing.length?E(x.missing.join('、')):'設定する'}</button>`)}</div></div>`).join('')}</div></div>
+<div class="panel c5"><h2>学校別の文章ルール</h2><div class="stack">${field('所見の期間',`<select data-bind="period">${['前期','後期','年間','1学期','2学期','3学期','要録'].map(x=>option(x,S.prefs.period)).join('')}</select>`)}${field('学期制',`<select data-bind="system">${['2学期制','3学期制'].map(x=>option(x,S.prefs.system)).join('')}</select>`)}${field('総合所見の教科数',`<select data-bind="mainCount">${[2,3].map(x=>option(x,S.prefs.mainCount)).join('')}</select>`)}${field('文章プレビューの上限目安（旧設定）',`<input type="number" min="1" max="1000" data-bind="maxChars" value="${S.prefs.maxChars}">`)}<div class="hint">完成率の判定に使う字数は、下の「所見別の文字数条件」で設定できます。</div></div></div>
+<div class="panel wide"><div class="title-row"><h2>学校別の表記ルール</h2><span class="tag">原文は変更しません</span></div><div class="two"><div class="stack">${S.rules.map((r,i)=>`<div class="inline card"><input type="checkbox" data-bind="rule-on" data-index="${i}" ${r.on?'checked':''} aria-label="ルールを有効にする"><span>${E(r.from)} → <strong>${E(r.to)}</strong></span><button class="btn danger" style="margin-left:auto" data-action="remove-rule" data-index="${i}">削除</button></div>`).join('')}</div><div class="stack"><div class="two">${field('変更前',`<input id="rule-from" placeholder="友達">`)}${field('変更後',`<input id="rule-to" placeholder="友だち">`)}</div><button class="btn softbtn" data-action="add-rule">＋ 表記ルールを追加</button><div class="notice">配付資料（PDF・Word・Excel）からルールを自動抽出する機能は今後追加。現在は手入力で確認しながら設定できます。</div></div></div></div></div>`}
+function bankHTML(){let list=S.bank.filter(b=>(bankFilter==='すべて'||b.subject===bankFilter)&&(`${b.grade}${b.subject}${b.unit}${b.text}`).toLowerCase().includes(bankQuery.toLowerCase()));return header('文例バンク','1つの文例を全クラスで再利用。番号の割り振りだけはクラスごとに独立します。')+`<div class="grid"><div class="panel c8"><div class="filter">${field('検索',`<input id="bank-search" value="${attr(bankQuery)}" placeholder="例：規則の尊重、外国語、電気">`)}${field('カテゴリー',`<select data-bind="bankFilter">${['すべて',...new Set(S.bank.map(b=>b.subject))].map(x=>option(x,bankFilter)).join('')}</select>`)}</div><div class="small muted" style="margin:12px 0">${list.length}件の文例</div><div class="stack">${list.map(b=>`<div class="card bankcard"><div class="inline between"><div class="inline"><span class="tag">${b.grade}年</span><span class="tag">${E(b.subject)}</span><span class="tag">${E(b.tag||'自作')}</span></div><button class="btn danger" data-action="delete-bank" data-id="${b.id}">削除</button></div><strong>${E(b.unit||'自由文例')}</strong><div class="banktxt">${E(b.text)}</div><div class="inline"><button class="btn softbtn" data-action="copy-bank" data-id="${b.id}">文例をコピー</button><button class="btn" data-action="use-bank" data-id="${b.id}">1クラスに配置</button><button class="btn primary" data-action="share-bank" data-id="${b.id}">複数クラスへ配置 ↗</button></div></div>`).join('')||'<div class="soft muted">該当する文例はありません。</div>'}</div></div>
+<div class="panel c4"><h2>文例を追加</h2><div class="stack">${field('学年',`<select id="bank-grade">${Array.from({length:6},(_,i)=>option(i+1,cur().grade)).join('')}</select>`)}${field('教科・領域',`<select id="bank-subject">${[...SUBJECTS.filter(x=>x!=='要検討'),'道徳','外国語活動','総合的な学習の時間','学習全般','生活・特別活動'].map(x=>option(x,'国語')).join('')}</select>`)}${field('単元名／テーマ',`<input id="bank-unit" placeholder="例：電気の通り道">`)}${field('文例',`<textarea id="bank-text" placeholder="所見文例を入力"></textarea>`)}<button class="btn primary" data-action="add-bank">＋ 文例バンクに保存</button><div class="notice">保存するのは、個人を特定しない汎用文例にしてください。元の所見から氏名や固有の事情が分かる記述は除いてください。</div></div></div></div>`}
+function composeHTML(){return header('文章づくり','キーワードから文章の土台を作る。AIへの送信はしないオフライン試作です。')+`<div class="grid"><div class="panel c5"><div class="stack">${field('学年',`<select data-bind="draft-grade">${Array.from({length:6},(_,i)=>option(i+1,draftMeta.grade)).join('')}</select>`)}${field('教科・領域',`<select data-bind="draft-subject">${[...SUBJECTS.filter(x=>x!=='要検討'),'道徳','外国語活動','総合的な学習の時間','学習全般','生活・特別活動'].map(x=>option(x,draftMeta.subject)).join('')}</select>`)}${field('単元名・活動名',`<input data-bind="draft-unit" value="${attr(draftMeta.unit)}" placeholder="例：太陽とかげ、クイズ係">`)}${field('キーワード（／や読点で区切る）',`<textarea data-bind="draft-keywords" placeholder="例：実験結果を比較、金属の共通点、理由を説明">${E(draftMeta.keywords)}</textarea>`)}<div class="inline"><button class="btn primary" data-action="make-draft">文章の土台を作る</button><button class="btn" data-action="prompt-copy">AI相談用の指示をコピー</button></div><div class="warning small">AI相談用には個人を特定できる情報を入力しないでください。外部サービスの利用条件も確認してください。</div></div></div>
+<div class="panel c7"><h2>文章プレビュー</h2><div class="exborder" id="draft-preview" style="white-space:pre-wrap;min-height:150px">${draft?E(draft):'<span class="muted">キーワードを入力して「文章の土台を作る」を押してください。</span>'}</div><div class="textcount">${draft.length}字 ／ 目安上限${S.prefs.maxChars}字</div><div class="inline" style="margin-top:14px"><button class="btn softbtn" data-action="draft-to-bank" ${!draft?'disabled':''}>文例バンクに保存</button><button class="btn" data-action="copy-draft" ${!draft?'disabled':''}>コピー</button></div><hr class="hr"><p class="muted small">この画面は簡易テンプレートによる文章化です。教科書会社の評価規準を正式に参照した生成、AIとの対話は未実装。推測した学習事実を自動追加しません。</p></div></div>`}
+function assignHTML(){let c=cur();return header('一括割り振り','1クラス分をまとめて仮配置。必要な番号だけあとで直せます。')+`<div class="grid"><div class="panel c6"><div class="two">${field('対象クラス',`<select data-bind="class">${classOpts()}</select>`)}${field('所見の種類',`<select data-bind="type">${typeOpts()}</select>`)}</div><hr class="hr"><h2>① 教科の一括仮配置</h2><p class="small muted">「総合所見」のみ。奇数と偶数に、国語または算数＋1〜2教科を設定します。</p>${[['奇数番号',odd,'odd'],['偶数番号',even,'even']].map(([label,arr,k])=>`<div class="soft" style="margin:10px 0"><strong>${label}</strong><div class="three" style="margin-top:9px">${arr.slice(0,S.prefs.mainCount).map((v,i)=>`<select data-bind="${k}" data-index="${i}">${SUBJECTS.map(x=>option(x,v)).join('')}</select>`).join('')}</div></div>`).join('')}<div class="inline"><button class="btn primary" data-action="bulk-subject" ${activeType!=='総合所見'?'disabled':''}>未設定枠へ一括反映</button><span class="small muted">個別変更済みは維持</span></div></div>
+<div class="panel c6"><h2>② 文例を指定番号へ一括配置</h2><div class="stack">${field('共通文例を選択',`<select data-bind="applySelected"><option value="">選択してください</option>${bankOpts()}</select>`)}${field('対象の作業番号',`<input data-bind="applyNumbers" value="${attr(applyNumbers)}" placeholder="例：1,3,7-12 または 奇数 / 偶数 / 全員">`)}${field('配置方法',`<select data-bind="applyMode"><option value="append" ${applyMode==='append'?'selected':''}>文末に追加（既存の文章を残す）</option><option value="replace" ${applyMode==='replace'?'selected':''}>文章を置き換える（確認あり）</option></select>`)}<button class="btn primary" data-action="apply-bank">指定番号へ文例を適用</button><p class="small muted">文例の採否と個別の事実確認は、最終的に先生が行います。欠番は対象外。</p></div></div><div class="panel wide"><h2>その後は一覧で確認</h2><div class="inline"><button class="btn softbtn" data-action="page" data-page="edit">全員を一覧で微調整する →</button><span class="hint">未作成・要検討だけを表示する機能もあります。</span></div></div></div>`}
+function editHTML(){let c=cur(),cnt=stateCount(c,activeType);let html=`<div class="two">${field('対象クラス',`<select data-bind="class">${classOpts()}</select>`)}${field('所見の種類',`<select data-bind="type">${typeOpts()}</select>`)}</div><div class="inline" style="margin-top:12px"><span class="tag done">確定 ${cnt.done}</span><span class="tag draft">下書き ${cnt.draft}</span><span class="tag need">要検討 ${cnt.need}</span><label class="small"><input type="checkbox" id="edit-only" data-bind="editOnly" ${editOnly?'checked':''}> 未完成・要検討だけ</label></div>`;let list=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!editOnly||(!c.missing.includes(n)&&getEnt(c,activeType,n).status!=='確定'));html+=`<div class="tablewrap" style="margin-top:15px"><table><thead><tr><th style="width:60px">作業番号</th>${activeType==='総合所見'?'<th style="width:230px">教科①・②・③</th>':''}<th>所見（直接編集できます）</th><th style="width:110px">状態</th></tr></thead><tbody>${list.map(n=>{let x=getEnt(c,activeType,n),miss=c.missing.includes(n);return `<tr><td class="num">${n}${miss?'<div class="tag need">欠番</div>':''}</td>${activeType==='総合所見'?`<td>${miss?'-':x.subjects.slice(0,S.prefs.mainCount).map((s,i)=>`<select data-bind="row-subject" data-n="${n}" data-index="${i}">${SUBJECTS.map(v=>option(v,s)).join('')}</select>`).join('<div style="height:4px"></div>')}</td>`:''}<td>${miss?'<span class="muted">欠番のため対象外</span>':`<textarea class="celltext" data-bind="row-text" data-n="${n}" placeholder="ここに所見を入力">${E(x.text)}</textarea><div class="textcount">${x.text.length}字</div>${x.text.trim()?`<div class="row-actions"><button class="btn" data-action="save-from-row" data-n="${n}">この文章を文例にする ↗</button></div>`:''}`}</td><td>${miss?'―':`<select data-bind="row-status" data-n="${n}">${['未作成','下書き','要検討','確定'].map(v=>option(v,x.status)).join('')}</select>`}</td></tr>`}).join('')}</tbody></table></div>`;return header('一覧編集','一人ずつタブを開かず、全員分を並べて確認。編集内容はこの画面で保持します。')+`<div class="grid"><div class="panel wide">${html}<div class="warning small" style="margin-top:16px">作業番号が実際の児童と対応する場合、個人情報に当たる可能性があります。学校の承認済み端末・保存先でのみ実運用してください。</div></div></div>`}
+let editOnly=false;
+function exportHTML(){let c=cur();return header('Excel出力','クラスごとに4シートを作成。番号と所見の列を指定できます。')+`<div class="grid"><div class="panel c6"><div class="stack">${field('出力するクラス',`<select data-bind="class">${classOpts()}</select>`)}${field('欠番の出力',`<select data-bind="missingMode"><option value="keep" ${S.prefs.missingMode==='keep'?'selected':''}>番号を残して、所見は空欄</option><option value="skip" ${S.prefs.missingMode==='skip'?'selected':''}>欠番の行を除外（番号は振り直さない）</option></select>`)}<div class="two">${field('番号列',`<select data-bind="numCol">${['A','B','C','D','E','F','G','H'].map(x=>option(x,S.prefs.numCol)).join('')}</select>`)}${field('所見列',`<select data-bind="textCol">${['A','B','C','D','E','F','G','H'].map(x=>option(x,S.prefs.textCol)).join('')}</select>`)}</div><div class="two">${field('開始行（見出しがある場合、番号は次行）',`<input data-bind="startRow" type="number" min="1" max="50" value="${S.prefs.startRow}">`)}${field('見出し',`<label class="inline" style="margin-top:10px"><input data-bind="header" type="checkbox" ${S.prefs.header?'checked':''}> 見出しを出力する</label>`)}</div><button class="btn primary" data-action="download-xlsx">⬇ Excel（.xlsx）で書き出す</button><p class="small muted" style="margin:0">4シート：総合所見／総合的な学習の時間／外国語活動／道徳</p></div></div>
+<div class="panel c6"><h2>出力イメージ</h2><div class="tablewrap" style="max-height:350px"><table style="min-width:0"><thead><tr><th>番号</th><th>総合所見（B列など）</th></tr></thead><tbody>${Array.from({length:Math.min(8,c.count)},(_,i)=>i+1).filter(n=>S.prefs.missingMode==='keep'||!c.missing.includes(n)).map(n=>`<tr><td>${n}</td><td>${c.missing.includes(n)?'<span class="muted">（空欄）</span>':E(getEnt(c,'総合所見',n).text||'（未作成）')}</td></tr>`).join('')}</tbody></table></div><hr class="hr"><div class="warning small">Excelは学校が認めた保存先へ保存してください。文例中の「要検討」や未完成欄がないか、出力前に確認してください。</div><div class="notice" style="margin-top:10px">学校から配付された既存のExcelファイルを読み込み、複雑な書式を維持して転記する機能は次の開発段階です。</div></div><div class="panel wide"><div class="title-row"><h2>バックアップ</h2><span class="tag">手動のみ</span></div><div class="inline"><button class="btn" data-action="save-json">設定・文例・編集内容をJSONで保存</button><button class="btn" data-action="load-json">JSONから復元</button><button class="btn danger" data-action="reset">すべて初期化</button></div><p class="small muted" style="margin:10px 0 0">自動保存は端末ごとに有効化が必要です。端末間の引き継ぎにはJSONバックアップを使用してください。バックアップファイルも適切に保護してください。</p></div></div>`}
+
+// Shared templates stay common. Assignments stay independent per class and number.
+function inferredType(subject){if(subject==='道徳')return '道徳';if(subject==='外国語活動')return '外国語活動';if(subject==='総合的な学習の時間')return '総合的な学習の時間';return '総合所見'}
+function startShare(id){let b=S.bank.find(x=>x.id===Number(id));if(!b)return;shareBankId=b.id;shareType=inferredType(b.subject);shareMode='empty';shareTargets={};shareExpanded={};shareResult='';page='share';render()}
+function selectedNumbers(c){return parseNumbers(shareTargets[c.id]||'',c.count).filter(n=>!c.missing.includes(n))}
+function shareHTML(){let b=S.bank.find(x=>x.id===Number(shareBankId))||S.bank[0];if(!b)return header('クラス横断配置','文例がありません。まず文例バンクから追加してください。');
+ let mismatch=S.classes.some(c=>c.grade!==b.grade);
+ let block=S.classes.map(c=>{let nos=selectedNumbers(c),open=!!shareExpanded[c.id];return `<div class="share-class">
+  <div class="share-class-head"><div><strong>クラス${c.id}</strong> <span>${c.grade}年 · ${c.count}名${c.missing.length?' · 欠番 '+c.missing.join('、'):''}</span></div><span class="tag ${nos.length?'done':''}" id="count-class-${c.id}">${nos.length}名選択</span></div>
+  <div class="share-class-body">${field('割り振る作業番号',`<input class="share-target" data-bind="share-target" data-id="${c.id}" value="${attr(shareTargets[c.id]||'')}" placeholder="例：2,5,9-12（奇数・偶数・全員も可）">`)}
+   <button class="btn softbtn" data-action="toggle-share-grid" data-id="${c.id}">${open?'番号ボタンを閉じる':'番号から選ぶ'} ${open?'⌃':'⌄'}</button></div>
+  ${open?`<div class="share-number-grid">${Array.from({length:c.count},(_,i)=>i+1).map(n=>{let sel=nos.includes(n),miss=c.missing.includes(n);return `<button class="share-chip ${sel?'is-selected':''} ${miss?'is-missing':''}" data-action="toggle-share-num" data-id="${c.id}" data-n="${n}" ${miss?'disabled':''} title="${miss?'欠番':'作業番号 '+n}">${n}</button>`}).join('')}</div>`:''}
+ </div>`}).join('');
+ return header('クラス横断配置','1つの文例を、複数クラスのそれぞれ異なる作業番号へ割り振れます。')+`<div class="workflow-banner"><div class="symbol">⇆</div><div><strong>文例は共有、番号はクラス別。</strong><p>1組の番号を2組へコピーしません。各クラスの該当番号を選ぶだけ。</p></div></div>
+ <div class="grid"><div class="panel c5"><div class="section-kicker">SELECTED EXAMPLE</div><h2>${E(b.unit||'自由文例')}</h2><div class="inline" style="margin-bottom:13px"><span class="tag">${b.grade}年</span><span class="tag">${E(b.subject)}</span><span class="tag">文例 No.${b.id}</span></div><div class="exborder" style="white-space:pre-wrap;line-height:2">${E(b.text)}</div><p class="small muted" style="margin-top:12px">この文例はコピーして配置します。割り振った先で文章を直しても、元の文例や別クラスの文章は変わりません。</p><button class="btn" data-action="page" data-page="bank">別の文例を選ぶ ↗</button></div>
+ <div class="panel c7"><div class="title-row"><div><div class="section-kicker">ARRANGE ACROSS CLASSES</div><h2>割り振るクラスと番号</h2></div><span class="tag">最大9クラス</span></div><div class="two">${field('反映先の所見',`<select data-bind="share-type">${TYPES.map(t=>option(t,shareType)).join('')}</select>`)}${field('既存文章がある場合',`<select data-bind="share-mode"><option value="empty" ${shareMode==='empty'?'selected':''}>空欄だけに配置（おすすめ）</option><option value="append" ${shareMode==='append'?'selected':''}>文末に追加（重複は除外）</option><option value="replace" ${shareMode==='replace'?'selected':''}>既存文章を置き換える（確認あり）</option></select>`)}</div>${block}
+ ${mismatch?'<div class="assist-note" style="margin-top:14px">文例と学年が違うクラスも表示しています。別学年に配置するときは、内容が適切か確認してください。</div>':''}
+ <div class="warning small" style="margin-top:15px">欠番には配置しません。確定済みの文章も「空欄だけ」では変更しません。実際の児童に合うかは最終確認してください。</div>
+ <div class="inline" style="margin-top:17px"><button class="btn primary" data-action="apply-shared">✓ 選択したクラスへまとめて配置</button><button class="btn" data-action="reset-share-targets">番号選択をクリア</button></div>
+ ${shareResult?`<div class="assist-note" style="margin-top:15px;white-space:pre-wrap">${E(shareResult)}</div><div class="inline" style="margin-top:10px">${S.classes.filter(c=>selectedNumbers(c).length).map(c=>`<button class="btn softbtn" data-action="go-edit-class" data-id="${c.id}">クラス${c.id}を一覧編集 →</button>`).join('')}</div>`:''}
+ </div></div>`}
+function saveExampleHTML(){if(!saveRowContext)return header('文例にする','一覧編集から所見を選んでください。');return header('文章を文例にする','クラスで使った表現を汎用文例として整理し、別クラスでも再利用します。')+`<div class="grid"><div class="panel c8"><div class="workflow-banner"><div class="symbol">✧</div><div><strong>個別の文章を、再利用できる文例に整える</strong><p>元の所見を変更せず、文例バンクにコピーを保存します。</p></div></div>
+ <div class="three">${field('学年',`<select data-bind="save-grade">${Array.from({length:6},(_,i)=>option(i+1,reusableDraft.grade)).join('')}</select>`)}${field('教科・領域',`<select data-bind="save-subject">${[...SUBJECTS.filter(x=>x!=='要検討'),'道徳','外国語活動','総合的な学習の時間','学習全般','生活・特別活動'].map(x=>option(x,reusableDraft.subject)).join('')}</select>`)}${field('単元・テーマ',`<input data-bind="save-unit" value="${attr(reusableDraft.unit)}" placeholder="例：電気の通り道">`)}</div>
+ ${field('文例として保存する文章',`<textarea class="review-textarea" data-bind="save-text" placeholder="再利用できる文章に編集してください">${E(reusableDraft.text)}</textarea>`)}
+ <div class="warning small" style="margin-top:14px">個別の児童に固有の事情や本人を特定できる情報がないか確認し、必要に応じて一般化してから保存してください。文例バンクはこのファイル内で共有されますが、外部には送信しません。</div>
+ <label class="inline small" style="margin:14px 0 18px"><input id="save-example-reviewed" type="checkbox"> この文例を再利用してよい内容か確認しました</label>
+ <div class="inline"><button class="btn primary" data-action="commit-example">文例バンクへ保存して配置へ進む ↗</button><button class="btn" data-action="cancel-example">一覧編集へ戻る</button></div></div>
+ <div class="panel c4"><div class="section-kicker">ORIGINAL ENTRY</div><h2>元の文章</h2><p class="muted">クラス${saveRowContext.classId} · 作業番号${saveRowContext.number} · ${E(saveRowContext.type)}</p><div class="assist-note">元の文章はそのまま残します。新しい文例をほかのクラスに配置するときも、クラス間で番号の対応関係は引き継ぎません。</div><p class="muted small" style="margin-top:18px">例：「3年1組の7番 → 3年2組の7番」のように自動で配置することはありません。</p></div></div>`}
+
+function missingHTML(c){return `<div class="panel wide"><div class="title-row"><h2>クラス${c.id} の欠番設定</h2><button class="btn" data-action="close-missing">閉じる</button></div><p class="small muted">欠番をタップして選択。欠番と未作成は別の状態として管理します。</p><div class="numgrid">${Array.from({length:c.count},(_,i)=>i+1).map(n=>`<button class="numchip ${c.missing.includes(n)?'missing':''}" data-action="toggle-missing" data-id="${c.id}" data-n="${n}">${n}${c.missing.includes(n)?' ×':''}</button>`).join('')}</div><p class="small muted">現在の欠番：${c.missing.length?c.missing.join('、'):'なし'}</p></div>`}
+let missingOpen=0;
+const previousRender=render;render=function(){renderTop();let view={home:homeHTML,settings:settingsHTML,bank:bankHTML,compose:composeHTML,assign:assignHTML,share:shareHTML,saveexample:saveExampleHTML,edit:editHTML,export:exportHTML}[page]||homeHTML;let html=view();if(page==='settings'&&missingOpen){let c=S.classes.find(x=>x.id===missingOpen);if(c)html+=`<div class="grid">${missingHTML(c)}</div>`} $('main').innerHTML=html};
+function parseNumbers(s,max){let set=new Set();let clean=String(s).trim();if(clean==='奇数')for(let n=1;n<=max;n+=2)set.add(n);else if(clean==='偶数')for(let n=2;n<=max;n+=2)set.add(n);else if(clean==='全員')for(let n=1;n<=max;n++)set.add(n);else clean.split(/[、,\s]+/).filter(Boolean).forEach(part=>{let m=part.match(/^(\d+)\s*[-〜～]\s*(\d+)$/);if(m){let a=+m[1],b=+m[2];for(let n=Math.min(a,b);n<=Math.max(a,b);n++)if(n<=max&&n>=1)set.add(n)}else if(/^\d+$/.test(part)){let n=+part;if(n<=max&&n>=1)set.add(n)}});return [...set].sort((a,b)=>a-b)}
+function applyRules(text){return S.rules.filter(r=>r.on&&r.from).reduce((t,r)=>t.split(r.from).join(r.to),text)}
+function makeDraft(){let m=draftMeta,keys=m.keywords.split(/[、,，／/\n]+/).map(x=>x.trim()).filter(Boolean);if(!m.unit.trim()&&!keys.length){toast('単元名かキーワードを入力してください');return}let topic=m.unit.trim()||'学習',gist=keys.length?keys.join('、'):'学習内容';if(m.subject==='道徳'){draft=`「${topic}」では、${gist}について考え、自分の考えを深めていました。`;}else if(m.subject==='総合的な学習の時間'){draft=`「${topic}」の活動では、${gist}に取り組み、学習を進めていました。`;}else if(m.subject==='生活・特別活動'){draft=`${topic}では、${gist}などに取り組んでいました。`;}else{draft=`${m.subject}の「${topic}」では、${gist}について考えながら学習に取り組んでいました。`;}draft=applyRules(draft);render()}
+function copyText(text){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>toast('コピーしました')).catch(()=>fallbackCopy(text))}else fallbackCopy(text)}
+function fallbackCopy(t){let a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;left:-9999px';document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('コピーしました')}catch(e){toast('コピーに失敗しました')}a.remove()}
+function downloadBlob(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+function jsonBackup(){
+ try{
+  const d=new Date(),p=n=>String(n).padStart(2,'0');
+  const stamp=d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds());
+  downloadBlob(new Blob([JSON.stringify({version:1,state:S},null,2)],{type:'application/json'}),'所見メーカー_バックアップ_'+stamp+'.json');
+  toast('JSONのダウンロードを開始しました。保存されたファイルを確認してください');
+  return true;
+ }catch(e){alert('JSONを書き出せませんでした：'+e.message);return false}
+}
+function confirmDataDiscard(message){
+ if(confirm('削除前に現在のデータのJSONバックアップを保存しますか？')){
+  if(!jsonBackup())return false;
+  alert('バックアップのダウンロード先にファイルがあることを確認してから、削除を進めてください。');
+ }
+ return confirm(message);
+}
+function restoreJSON(file){let rd=new FileReader();rd.onload=()=>{try{let p=JSON.parse(rd.result);if(!p||p.version!==1||!p.state||!Array.isArray(p.state.classes)||!Array.isArray(p.state.bank))throw Error('形式が異なります');S=p.state;S.classes=S.classes.slice(0,9);activeClass=S.classes[0].id;page='home';render();toast('復元しました')}catch(e){alert('復元できませんでした：'+e.message)}};rd.readAsText(file)}
+// Offline .xlsx writer (Office Open XML, ZIP STORE, UTF-8 filenames). No third-party JS or network connection.
+const enc=new TextEncoder();const xml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const u16=(v)=>[v&255,(v>>8)&255],u32=(v)=>[v&255,(v>>8)&255,(v>>16)&255,(v>>24)&255];
+const crcTab=new Uint32Array(256);for(let i=0;i<256;i++){let x=i;for(let j=0;j<8;j++)x=(x&1)?(0xEDB88320^(x>>>1)):(x>>>1);crcTab[i]=x>>>0}function crc32(b){let x=0xffffffff;for(const v of b)x=crcTab[(x^v)&255]^(x>>>8);return (x^0xffffffff)>>>0}
+function zipFiles(files){let local=[],central=[],offset=0;for(let [name,str] of files){let n=enc.encode(name),b=enc.encode(str),crc=crc32(b);let head=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(b.length),...u32(b.length),...u16(n.length),...u16(0)]);local.push(head,n,b);let cent=new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(b.length),...u32(b.length),...u16(n.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset)]);central.push(cent,n);offset+=head.length+n.length+b.length}let csize=central.reduce((x,y)=>x+y.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(csize),...u32(offset),...u16(0)]);return new Blob([...local,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+function columnIndex(s){return s.toUpperCase().charCodeAt(0)-64}
+function xlsxSheet(c,type){const h=S.prefs.header;let num=S.prefs.numCol,txt=S.prefs.textCol,start=Math.max(1,Number(S.prefs.startRow)||1);let rs=[];if(h){let hrow=Math.max(1,start-1);rs.push(`<row r="${hrow}"><c r="${num}${hrow}" t="inlineStr" s="1"><is><t>番号</t></is></c><c r="${txt}${hrow}" t="inlineStr" s="1"><is><t>所見</t></is></c></row>`)}let ix=0;for(let n=1;n<=c.count;n++){if(c.missing.includes(n)&&S.prefs.missingMode==='skip')continue;let rr=start+ix++;let value=c.missing.includes(n)?'':applyRules(getEnt(c,type,n).text);rs.push(`<row r="${rr}"><c r="${num}${rr}" t="n"><v>${n}</v></c><c r="${txt}${rr}" t="inlineStr" s="2"><is><t xml:space="preserve">${xml(value)}</t></is></c></row>`)}return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="16"/><cols><col min="${Math.min(columnIndex(num),columnIndex(txt))}" max="${Math.min(columnIndex(num),columnIndex(txt))}" width="12" customWidth="1"/><col min="${columnIndex(txt)}" max="${columnIndex(txt)}" width="78" customWidth="1"/></cols><sheetData>${rs.join('')}</sheetData></worksheet>`}
+function downloadXlsx(){if(S.prefs.numCol===S.prefs.textCol){alert('番号列と所見列を別々にしてください');return}let c=cur(),bad=[];for(let t of TYPES){for(let n=1;n<=c.count;n++){if(c.missing.includes(n))continue;let x=getEnt(c,t,n);if(x.text.includes('要検討')||x.status==='要検討')bad.push(t+'・'+n)}}if(bad.length&&!confirm('「要検討」の欄があります（'+bad.length+'件）。そのまま書き出しますか？'))return;let files=[['[Content_Types].xml',`<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${TYPES.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`],['_rels/.rels',`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],['xl/workbook.xml',`<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${TYPES.map((t,i)=>`<sheet name="${xml(t)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`],['xl/_rels/workbook.xml.rels',`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${TYPES.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${TYPES.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],['xl/styles.xml',`<?xml version="1.0" encoding="UTF-8"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Yu Gothic"/></font><font><b/><sz val="11"/><color rgb="FF315D50"/><name val="Yu Gothic"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE7F1E8"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf></cellXfs></styleSheet>`]];TYPES.forEach((t,i)=>files.push([`xl/worksheets/sheet${i+1}.xml`,xlsxSheet(c,t)]));downloadBlob(zipFiles(files),`所見メーカー_クラス${c.id}_${S.prefs.period}.xlsx`);toast('Excelを書き出しました')}
+// Delegated controls
+$('importfile').addEventListener('change',e=>{let f=e.target.files?.[0];if(f)restoreJSON(f);e.target.value=''});
+document.addEventListener('click',e=>{let b=e.target.closest('[data-action]');if(!b)return;let a=b.dataset.action;switch(a){case 'page':page=b.dataset.page;render();break;case 'add-class':if(S.classes.length<9){let ids=S.classes.map(c=>c.id),id=Array.from({length:9},(_,i)=>i+1).find(x=>!ids.includes(x));S.classes.push({id,grade:3,count:34,missing:[],entries:{}});activeClass=id;render()}break;case 'delete-class':if(S.classes.length>1&&confirmDataDiscard('このクラスの編集内容も削除します。よろしいですか？')){S.classes=S.classes.filter(x=>x.id!==Number(b.dataset.id));activeClass=S.classes[0].id;render()}break;case 'open-missing':missingOpen=Number(b.dataset.id);render();break;case 'close-missing':missingOpen=0;render();break;case 'toggle-missing':{let c=S.classes.find(x=>x.id===Number(b.dataset.id)),n=Number(b.dataset.n);c.missing=c.missing.includes(n)?c.missing.filter(x=>x!==n):[...c.missing,n].sort((a,z)=>a-z);render();break}case 'add-rule':{let f=$('rule-from')?.value.trim(),t=$('rule-to')?.value.trim();if(f&&t&&f!==t){S.rules.push({from:f,to:t,on:true});render()}else toast('変更前と変更後を入力してください');break}case 'remove-rule':S.rules.splice(Number(b.dataset.index),1);render();break;case 'add-bank':{let t=$('bank-text').value.trim();if(!t){toast('文例を入力してください');break}S.bank.push({id:S.nextId++,grade:Number($('bank-grade').value),subject:$('bank-subject').value,unit:$('bank-unit').value.trim(),text:t,tag:'追加文例'});render();toast('文例を保存しました');break}case 'delete-bank':if(confirm('この文例をバンクから削除しますか？（すでに割り振った文章は残ります）')){S.bank=S.bank.filter(x=>x.id!==Number(b.dataset.id));render()}break;case 'copy-bank':{let item=S.bank.find(x=>x.id===Number(b.dataset.id));if(item)copyText(item.text);break}case 'use-bank':applySelected=b.dataset.id;page='assign';render();break;
+case 'share-bank':startShare(b.dataset.id);break;
+case 'toggle-share-grid':shareExpanded[b.dataset.id]=!shareExpanded[b.dataset.id];render();break;
+case 'toggle-share-num':{let c=S.classes.find(x=>x.id===Number(b.dataset.id));if(!c)break;let n=Number(b.dataset.n),nos=selectedNumbers(c);if(nos.includes(n))nos=nos.filter(x=>x!==n);else nos.push(n);shareTargets[c.id]=nos.sort((a,z)=>a-z).join(',');render();break}
+case 'reset-share-targets':shareTargets={};shareResult='';render();break;
+case 'apply-shared':{let item=S.bank.find(x=>x.id===Number(shareBankId));if(!item){toast('文例がありません');break}
+let tasks=S.classes.map(c=>({c,nums:selectedNumbers(c)})).filter(x=>x.nums.length);if(!tasks.length){toast('配置する作業番号を選んでください');break}
+let diff=tasks.filter(x=>x.c.grade!==item.grade);if(diff.length&&!confirm('文例の学年と異なるクラスが含まれます。内容を確認したうえで続けますか？'))break;
+let overwrite=tasks.reduce((s,{c,nums})=>s+nums.filter(n=>getEnt(c,shareType,n).text).length,0);if(shareMode==='replace'&&overwrite&&!confirm(overwrite+'件の既存文章を置き換えます。よろしいですか？'))break;
+let changed=0,skipped=0,res=[];for(let {c,nums} of tasks){let count=0;for(let n of nums){let x=getEnt(c,shareType,n);if(shareMode==='empty'&&x.text.trim()){skipped++;continue}if(shareMode==='append'&&x.text.includes(item.text)){skipped++;continue}let txt=shareMode==='append'&&x.text.trim()?x.text+'\n'+item.text:item.text;editEnt(c,shareType,n,{text:txt,status:'下書き',touched:true,sourceBankId:item.id});count++;changed++}res.push('クラス'+c.id+'：'+count+'件')}shareResult=res.join(' ／ ')+'\n反映 '+changed+'件'+(skipped?'・既存文などでスキップ '+skipped+'件':'')+'。一覧編集で文章を確認してください。';render();break}
+case 'go-edit-class':activeClass=Number(b.dataset.id);activeType=shareType;page='edit';render();break;
+case 'save-from-row':{let c=cur(),n=Number(b.dataset.n),x=getEnt(c,activeType,n);if(!x.text.trim()){toast('文章を入力してください');break}
+saveRowContext={classId:c.id,number:n,type:activeType};reusableDraft={grade:c.grade,subject:activeType==='総合所見'?(x.subjects.find(s=>s!=='要検討')||'学習全般'):activeType,unit:'',text:x.text};page='saveexample';render();break}
+case 'cancel-example':page='edit';render();break;
+case 'commit-example':{if(!$('save-example-reviewed')?.checked){toast('内容を確認してチェックを入れてください');break}let txt=reusableDraft.text.trim();if(!txt){toast('文例の文章を入力してください');break}let b={id:S.nextId++,grade:Number(reusableDraft.grade),subject:reusableDraft.subject||'学習全般',unit:reusableDraft.unit.trim(),text:txt,tag:'一覧から文例化'};S.bank.push(b);startShare(b.id);toast('文例をバンクに登録しました');break}
+case 'make-draft':makeDraft();break;case 'copy-draft':copyText(draft);break;case 'prompt-copy':{let m=draftMeta;copyText(`次の一般的な教材情報から、個人を特定しない所見文例を3種類作ってください。入力されていない児童の事実は追加しないでください。\n学年：${m.grade}年\n教科：${m.subject}\n単元・活動：${m.unit}\nキーワード：${m.keywords}\n文字数目安：${S.prefs.maxChars}字以内\n学校表記ルール：${S.rules.filter(x=>x.on).map(x=>x.from+'→'+x.to).join('、')}`);break}case 'draft-to-bank':if(draft){S.bank.push({id:S.nextId++,grade:Number(draftMeta.grade),subject:draftMeta.subject,unit:draftMeta.unit,text:draft,tag:'テンプレ生成（要確認）'});page='bank';render();toast('文例バンクに追加しました')}break;case 'bulk-subject':{let c=cur(),changed=0;for(let n=1;n<=c.count;n++){if(c.missing.includes(n))continue;let x=getEnt(c,activeType,n);if(x.touched)continue;editEnt(c,activeType,n,{subjects:(n%2?odd:even).slice(0,S.prefs.mainCount).concat(Array(3).fill('要検討')).slice(0,3),status:x.status==='未作成'?'下書き':x.status});changed++}toast(changed+'枠に教科を仮配置しました');break}case 'apply-bank':{let c=cur(),item=S.bank.find(x=>x.id===Number(applySelected)),nos=parseNumbers(applyNumbers,c.count).filter(n=>!c.missing.includes(n));if(!item||!nos.length){toast('文例と番号を指定してください');break}if(applyMode==='replace'&&nos.some(n=>getEnt(c,activeType,n).text)&&!confirm('既存の文章を置き換えますか？'))break;for(let n of nos){let x=getEnt(c,activeType,n),txt=applyMode==='append'&&x.text?x.text+'\n'+item.text:item.text;editEnt(c,activeType,n,{text:txt,status:'下書き',touched:true})}toast(nos.length+'枠へ適用しました');break}case 'download-xlsx':downloadXlsx();break;case 'save-json':jsonBackup();break;case 'load-json':$('importfile').click();break;case 'reset':if(confirmDataDiscard('すべての編集内容を破棄して初期化しますか？')){S=newState();activeClass=1;activeType='総合所見';page='home';render()}break;}});
+document.addEventListener('change',e=>{let el=e.target,b=el.dataset.bind;if(!b)return;let v=el.value,c=cur(),n=Number(el.dataset.n),i=Number(el.dataset.index),id=Number(el.dataset.id);switch(b){case 'class':activeClass=Number(v);render();break;case 'type':activeType=v;render();break;case 'class-grade':S.classes.find(x=>x.id===id).grade=Number(v);render();break;case 'class-count':S.classes.find(x=>x.id===id).count=Number(v);render();break;case 'period':S.prefs.period=v;break;case 'system':S.prefs.system=v;break;case 'mainCount':S.prefs.mainCount=Number(v);render();break;case 'maxChars':S.prefs.maxChars=Number(v);break;case 'rule-on':S.rules[i].on=el.checked;break;case 'bankFilter':bankFilter=v;render();break;case 'draft-grade':draftMeta.grade=Number(v);break;case 'draft-subject':draftMeta.subject=v;break;case 'draft-unit':draftMeta.unit=v;break;case 'draft-keywords':draftMeta.keywords=v;break;case 'odd':odd[i]=v;break;case 'even':even[i]=v;break;case 'applySelected':applySelected=v;break;case 'applyNumbers':applyNumbers=v;break;case 'applyMode':applyMode=v;break;
+case 'share-type':shareType=v;break;case 'share-mode':shareMode=v;break;
+case 'save-grade':reusableDraft.grade=Number(v);break;
+case 'save-subject':reusableDraft.subject=v;break;
+case 'save-unit':reusableDraft.unit=v;break;
+case 'save-text':reusableDraft.text=v;break;
+case 'editOnly':editOnly=el.checked;render();break;case 'row-subject':{let x=getEnt(c,activeType,n),subs=x.subjects.slice();subs[i]=v;editEnt(c,activeType,n,{subjects:subs,touched:true});break}case 'row-text':{let txt=el.value,x=getEnt(c,activeType,n);editEnt(c,activeType,n,{text:txt,status:x.status==='未作成'&&txt?'下書き':x.status,touched:true});el.parentElement.querySelector('.textcount').textContent=txt.length+'字';break}case 'row-status':editEnt(c,activeType,n,{status:v,touched:true});break;case 'missingMode':S.prefs.missingMode=v;render();break;case 'numCol':S.prefs.numCol=v;break;case 'textCol':S.prefs.textCol=v;break;case 'startRow':S.prefs.startRow=Number(v);break;case 'header':S.prefs.header=el.checked;break;}});
+document.addEventListener('input',e=>{let b=e.target.dataset.bind;if(b==='share-target'){shareTargets[Number(e.target.dataset.id)]=e.target.value;let c=S.classes.find(x=>x.id===Number(e.target.dataset.id));let q=$('count-class-'+c.id);if(q)q.textContent=selectedNumbers(c).length+'名選択';}
+else if(b==='save-unit')reusableDraft.unit=e.target.value;
+else if(b==='save-text')reusableDraft.text=e.target.value;
+else if(b==='draft-unit')draftMeta.unit=e.target.value;else if(b==='draft-keywords')draftMeta.keywords=e.target.value;else if(b==='applyNumbers')applyNumbers=e.target.value;else if(e.target.id==='bank-search'){bankQuery=e.target.value;let caret=e.target.selectionStart;render();let x=$('bank-search');if(x){x.focus();x.setSelectionRange(caret,caret)}}else if(b==='row-text'){let c=cur(),n=Number(e.target.dataset.n),x=getEnt(c,activeType,n);editEnt(c,activeType,n,{text:e.target.value,status:x.status==='未作成'?'下書き':x.status,touched:true});e.target.parentElement.querySelector('.textcount').textContent=e.target.value.length+'字';}});
+window.addEventListener('beforeunload',e=>{if(window.SHOKEN_AUTOSAVE_ENABLED&&typeof window.SHOKEN_AUTOSAVE_FLUSH==='function')window.SHOKEN_AUTOSAVE_FLUSH();if(window.SHOKEN_AUTOSAVE_ENABLED&&window.SHOKEN_AUTOSAVE_SYNCED)return;if(S.classes.some(c=>Object.keys(c.entries).length)||S.bank.length>INITIAL_BANK.length||S.classes.length>1){e.preventDefault();e.returnValue=''}});
+
+/* v0.4 improvements: safe drafting, textbook choice and 7 curated examples */
+const V4_PUBLISHERS={
+ '国語':['光村図書','東京書籍','教育出版'],
+ '算数':['東京書籍','啓林館','教育出版','大日本図書','日本文教出版','学校図書'],
+ '理科':['東京書籍','啓林館','教育出版','大日本図書','学校図書'],
+ '社会':['東京書籍','教育出版','日本文教出版'],
+ '生活':['東京書籍','教育出版','光村図書','啓林館','大日本図書','学校図書'],
+ '音楽':['教育芸術社','教育出版'],
+ '図工':['日本文教出版','開隆堂'],
+ '体育':['東京書籍','学研','光文書院'],
+ '家庭':['東京書籍','開隆堂'],
+ '外国語':['東京書籍','光村図書','開隆堂','教育出版'],
+ '外国語活動':["文部科学省 Let’s Try!",'自治体教材'],
+ '道徳':['東京書籍','光村図書','教育出版','日本文教出版','光文書院','学研']
+};
+const V4_UNITS=[
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'太陽とかげ',texts:[
+ '「太陽とかげ」では、同じ場所で時刻を変えて影を観察し、影の向きの変化を記録していました。',
+ '「太陽とかげ」では、太陽の位置と影の向きを比べ、その位置関係に気付いていました。',
+ '「太陽とかげ」では、時刻ごとの記録を根拠に、影の向きが変わる理由を説明していました。',
+ '「太陽とかげ」では、友だちの記録と自分の結果を比べ、考えを見直していました。',
+ '「太陽とかげ」では、時刻や方位に気を付け、観察結果を分かりやすく図にまとめていました。',
+ '「太陽とかげ」では、影の向きについて予想を立て、観察で確かめようとしていました。',
+ '「太陽とかげ」では、観察結果を基に、太陽の位置と影の向きの関係を考えていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'電気の通り道',texts:[
+ '「電気の通り道」では、豆電球の明かりがつくつなぎ方を調べ、回路のつながりに着目して考えていました。',
+ '「電気の通り道」では、予想したつなぎ方を試し、結果を基に回路の条件を説明していました。',
+ '「電気の通り道」では、明かりがつく場合とつかない場合を比べ、共通点を探していました。',
+ '「電気の通り道」では、身の回りの物を調べ、電気を通す物と通さない物に分けていました。',
+ '「電気の通り道」では、実験結果を比べ、電気を通す物の材質について考えていました。',
+ '「電気の通り道」では、うまく明かりがつかないときも、つなぎ方を確かめながら試していました。',
+ '「電気の通り道」では、友だちと実験結果を確かめ合い、自分の考えを整理していました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'風とゴムのはたらき',texts:[
+ '「風とゴムのはたらき」では、風の強さを変えて車を動かし、進んだ距離を比べていました。',
+ '「風とゴムのはたらき」では、実験の条件をそろえ、風の強さによる動き方の違いを調べていました。',
+ '「風とゴムのはたらき」では、ゴムを伸ばす長さを変えて実験し、結果を表に整理していました。',
+ '「風とゴムのはたらき」では、実験結果を根拠に、ゴムの伸ばし方と車の動き方の関係を説明していました。',
+ '「風とゴムのはたらき」では、予想と結果の違いに気付き、理由を考えていました。',
+ '「風とゴムのはたらき」では、班の実験結果と自分の結果を比べ、考えを深めていました。',
+ '「風とゴムのはたらき」では、風とゴムの働きの共通点や違いを見つけ、言葉でまとめていました。']}
+];
+let v4Grade=3,v4Subject='理科',v4Unit='',v4BankEdit=0;
+S.textbooks=S.textbooks||{};S.criteria=S.criteria||{};
+function v4Pub(g,s){return (S.textbooks||{})[g+':'+s]||'未設定'}
+function v4Opts(list,current){return list.map(x=>option(x,current)).join('')}
+function v4UnitOptions(){return V4_UNITS.filter(x=>x.grade===v4Grade&&x.subject===v4Subject&&x.publisher===v4Pub(v4Grade,v4Subject))}
+function v4SelectedUnit(){const a=v4UnitOptions();return a.find(x=>x.unit===v4Unit)||a[0]}
+function v4Import(x,i){const b={id:S.nextId++,grade:x.grade,subject:x.subject,unit:x.unit,text:x.texts[i],tag:'編集用見本・要確認'};S.bank.push(b);return b}
+makeDraft=function(){
+ const m=draftMeta,topic=m.unit.trim(),raw=m.keywords.trim();
+ if(!topic){toast('単元名を入力してください');return}
+ const sentence=raw.replace(/[。！？]+$/,'');
+ if(!/(?:ました|ています|でした|です|ます|できた|ことができた|していた|している|した|だった|考えた|気付いた|分かった)$/.test(sentence)){
+  toast('文のつなぎ間違いを防ぐため、学習の様子を「〜していました。」まで入力してください');
+  return;
+ }
+ const natural=sentence.replace(/ことができた$/,'ことができました').replace(/していた$/,'していました').replace(/だった$/,'でした');
+ const intro=(m.subject==='道徳'||m.subject==='総合的な学習の時間'?'':m.subject+'の')+'「'+topic+'」では、';
+ draft=applyRules(intro+natural+'。');v4BankEdit=0;render();
+};
+const v4OldTop=renderTop;
+renderTop=function(){v4OldTop();const tabs=$('tabs');if(!tabs.querySelector('[data-page="unit-bank"]')){const b=document.createElement('button');b.className='tab'+(page==='unit-bank'?' active':'');b.textContent='📚 単元から選ぶ';b.dataset.action='page';b.dataset.page='unit-bank';tabs.insertBefore(b,tabs.querySelector('[data-page="compose"]'))}};
+const v4OldRender=render;
+render=function(){
+ if(page==='unit-bank'){renderTop();$('main').innerHTML=v4UnitHTML();return}
+ v4OldRender();
+ if(page==='settings')v4Settings();
+ if(page==='compose')v4DraftEditor();
+ if(page==='bank')v4BankButtons();
+};
+function v4Settings(){
+ const box=document.createElement('div');box.className='panel';box.style.marginTop='16px';
+ box.innerHTML='<h2>教科書会社の設定</h2><div class="three">'+
+ '<div class="field"><label>学年</label><select id="v4-grade">'+v4Opts([1,2,3,4,5,6],v4Grade)+'</select></div>'+
+ '<div class="field"><label>教科</label><select id="v4-subject">'+v4Opts(Object.keys(V4_PUBLISHERS),v4Subject)+'</select></div>'+
+ '<div class="field"><label>教科書会社</label><select id="v4-publisher">'+v4Opts(['未設定'].concat(V4_PUBLISHERS[v4Subject],['その他']),v4Pub(v4Grade,v4Subject))+'</select></div></div>'+
+ '<div class="notice" style="margin-top:12px">学年・教科別に設定します。会社を選ぶだけで全単元の評価規準を自動取得するわけではありません。<button class="btn" data-v4="show-unit">単元から選ぶ →</button></div>';
+ $('main').appendChild(box);
+}
+function v4UnitHTML(){
+ const examples=v4UnitOptions(),chosen=v4SelectedUnit();if(chosen&&!examples.some(x=>x.unit===v4Unit))v4Unit=chosen.unit;
+ let h=header('単元別の文例','教科書会社を選び、7種類の文例から選ぶ。言葉の修正やクラス横断配置もできます。')+'<div class="grid"><div class="panel wide"><div class="three">'+
+ '<div class="field"><label>学年</label><select id="v4-grade">'+v4Opts([1,2,3,4,5,6],v4Grade)+'</select></div>'+
+ '<div class="field"><label>教科</label><select id="v4-subject">'+v4Opts(Object.keys(V4_PUBLISHERS),v4Subject)+'</select></div>'+
+ '<div class="field"><label>教科書会社</label><select id="v4-publisher">'+v4Opts(['未設定'].concat(V4_PUBLISHERS[v4Subject],['その他']),v4Pub(v4Grade,v4Subject))+'</select></div>'+
+ '</div><p class="hint" style="margin-top:10px">設定はクラス・設定と共通。ほかの会社や単元の文例は準備中です。</p></div>';
+ if(!chosen)return h+'<div class="panel wide"><h2>この教科書会社の単元別文例は準備中</h2><p>操作見本は「3年・理科・東京書籍」で確認できます。評価規準が未登録の単元について公式準拠とは表示しません。</p></div></div>';
+ h+='<div class="panel wide"><h2>単元の7文例</h2><div class="field"><label>単元</label><select id="v4-unit">'+v4Opts(examples.map(x=>x.unit),v4Unit)+'</select></div>'+
+ '<div class="warning" style="margin:12px 0">以下は編集用の見本です。出版社の公式評価規準への照合は未完了。使う際は、児童の実際の学習の姿を確認してください。</div><div class="stack">'+
+ chosen.texts.map((txt,i)=>'<div class="card"><strong>文例 '+(i+1)+'</strong><p style="margin:9px 0">'+E(txt)+'</p><div class="inline"><button class="btn softbtn" data-v4="edit-unit" data-i="'+i+'">言葉を変える</button><button class="btn" data-v4="add-unit" data-i="'+i+'">バンクに追加</button><button class="btn primary" data-v4="share-unit" data-i="'+i+'">クラスへ配置 ↗</button></div></div>').join('')+
+ '</div><hr><button class="btn" data-v4="new-unit">＋ 文例を増やす</button><button class="btn" data-v4="unit-prompt">7文例の追加案をAIに相談する指示をコピー</button>'+
+ '<div class="field" style="margin-top:16px"><label>評価規準・出典のメモ（児童情報は入力しない）</label><textarea id="v4-criteria">'+E((S.criteria||{})[[chosen.grade,chosen.subject,chosen.publisher,chosen.unit].join('|')]||'')+'</textarea></div></div></div>';
+ return h;
+}
+function v4DraftEditor(){
+ const prev=$('draft-preview');if(!prev)return;
+ const area=document.createElement('textarea');area.id='v4-editor';area.className='review-textarea';area.style.cssText='min-height:180px;width:100%;background:#f8fbf8;border:1px solid #bfd2c2;border-radius:12px;padding:15px';area.value=draft;
+ prev.replaceWith(area);
+ const saveDraftButton=document.querySelector('[data-action="draft-to-bank"]');if(saveDraftButton)saveDraftButton.disabled=false;
+ area.addEventListener('input',()=>{draft=area.value;const n=area.parentElement.querySelector('.textcount');if(n)n.textContent=draft.length+'字 ／ 目安上限'+S.prefs.maxChars+'字'});
+ if(v4BankEdit){const b=document.createElement('button');b.className='btn';b.dataset.v4='save-bank';b.textContent='元の文例を更新';const bar=area.parentElement.querySelector('.inline');if(bar)bar.appendChild(b)}
+}
+function v4BankButtons(){
+ const cards=Array.from($('main').querySelectorAll('.bankcard'));
+ const entries=S.bank.filter(x=>(bankFilter==='すべて'||x.subject===bankFilter)&&(String(x.grade)+x.subject+x.unit+x.text).toLowerCase().includes(bankQuery.toLowerCase()));
+ cards.forEach((card,i)=>{if(!entries[i])return;const bar=card.querySelectorAll('.inline');const actions=bar[bar.length-1];if(!actions)return;const b=document.createElement('button');b.className='btn';b.dataset.v4='edit-bank';b.dataset.id=entries[i].id;b.textContent='文章を編集';actions.appendChild(b)});
+}
+function v4StartEdit(txt,meta,id){draft=txt;draftMeta={grade:meta.grade,subject:meta.subject,unit:meta.unit,keywords:''};v4BankEdit=id||0;page='compose';render()}
+document.addEventListener('change',e=>{
+ const el=e.target;
+ if(el.id==='v4-grade'){v4Grade=Number(el.value);v4Unit='';render()}
+ else if(el.id==='v4-subject'){v4Subject=el.value;v4Unit='';render()}
+ else if(el.id==='v4-publisher'){S.textbooks=S.textbooks||{};S.textbooks[v4Grade+':'+v4Subject]=el.value;v4Unit='';render()}
+ else if(el.id==='v4-unit'){v4Unit=el.value;render()}
+ else if(el.id==='v4-criteria'){const u=v4SelectedUnit();if(u){S.criteria=S.criteria||{};S.criteria[[u.grade,u.subject,u.publisher,u.unit].join('|')]=el.value}}
+});
+document.addEventListener('input',e=>{if(e.target.id==='v4-criteria'){const u=v4SelectedUnit();if(u){S.criteria=S.criteria||{};S.criteria[[u.grade,u.subject,u.publisher,u.unit].join('|')]=e.target.value}}});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v4]');if(!b)return;const a=b.dataset.v4,u=v4SelectedUnit();
+ if(a==='show-unit'){v4Unit='';page='unit-bank';render()}
+ else if(a==='edit-unit'){v4StartEdit(u.texts[Number(b.dataset.i)],u,0)}
+ else if(a==='add-unit'){v4Import(u,Number(b.dataset.i));toast('文例を保存しました');render()}
+ else if(a==='share-unit'){const x=v4Import(u,Number(b.dataset.i));startShare(x.id)}
+ else if(a==='new-unit'){v4StartEdit('',u,0)}
+ else if(a==='edit-bank'){const x=S.bank.find(z=>z.id===Number(b.dataset.id));if(x)v4StartEdit(x.text,x,x.id)}
+ else if(a==='save-bank'){const x=S.bank.find(z=>z.id===v4BankEdit);if(x&&draft.trim()&&confirm('元の文例を更新しますか？ すでに番号へ割り振った文章は変わりません。')){x.text=draft.trim();v4BankEdit=0;page='bank';render();toast('更新しました')}}
+ else if(a==='unit-prompt'){copyText('個人を特定できる情報は含めず、次の単元について異なる観点から所見文例7種類を自然な日本語で提案してください。推測した児童の様子を断定せず、評価規準が不明なら公式準拠と表現しないでください。学年：'+u.grade+'年、教科：'+u.subject+'、教科書会社：'+u.publisher+'、単元：'+u.unit+'。')}
+});
+
+
+/* v1.7 curriculum-grounded sentence authoring, no external data exchange */
+const V5_CHII={
+ grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
+ source:'光村図書 令和6年度版 小学校3年 国語 年間指導計画例',
+ sourceUrl:'https://www.mitsumura-tosho.co.jp/kyokasho/s-kokugo/keikaku',
+ activities:'第1場面と第4場面のかげおくりを比べる／出来事や行動を表す言葉を基に気持ちを想像する／読後の感想を理由とともにまとめる',
+ criteria:'場面の移り変わりと結び付けて登場人物の気持ちや情景を想像する。読んで理解したことに基づき、感想や考えをもつ。',
+ texts:[
+ '国語の「ちいちゃんのかげおくり」の学習では、第1場面と第4場面のかげおくりを比べ、その意味の違いについて考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、場面ごとの出来事や登場人物の行動を根拠に、ちいちゃんの気持ちの変化を考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、行動や様子を表す言葉に着目し、ちいちゃんの願いや思いを具体的に想像することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、二つのかげおくりの共通点と相違点を見つけ、場面の移り変わりと結び付けて考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、本文の言葉を手がかりに場面の様子を捉え、登場人物の心情を読み深めることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、第5場面とそれまでの場面を比べ、物語を読んで感じたことを理由とともにまとめることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、友だちと感想を読み合い、それぞれの感じ方の共通点や違いに気付くことができました。'
+ ]};
+S.customUnitsV5=S.customUnitsV5||[];
+let v5Pending='',v5EditText='';
+const v5OldUnits=v4UnitOptions;
+v4UnitOptions=function(){
+ const official=v4Grade===3&&v4Subject==='国語'&&v4Pub(3,'国語')==='光村図書'?[V5_CHII]:[];
+ const old=v5OldUnits();
+ const custom=(S.customUnitsV5||[]).filter(x=>Number(x.grade)===Number(v4Grade)&&x.subject===v4Subject&&x.publisher===v4Pub(v4Grade,v4Subject)).map(x=>({...x,texts:[]}));
+ return official.concat(old,custom);
+};
+const v5OldUnitHTML=v4UnitHTML;
+v4UnitHTML=function(){
+ const chosen=v4SelectedUnit();
+ let old=v5OldUnitHTML();
+ if(chosen&&chosen.unit==='ちいちゃんのかげおくり')old=old.replace('以下は編集用の見本です。出版社の公式評価規準への照合は未完了。使う際は、児童の実際の学習の姿を確認してください。','光村図書の学習活動と評価の視点を参考にした所見の編集用文例です。出版社が発行した所見文例ではありません。実際の学習の姿を確認してください。');
+ const at=old.lastIndexOf('</div></div>');
+ const available=!!chosen;
+ const own=available?S.bank.filter(x=>x.grade===chosen.grade&&x.subject===chosen.subject&&x.unit===chosen.unit):[];
+ const prior=(chosen&&chosen.criteria)||(chosen&&chosen.source?'上記の学習活動と評価の視点を参照':'');
+ const block='<div class="panel wide v5-panel">'+
+ '<div class="section-kicker">CURRICULUM → LEARNING → REPORT</div><h2>学習活動と評価の視点から文例を作る</h2>'+
+ (available?'<div class="soft"><strong>単元：'+E(chosen.unit)+'</strong>'+
+ '<p style="margin:8px 0 4px"><b>主な学習活動：</b>'+E(chosen.activities||'未登録。実際に行う学習活動を確認してください。')+'</p>'+
+ '<p style="margin:0"><b>評価の視点：</b>'+E(chosen.criteria||'未登録。学校の評価規準を確認してください。')+'</p>'+
+ '<p class="small muted" style="margin:8px 0 0">'+E(chosen.source||'編集用サンプル・資料未照合')+'</p></div>':'<p class="muted">単元がまだ選ばれていません。下のフォームから登録できます。</p>')+
+ '<div class="warning small" style="margin:13px 0">文章は「その児童に実際に見られた学習の姿」を選んで使います。出版社の評価規準をそのまま児童の実績として断定しません。</div>'+
+ (available?'<h3>自分の文例を追加</h3><div class="two">'+
+ '<div class="field"><label>実際の学習活動（例：場面ごとの行動を比べ）</label><input id="v5-act" placeholder="例：場面ごとの出来事や行動に着目し"></div>'+
+ '<div class="field"><label>見取った力（例：気持ちの変化を考える）</label><input id="v5-skill" placeholder="例：ちいちゃんの気持ちの変化を考える"></div></div>'+
+ '<div class="inline" style="margin:14px 0 10px"><button class="btn primary" data-v5="assemble">活動＋評価から文例を組み立てる</button><button class="btn" data-v5="ai-help">同じ活動・評価から7案を相談する指示をコピー</button></div>'+
+ '<div class="field"><label>完成した文章（自由に直せます）</label><textarea id="v5-preview" rows="5" placeholder="ここに文章を表示します。直接書いてもOKです。">'+E(v5Pending)+'</textarea></div>'+
+ '<div class="inline"><button class="btn softbtn" data-v5="save-example">この単元の文例として保存</button><span class="hint">保存した文例は文例バンクで共有できます。</span></div>'+
+ '<hr class="hr"><h3>自分で追加した文例　'+own.length+'件</h3>'+
+ (own.map(b=>'<div class="card"><p>'+E(b.text)+'</p><div class="inline"><button class="btn" data-v5="edit-existing" data-id="'+b.id+'">文章を修正</button><button class="btn softbtn" data-v5="assign-existing" data-id="'+b.id+'">クラスへ配置</button></div></div>').join('')||'<p class="muted small">まだありません。</p>'):'')+
+ '<hr class="hr"><h3>新しい単元を自分で登録する</h3><p class="hint">学年・教科・教科書会社は上の選択を使います。実際の学習活動と評価規準を確認して登録してください。</p>'+
+ '<div class="two"><div class="field"><label>追加する単元名</label><input id="v5-unit-name" placeholder="例：まいごのかぎ"></div>'+
+ '<div class="field"><label>資料名・出典（任意）</label><input id="v5-unit-source" placeholder="例：年間指導計画例／学校の指導計画"></div></div>'+
+ '<div class="field"><label>この単元の主な学習活動</label><textarea id="v5-unit-activities" placeholder="例：場面を比べ、登場人物の行動を読み取る"></textarea></div>'+
+ '<div class="field"><label>この単元の評価規準・評価の視点</label><textarea id="v5-unit-criteria" placeholder="例：叙述を根拠に、登場人物の気持ちの変化を具体的に想像する"></textarea></div>'+
+ '<button class="btn softbtn" data-v5="register-unit">＋ 学習活動・評価規準とともに単元を登録</button></div>';
+ if(at>=0)return old.slice(0,at)+block+old.slice(at);
+ return old+block;
+};
+function v5MakeText(u,act,skill){
+ const a=act.trim().replace(/[、。]+$/g,'');
+ const k=skill.trim().replace(/[。]+$/g,'');
+ if(!a||!k)return '';
+ if(/(?:ました|でした|していました|しています)$/.test(a))return '';
+ if(/(?:ました|でした|していました|しています|できました)$/.test(k))return '';
+ if(!/(?:る|す|む|ぶ|く|ぐ|つ|う|ぬ|える|いる)$/.test(k))return '';
+ const category=(u.subject==='道徳'||u.subject==='総合的な学習の時間'||u.subject==='外国語活動');
+ const prefix=category?'「'+u.unit+'」の学習では、':u.subject+'の「'+u.unit+'」の学習では、';
+ const text=category?prefix+a+'、'+k+'姿が見られました。':prefix+a+'、'+k+'ことができました。';
+ return text.replace('、、','、');
+}
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-v5]');if(!el)return;
+ const action=el.dataset.v5, u=v4SelectedUnit();
+ if(action==='assemble'){
+  if(!u){toast('先に単元を選択してください');return}
+  const a=$('v5-act')?.value||'',b=$('v5-skill')?.value||'';
+  const text=v5MakeText(u,a,b);
+  if(!text){toast('学習活動は「〜を比べ」、見取った力は「〜を考える」などの形で入力してください');return}
+  v5Pending=applyRules(text);$('v5-preview').value=v5Pending;toast('文章を作りました。表現を調整して保存できます');
+ }else if(action==='save-example'){
+  if(!u)return;const val=$('v5-preview')?.value?.trim();
+  if(!val){toast('文例を入力してください');return}
+  const a=$('v5-act')?.value?.trim()||'',b=$('v5-skill')?.value?.trim()||'';
+  S.bank.push({id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,text:val,tag:'活動・評価から追加（要確認）',publisher:u.publisher,activity:a,skill:b});
+  v5Pending='';render();toast('文例を保存しました');
+ }else if(action==='register-unit'){
+  const name=$('v5-unit-name')?.value?.trim(),a=$('v5-unit-activities')?.value?.trim(),c=$('v5-unit-criteria')?.value?.trim(),src=$('v5-unit-source')?.value?.trim()||'自分で確認した教材資料';
+  if(!name||!a||!c){toast('単元名・学習活動・評価規準の3つを入力してください');return}
+  if(v4Pub(v4Grade,v4Subject)==='未設定'){toast('まず教科書会社を選んでください');return}
+  S.customUnitsV5=S.customUnitsV5||[];
+  if(v4UnitOptions().some(x=>x.unit===name)){toast('同じ単元名が登録されています');return}
+  S.customUnitsV5.push({grade:v4Grade,subject:v4Subject,publisher:v4Pub(v4Grade,v4Subject),unit:name,source:src,activities:a,criteria:c});
+  v4Unit=name;v5Pending='';render();toast('単元を登録しました。学習活動から文例を追加できます');
+ }else if(action==='edit-existing'){const b=S.bank.find(x=>x.id===Number(el.dataset.id));if(b)v4StartEdit(b.text,b,b.id)}
+ else if(action==='assign-existing')startShare(el.dataset.id);
+ else if(action==='ai-help'){
+  if(!u)return;
+  const prompt='学年：'+u.grade+'年／教科：'+u.subject+'／教科書会社：'+u.publisher+'／単元：'+u.unit+
+  '\n主な学習活動：'+(u.activities||'資料未確認')+'\n評価規準の視点：'+(u.criteria||'資料未確認')+
+  '\nこの学習活動と評価規準の範囲内で、所見として自然な日本語の例文を7案提案してください。各案は異なる学習の姿に着目し、学習活動と評価が具体的に結び付く文にする。単元にない活動や児童の行動を勝手に追加しない。資料未確認なら出版社準拠と断定しない。児童名・番号・個別の実績は含めない。普通教科は原則「〜ことができました。」で終える。道徳・総合は到達度を断定しない。';
+  copyText(prompt);
+ }
+});
+
+
+/* v1.7: Eight examples organized by three Japanese curriculum assessment perspectives */
+const V6_AXES=[
+ {id:'knowledge',label:'知識・技能',short:'知識・技能',count:3},
+ {id:'thinking',label:'思考・判断・表現',short:'思考・判断・表現',count:3},
+ {id:'attitude',label:'主体的に学習に取り組む態度',short:'主体的な態度',count:2}
+];
+const V6_EXAMPLES=[
+ {grade:3,subject:'国語',publisher:'光村図書',unit:'ちいちゃんのかげおくり',
+ knowledge:[
+ '国語の「ちいちゃんのかげおくり」の学習では、様子や行動を表す言葉の意味を確かめ、物語の場面に合う語句を理解することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、登場人物の気持ちを表す言葉を集め、場面に応じた語彙を増やすことができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、感想を書く際に様子や気持ちを表す言葉を選び、自分の考えが伝わる文章に使うことができました。'],
+ thinking:[
+ '国語の「ちいちゃんのかげおくり」の学習では、場面ごとの出来事や行動を根拠に、ちいちゃんの気持ちの変化を考えることができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、二つのかげおくりの場面を比べ、ちいちゃんの気持ちと結び付けて意味の違いを説明することができました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、本文の言葉を根拠に、物語を読んで感じたことを理由とともにまとめることができました。'],
+ attitude:[
+ '国語の「ちいちゃんのかげおくり」の学習では、自分の考えと友だちの読み取りを比べ、根拠となる言葉を見直しながら考えを深めていました。',
+ '国語の「ちいちゃんのかげおくり」の学習では、場面を読み返して新たな気付きを探し、感想をより具体的に書き直そうとしていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'太陽とかげ',
+ knowledge:[
+ '理科の「太陽とかげ」の学習では、影が太陽と反対側にできることを、観察結果から理解することができました。',
+ '理科の「太陽とかげ」の学習では、方位磁針を使って向きを確かめ、時刻ごとの影の向きを正確に記録することができました。',
+ '理科の「太陽とかげ」の学習では、太陽の位置を調べる際の安全な観察方法を理解し、決めた方法で観察することができました。'],
+ thinking:[
+ '理科の「太陽とかげ」の学習では、時刻ごとの観察結果を比べ、太陽の位置と影の向きの関係を考えることができました。',
+ '理科の「太陽とかげ」の学習では、影の向きについて予想し、複数の観察結果を根拠に説明することができました。',
+ '理科の「太陽とかげ」の学習では、自分の記録と友だちの記録を比べ、共通点を基に考えをまとめることができました。'],
+ attitude:[
+ '理科の「太陽とかげ」の学習では、予想を確かめるために時刻を変えて観察し、結果を続けて記録しようとしていました。',
+ '理科の「太陽とかげ」の学習では、観察結果が予想と違ったときも記録を確かめ直し、理由を考えようとしていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'電気の通り道',
+ knowledge:[
+ '理科の「電気の通り道」の学習では、乾電池と豆電球を輪のようにつなぐと明かりがつくことを理解することができました。',
+ '理科の「電気の通り道」の学習では、導線や乾電池を正しくつなぎ、豆電球がつくかどうかを調べることができました。',
+ '理科の「電気の通り道」の学習では、実験を通して金属には電気を通す性質があることを理解することができました。'],
+ thinking:[
+ '理科の「電気の通り道」の学習では、明かりがつくつなぎ方とつかないつなぎ方を比べ、回路の共通点を考えることができました。',
+ '理科の「電気の通り道」の学習では、身の回りの物の実験結果を比べ、電気を通す材質の特徴を考えることができました。',
+ '理科の「電気の通り道」の学習では、予想と実験結果を照らし合わせ、結果を根拠に自分の考えを説明することができました。'],
+ attitude:[
+ '理科の「電気の通り道」の学習では、豆電球がつかないときも導線のつなぎ方を確かめ、試し直そうとしていました。',
+ '理科の「電気の通り道」の学習では、友だちの実験結果と比べ、疑問に思ったことを進んで確かめようとしていました。']},
+ {grade:3,subject:'理科',publisher:'東京書籍',unit:'風とゴムのはたらき',
+ knowledge:[
+ '理科の「風とゴムのはたらき」の学習では、風の強さによって車の進む距離が変わることを、実験結果から理解することができました。',
+ '理科の「風とゴムのはたらき」の学習では、ゴムを伸ばす長さによって車の動きが変わることを理解することができました。',
+ '理科の「風とゴムのはたらき」の学習では、実験の条件をそろえて距離を測り、結果を表やグラフに整理することができました。'],
+ thinking:[
+ '理科の「風とゴムのはたらき」の学習では、風の強さと車が進んだ距離を比べ、結果を根拠に関係を説明することができました。',
+ '理科の「風とゴムのはたらき」の学習では、ゴムの伸ばし方を変えた実験結果を比べ、車の動き方の違いを考えることができました。',
+ '理科の「風とゴムのはたらき」の学習では、風とゴムの働きの共通点や違いを見つけ、実験結果を基にまとめることができました。'],
+ attitude:[
+ '理科の「風とゴムのはたらき」の学習では、予想を確かめるために実験を繰り返し、結果を丁寧に記録しようとしていました。',
+ '理科の「風とゴムのはたらき」の学習では、班で結果が異なると測り方や条件を確かめ直し、理由を考えようとしていました。']}
+];
+let v6SelectedAxis='knowledge',v6NewAxis='thinking',v6DraftAxis='';
+function v6Category(b){return V6_AXES.find(x=>x.id===b)?.label||V6_AXES.find(x=>x.label===b)?.label||''}
+function v6Data(u){return V6_EXAMPLES.find(x=>u&&x.grade==u.grade&&x.subject===u.subject&&x.publisher===u.publisher&&x.unit===u.unit)}
+function v6Options(value){return V6_AXES.map(x=>'<option value="'+x.id+'" '+(value===x.id?'selected':'')+'>'+x.label+'</option>').join('')}
+function v6BankPut(u,axis,txt){const b={id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,domain:u.domain||'',text:txt,criterion:axis,tag:'観点別の文例（要確認）'};S.bank.push(b);return b}
+function v6Prompt(u){
+ const raw=Array.isArray(u?.texts)?u.texts.length:0;
+ const c=(S.criteria||{})[[u.grade,u.subject,u.publisher,u.unit].join('|')]||u.criteria||'資料未登録';
+ const a=u.activities||'資料未登録';
+ return '【個人情報なしの汎用所見文例を作成】\\n学年：'+u.grade+'年\\n教科：'+u.subject+'\\n教科書会社：'+u.publisher+'\\n単元：'+u.unit+
+ '\\n主な学習活動：'+a+'\\n評価の視点：'+c+
+ '\\n学習活動と評価の視点を結び付けて、次の計8文例を作成してください。\\n①知識・技能：3文例\\n②思考・判断・表現：3文例\\n③主体的に学習に取り組む態度：2文例'+
+ '\\n各文例は異なる具体的な学習の姿を示す。主体的な態度は、見通し・粘り強さ・振り返り・調整など観察できる行動を用いる。本文にない活動を創作しない。資料不明の箇所は確認が必要と明記し、教科書会社の正式文例とは呼ばない。児童名・児童番号・個別の所見を一切含めない。\\n各文例を独立した自然な日本語の完結文にしてください。';
+}
+const v6OldUnitHTML=v4UnitHTML;
+v4UnitHTML=function(){
+ let html=v6OldUnitHTML();
+ const u=v4SelectedUnit();
+ if(!u)return html;
+ const start=html.indexOf('<div class="panel wide"><h2>単元の7文例</h2>');
+ const end=html.indexOf('<div class="panel wide v5-panel">');
+ if(start<0||end<=start)return html;
+ const dataset=v6Data(u);
+ const existing=S.bank.filter(b=>b.grade==u.grade&&b.subject===u.subject&&b.unit===u.unit&&(!b.publisher||b.publisher===u.publisher));
+ const groups=V6_AXES.map(axis=>{
+  const samples=dataset?dataset[axis.id]:[];
+  const custom=existing.filter(x=>x.criterion===axis.id);
+  const buttons=samples.map((txt,i)=>'<div class="card"><div class="inline between"><strong>'+axis.short+' '+(i+1)+'</strong><span class="tag">編集用文例</span></div>'+
+   '<p style="margin:8px 0 10px">'+E(txt)+'</p><div class="inline"><button class="btn softbtn" data-v6="edit" data-axis="'+axis.id+'" data-index="'+i+'">言葉を変える</button>'+
+   '<button class="btn" data-v6="add" data-axis="'+axis.id+'" data-index="'+i+'">バンクへ追加</button>'+
+   '<button class="btn primary" data-v6="share" data-axis="'+axis.id+'" data-index="'+i+'">クラスへ配置 ↗</button></div></div>').join('');
+  const extra=custom.map((b,i)=>'<div class="card"><span class="tag">追加文例 '+(i+1)+'</span><p style="margin:8px 0 10px">'+E(b.text)+'</p>'+
+   '<button class="btn softbtn" data-v6="edit-own" data-id="'+b.id+'">修正</button> '+
+   '<button class="btn" data-v6="share-own" data-id="'+b.id+'">クラスへ配置</button></div>').join('');
+  return '<section class="soft" style="margin-top:15px;background:#f3f7f1"><div class="inline between"><h3 style="margin:0">'+axis.label+'</h3><span class="tag">'+samples.length+'/'+axis.count+' 基本文例</span></div>'+
+   '<div class="stack" style="margin-top:12px">'+(buttons||'<div class="notice">出版社の学習活動・評価の視点を確認後、基本文例を準備します。下の作成欄から、この観点の文例を追加できます。</div>')+extra+'</div></section>';
+ }).join('');
+ const title='<div class="panel wide"><div class="section-head"><div><div class="section-kicker">ASSESSMENT PERSPECTIVES</div><h2>観点別の文例｜基本は8種類</h2></div><span class="tag">知3・思3・態2</span></div>'+
+ '<div class="field"><label>単元</label><select id="v4-unit">'+v4Opts(v4UnitOptions().map(x=>x.unit),v4Unit)+'</select></div>'+
+ '<div class="warning small" style="margin-top:13px">文例は所見を作るための編集例で、出版社発行の所見文ではありません。学習活動・評価の視点と実際の児童の姿を必ず照らし合わせて使ってください。</div>'+
+ groups+
+ '<div class="inline" style="margin-top:16px"><button class="btn" data-v6="prompt">観点別8文例をAIに相談する指示をコピー</button></div></div>';
+ html=html.slice(0,start)+title+html.slice(end);
+ html=html.replace('<h3>自分の文例を追加</h3>','<h3>自分の文例を追加</h3><div class="field" style="margin-bottom:12px"><label>この文例の評価の観点</label><select id="v6-custom-criterion">'+v6Options(v6NewAxis)+'</select></div>');
+ html=html.replace('同じ活動・評価から7案を相談する指示をコピー','観点別8文例の案を相談する指示をコピー');
+ return html;
+};
+// Correct the preview label for newly saved comments, without altering pupil assignments
+const v6OldBankButtons=v4BankButtons;
+v4BankButtons=function(){
+ v6OldBankButtons();
+ const cards=Array.from($('main')?.querySelectorAll('.bankcard')||[]);
+ const entries=S.bank.filter(b=>(bankFilter==='すべて'||b.subject===bankFilter)&&(String(b.grade)+b.subject+b.unit+b.text).toLowerCase().includes(bankQuery.toLowerCase()));
+ cards.forEach((card,i)=>{
+  if(!entries[i]||!entries[i].criterion)return;
+  const label=document.createElement('span');label.className='tag';label.textContent=v6Category(entries[i].criterion);
+  const parent=card.querySelector('.inline');if(parent)parent.appendChild(label);
+ });
+};
+document.addEventListener('change',e=>{if(e.target.id==='v6-custom-criterion')v6NewAxis=e.target.value});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v6]');if(!b)return;
+ const action=b.dataset.v6,u=v4SelectedUnit(),d=v6Data(u),axis=b.dataset.axis,idx=Number(b.dataset.index);
+ if(action==='prompt'){if(u)copyText(v6Prompt(u));return}
+ if(action==='edit'||action==='add'||action==='share'){
+  if(!u||!d||!d[axis]||!d[axis][idx])return;
+  const txt=d[axis][idx];
+  if(action==='edit'){v6DraftAxis=axis;v4StartEdit(txt,u,0)}
+  else{const entry=v6BankPut(u,axis,txt);if(action==='add'){toast('「'+v6Category(axis)+'」に文例を追加しました');render()}else startShare(entry.id)}
+ }else if(action==='edit-own'){const x=S.bank.find(y=>y.id===Number(b.dataset.id));if(x){v6DraftAxis=x.criterion||'';v4StartEdit(x.text,x,x.id)}}
+ else if(action==='share-own'){startShare(b.dataset.id)}
+});
+/* Capture the existing save command to attach a perspective to the custom example. */
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v5="save-example"]');
+ if(!b)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const u=v4SelectedUnit(),text=$('v5-preview')?.value?.trim()||'';
+ if(!u||!text){toast('保存する文例を入力してください');return}
+ const axis=$('v6-custom-criterion')?.value||v6NewAxis;
+ S.bank.push({id:S.nextId++,grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,domain:u.domain||'',text,criterion:axis,tag:'学習活動・評価から追加（要確認）',activity:$('v5-act')?.value?.trim()||'',skill:$('v5-skill')?.value?.trim()||''});
+ v5Pending='';render();toast('「'+v6Category(axis)+'」の文例に追加しました');
+},true);
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v5="ai-help"]');if(!b)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const u=v4SelectedUnit();if(u)copyText(v6Prompt(u));
+},true);
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-action="draft-to-bank"]');if(!b||!v6DraftAxis)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ if(!draft.trim()){toast('文章を入力してください');return}
+ const u={grade:Number(draftMeta.grade),subject:draftMeta.subject,unit:draftMeta.unit,publisher:v4Pub(Number(draftMeta.grade),draftMeta.subject)};
+ v6BankPut(u,v6DraftAxis,draft.trim());v6DraftAxis='';page='bank';render();toast('観点を付けて文例を保存しました');
+},true);
+
+
+/* v1.7 physical education: practical uses MEXT PE commentary, health uses health textbook publisher */
+const V7_MEXT="文部科学省（学習指導要領・体育編）";
+const V7_HEALTH_PUBLISHERS=['東京書籍','大日本図書','大修館書店','文教社','光文書院','Gakken'];
+let v7PeMode='実技';
+const V7_PE_UNITS=[
+ {grade:3,subject:'体育',domain:'実技',publisher:V7_MEXT,unit:'跳び箱運動',
+ source:'文部科学省『小学校学習指導要領（平成29年告示）解説 体育編』第3・4学年 B 器械運動',
+ sourceUrl:'https://www.mext.go.jp/content/20240918-mxt_kyoiku01-100002607.pdf',
+ activities:'切り返し系（開脚跳びなど）／回転系（台上前転など）／課題に応じた練習の場の工夫／友達と動きを確かめる',
+ criteria:'基本的な技の行い方を知り、自己に適した技に取り組む。課題を見付けて練習を工夫し、動きのポイントを友達に伝える。約束・安全・仲間を大切にする。',
+ knowledge:[
+ '体育の「跳び箱運動」では、開脚跳びの行い方を理解し、助走から踏切り、着手、着地までをつなげて行うことができました。',
+ '体育の「跳び箱運動」では、踏切りや手の着き方に気を付け、切り返し系の基本的な技に取り組むことができました。',
+ '体育の「跳び箱運動」では、台上前転の行い方を知り、体を丸めて前方へ回転する動きを身に付けることができました。'],
+ thinking:[
+ '体育の「跳び箱運動」では、自分の技の課題を見付け、踏切りや着手を確かめられる練習の場を選ぶことができました。',
+ '体育の「跳び箱運動」では、友達の動きと自分の動きを比べ、技をよりよくするためのポイントを考えることができました。',
+ '体育の「跳び箱運動」では、練習で気付いたことを基に、跳ぶための体の使い方を友達に伝えることができました。'],
+ attitude:[
+ '体育の「跳び箱運動」では、自分に合った練習の場で技を繰り返し試し、できるようになるための工夫を続けていました。',
+ '体育の「跳び箱運動」では、用具や周囲の安全に気を配り、友達の挑戦を認めながら学習に取り組んでいました。']},
+ {grade:3,subject:'体育',domain:'実技',publisher:V7_MEXT,unit:'ゴール型ゲーム（ハンドボール）',
+ source:'文部科学省『小学校学習指導要領（平成29年告示）解説 体育編』第3・4学年 E ゲーム／ゴール型ゲーム',
+ sourceUrl:'https://www.mext.go.jp/content/20240918-mxt_kyoiku01-100002607.pdf',
+ activities:'ハンドボールを基にした易しいゲーム／パスとシュート／ボールを持たないときの空間への移動／作戦や規則の工夫',
+ criteria:'基本的なボール操作とボールを持たないときの動きで易しいゲームをする。自己やチームの課題を見付け、作戦や規則を工夫して友達に伝える。協力し安全に運動する。',
+ knowledge:[
+ '体育の「ゴール型ゲーム」では、味方にパスをつなぐことやゴールを狙ってシュートすることができました。',
+ '体育の「ゴール型ゲーム」では、相手のいない場所を見つけ、パスを受けられる位置へ動くことができました。',
+ '体育の「ゴール型ゲーム」では、基本的なルールを理解し、ボールを持ったときにゴールへ体を向けてプレーすることができました。'],
+ thinking:[
+ '体育の「ゴール型ゲーム」では、得点につなげるために空いている場所へ動く作戦を考えることができました。',
+ '体育の「ゴール型ゲーム」では、ゲームを振り返ってチームの課題を見つけ、パスのつなぎ方を工夫することができました。',
+ '体育の「ゴール型ゲーム」では、友達の意見を取り入れながら、みんなが参加しやすい作戦やルールを考えることができました。'],
+ attitude:[
+ '体育の「ゴール型ゲーム」では、仲間に声をかけて協力し、ルールを守ってゲームに取り組んでいました。',
+ '体育の「ゴール型ゲーム」では、ゲームの後にチームの動きを振り返り、次の試合で試したい作戦を考えようとしていました。']},
+ {grade:3,subject:'体育',domain:'保健',publisher:'東京書籍',unit:'けんこうな生活',
+ source:'東京書籍『新編 新しい保健』3・4年 年間指導計画作成資料（2024年版）',
+ sourceUrl:'https://ten.tokyo-shoseki.co.jp/text/shou/hoken/data/R6_34_nenkari_2024_1.pdf',
+ activities:'心や体の健康について考える／生活を振り返る／運動・食事・休養・睡眠のバランス／体の清潔と生活環境について考える',
+ criteria:'健康には本人の生活や周囲の環境が関係することを理解する。健康な生活の課題を見付け、改善方法を考え伝える。健康な生活の大切さを考えて学習に取り組む。',
+ knowledge:[
+ '保健の「けんこうな生活」の学習では、毎日の健康には運動・食事・休養・睡眠のバランスが大切であることを理解することができました。',
+ '保健の「けんこうな生活」の学習では、手洗いや身の回りの清潔が健康な生活につながることを理解することができました。',
+ '保健の「けんこうな生活」の学習では、部屋の明るさや換気など、生活環境が健康に関係することを理解することができました。'],
+ thinking:[
+ '保健の「けんこうな生活」の学習では、自分の1日の過ごし方を振り返り、健康のために改善できることを考えることができました。',
+ '保健の「けんこうな生活」の学習では、生活習慣を比べ、健康に過ごすために必要なことを理由とともに説明することができました。',
+ '保健の「けんこうな生活」の学習では、身近な生活環境を振り返り、より健康に過ごすための工夫を考えることができました。'],
+ attitude:[
+ '保健の「けんこうな生活」の学習では、自分の生活を進んで振り返り、健康に関する課題を見つけようとしていました。',
+ '保健の「けんこうな生活」の学習では、健康によい生活の仕方に関心をもち、学んだことを毎日の生活に生かす方法を考えていました。']}
+];
+function v7RefreshPublisherOptions(){
+ V4_PUBLISHERS['体育']=v7PeMode==='実技'?[V7_MEXT]:V7_HEALTH_PUBLISHERS;
+}
+const v7BasePub=v4Pub;
+v4Pub=function(g,subject){
+ if(subject==='体育'&&v7PeMode==='実技')return V7_MEXT;
+ return v7BasePub(g,subject);
+};
+const v7BaseUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ if(v4Subject==='体育'){
+  const pub=v4Pub(v4Grade,v4Subject);
+  return V7_PE_UNITS.filter(u=>u.grade===Number(v4Grade)&&u.domain===v7PeMode&&u.publisher===pub).map(u=>({...u,texts:[...u.knowledge,...u.thinking,...u.attitude]}));
+ }
+ return v7BaseUnitOptions();
+};
+const v7BaseExamples=v6Data;
+v6Data=function(u){return V7_PE_UNITS.find(x=>u&&x.grade===u.grade&&x.subject===u.subject&&x.unit===u.unit&&x.publisher===u.publisher&&x.domain===u.domain)||v7BaseExamples(u)};
+const v7BaseMaker=v5MakeText;
+v5MakeText=function(u,activity,skill){
+ if(u&&u.domain==='保健')return v7BaseMaker({...u,subject:'保健'},activity,skill);
+ return v7BaseMaker(u,activity,skill);
+};
+function v7ModeSelector(){
+ return '<div class="field"><label>体育の分野</label><select id="v7-pe-mode" aria-label="体育の分野"><option value="実技" '+(v7PeMode==='実技'?'selected':'')+'>実技（学習指導要領）</option><option value="保健" '+(v7PeMode==='保健'?'selected':'')+(Number(v4Grade)<3?' disabled':'')+'>保健（教科書会社）</option></select></div>';
+}
+function v7SourceNote(){
+ return '<div class="notice" style="margin:10px 0">参照元：'+(v7PeMode==='実技'?'文部科学省の学習指導要領・体育編。実技に教科書会社の選択は不要です。':'学校で使用する保健教科書の学習活動と評価規準。出版社ごとの単元データは順次整備します。')+' 出力上の教科は「体育」のままです。</div>';
+}
+const v7BaseSettings=v4Settings;
+v4Settings=function(){
+ v7RefreshPublisherOptions();v7BaseSettings();
+ if(v4Subject!=='体育')return;
+ const publisher=document.getElementById('v4-publisher');
+ if(publisher?.parentElement){publisher.parentElement.insertAdjacentHTML('beforebegin',v7ModeSelector());
+  publisher.parentElement.querySelector('label').textContent=v7PeMode==='実技'?'参考資料':'保健教科書会社';
+  publisher.parentElement.insertAdjacentHTML('afterend',v7SourceNote());
+ }
+};
+const v7BaseUnitHtml=v4UnitHTML;
+v4UnitHTML=function(){
+ v7RefreshPublisherOptions();
+ let html=v7BaseUnitHtml();
+ if(v4Subject!=='体育')return html;
+ const look='<div class="field"><label>教科書会社</label>';
+ const newLabel='<div class="field"><label>'+(v7PeMode==='実技'?'参考資料':'保健教科書会社')+'</label>';
+ if(html.includes(look)){html=html.replace(look,v7ModeSelector()+newLabel);}
+ const mark='<p class="hint" style="margin-top:10px">';
+ const i=html.indexOf(mark);
+ if(i>=0)html=html.slice(0,i)+v7SourceNote()+html.slice(i);
+ const u=v4SelectedUnit();
+ if(u?.sourceUrl){
+  const official='<div class="notice" style="margin:12px 0">根拠資料：<a href="'+E(u.sourceUrl)+'" target="_blank" rel="noopener noreferrer">'+E(u.source||'参考資料を開く')+'</a>。所見文例は資料を参考に編集した例で、公式の所見文ではありません。</div>';
+  const needle='<div class="warning small" style="margin-top:13px">';
+  html=html.replace(needle,official+needle);
+ }
+ return html;
+};
+document.addEventListener('change',e=>{
+ if(e.target?.id!=='v7-pe-mode')return;
+ if(e.target.value==='保健'&&Number(v4Grade)<3){toast('保健領域は3年生以上で扱います');v7PeMode='実技'}else{v7PeMode=e.target.value==='保健'?'保健':'実技'}v4Unit='';v7RefreshPublisherOptions();render();
+});
+
+render();
+</script><script>
+/* bundled v8-progress.js */
+/* Shoken STUDIO v0.8 progress */
+const V8_TYPES=['総合所見','総合的な学習の時間','外国語活動','道徳'];
+const V8_DEFAULT={min:1,max:300};
+function v8Limits(t){
+ S.prefs.charLimits=S.prefs.charLimits||{};
+ const a=S.prefs.charLimits[t]||V8_DEFAULT;
+ const min=Math.max(1,Number(a.min)||1),max=Math.max(min,Number(a.max)||300);
+ return {min,max};
+}
+function v8Length(s){return Array.from(String(s||'').trim()).length}
+function v8Count(c,t){
+ const nums=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!c.missing.includes(n));
+ const v=v8Limits(t);let good=0,confirmed=0;
+ for(const n of nums){const x=getEnt(c,t,n),len=v8Length(x.text);if(len>=v.min&&len<=v.max){good++;if(x.status==='確定')confirmed++}}
+ const total=nums.length;
+ return {total,good,confirmed,range:v,pct:total?Math.round(good/total*100):0,confirmedPct:total?Math.round(confirmed/total*100):0};
+}
+const v8Style=document.createElement('style');
+v8Style.textContent='.v8-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.v8-progress-card{background:#fffefb;border:1px solid #dce7dc;border-radius:15px;padding:14px}.v8-score{font-size:28px;font-weight:800;color:#315f4d}.v8-track{height:8px;border-radius:12px;background:#e2e9e0;overflow:hidden;margin:8px 0}.v8-fill{height:100%;background:#69967e}.v8-mini{font-size:11px;color:#63786c}.v8-limits{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:12px;margin:12px 0;align-items:end}.v8-number-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:7px;margin:12px 0}.v8-number-grid .share-chip{min-width:0;padding:11px 0}.v8-shortcuts{display:flex;gap:6px;flex-wrap:wrap}.v8-row{border:1px solid #dae6db;background:#fffefb;border-radius:16px;padding:15px;margin:0 0 13px}.v8-row-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:15px}.v8-row-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}.v8-picker{padding:12px;border-radius:12px;background:#f2f6f0}.v8-picker .field{margin-bottom:8px}.v8-picker select,.v8-row select{width:100%;max-width:100%}.v8-preview{padding:10px;border-radius:9px;background:white;border:1px dashed #b6cdbb;white-space:pre-wrap;font-size:12px}.v8-row textarea{width:100%;min-height:100px}.v8-valid{color:#336e50}.v8-invalid{color:#ad644e}@media(max-width:970px){.v8-progress{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:690px){.v8-number-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.v8-row-main{grid-template-columns:1fr}.v8-limits{grid-template-columns:1fr 1fr}.v8-limits strong{grid-column:span 2}}';
+document.head.appendChild(v8Style);
+function v8ProgressBlock(c){
+ return '<div class="panel wide" style="margin:0 0 20px"><div class="section-kicker">PROGRESS BY CATEGORY</div><h2 style="margin:4px 0">所見別の完成状況｜'+E(labelClass(c))+'</h2>'+
+ '<p class="muted small">大きい数字は文字数クリア率。確定率は別に表示。欠番を除いた全員が指定文字数内なら100%です。</p><div class="v8-progress">'+
+ V8_TYPES.map(t=>{const x=v8Count(c,t);return '<div class="v8-progress-card"><strong>'+E(t)+'</strong><div class="v8-score">'+x.pct+'%</div><div class="v8-track"><div class="v8-fill" style="width:'+x.pct+'%"></div></div><div class="v8-mini">文字数クリア '+x.good+'/'+x.total+'名（'+x.range.min+'〜'+x.range.max+'字）</div><div class="v8-mini">確定＋文字数 '+x.confirmed+'/'+x.total+'名（'+x.confirmedPct+'%）</div></div>'}).join('')+
+ '</div><p class="hint" style="margin:12px 0 0">初期文字数は仮設定（1〜300字）。学校の規定に合わせ「クラス・設定」で変更できます。</p></div>';
+}
+const v8PrevHome=homeHTML;
+homeHTML=function(){
+ const h=v8PrevHome(),needle='<div class="section-head"><div><div class="section-kicker">WORKSPACE / TODAY</div>';
+ return h.replace(needle,v8ProgressBlock(cur())+needle);
+};
+const v8PrevSettings=v4Settings;
+v4Settings=function(){
+ v8PrevSettings();
+ const p=document.createElement('div');p.className='panel';p.style.marginTop='15px';
+ p.innerHTML='<div class="section-kicker">CHARACTER TARGETS</div><h2>所見別の文字数条件</h2><p class="muted small">下限・上限を設定。文字が入っていても指定範囲外ならクリアに含みません。</p>'+
+ V8_TYPES.map(t=>{const v=v8Limits(t);return '<div class="v8-limits"><strong>'+E(t)+'</strong><div class="field"><label>下限（字）</label><input type="number" min="1" max="1000" data-v8-limit="min" data-type="'+E(t)+'" value="'+v.min+'"></div><div class="field"><label>上限（字）</label><input type="number" min="1" max="1000" data-v8-limit="max" data-type="'+E(t)+'" value="'+v.max+'"></div></div>'}).join('')+
+ '<p class="hint">学校の実際の字数規定を入力してね。これらの設定はJSONバックアップに含まれます。</p>';
+ $('main').appendChild(p);
+};
+document.addEventListener('change',e=>{
+ const f=e.target.dataset.v8Limit;if(!f)return;
+ const t=e.target.dataset.type,v8={...v8Limits(t)},num=Math.min(1000,Math.max(1,Number(e.target.value)||1));
+ v8[f]=num;if(v8.min>v8.max){if(f==='min')v8.max=v8.min;else v8.min=v8.max}
+ S.prefs.charLimits=S.prefs.charLimits||{};S.prefs.charLimits[t]=v8;render();toast('文字数条件を変更しました');
+});
+</script><script>
+/* bundled v8-assign.js */
+/* Shoken STUDIO v0.8 tap-number assignment */
+applyMode='empty';
+function v8Chosen(c){return parseNumbers(applyNumbers,c.count).filter(n=>!c.missing.includes(n))}
+function v8Chips(c){
+ const sel=new Set(v8Chosen(c));
+ return '<div class="v8-shortcuts" style="margin:9px 0"><button class="btn softbtn" data-v8-assign="preset" data-group="奇数">奇数</button><button class="btn softbtn" data-v8-assign="preset" data-group="偶数">偶数</button>'+
+ '<button class="btn softbtn" data-v8-assign="preset" data-group="全員">全員</button><button class="btn softbtn" data-v8-assign="unfilled">未配置だけ</button><button class="btn" data-v8-assign="preset" data-group="">選択解除</button><span class="hint" id="v8-amount">'+sel.size+'名選択</span></div>'+
+ '<div class="v8-number-grid" id="v8-assign-grid">'+Array.from({length:c.count},(_,i)=>i+1).map(n=>'<button type="button" class="share-chip'+(sel.has(n)?' is-selected':'')+(c.missing.includes(n)?' is-missing':'')+
+ '" data-v8-assign="number" data-n="'+n+'" aria-pressed="'+sel.has(n)+'" '+(c.missing.includes(n)?'disabled':'')+'>'+n+'</button>').join('')+'</div>'+
+ '<p class="hint">文例選択後に、当てはまる番号をタップ。欠番は選択できません。</p>';
+}
+const v8OldAssign=assignHTML;
+assignHTML=function(){
+ const html=v8OldAssign(),input=/(<input data-bind="applyNumbers"[^>]*>)/;
+ let out=html.replace(input,function(x){return x+v8Chips(cur())});
+ out=out.replace('<option value="append"','<option value="empty" '+(applyMode==='empty'?'selected':'')+'>空欄だけに配置（おすすめ）</option><option value="append"');
+ return out;
+};
+function v8SyncChips(){
+ const c=cur(),chosen=new Set(v8Chosen(c)),amount=$('v8-amount');
+ if(amount)amount.textContent=chosen.size+'名選択';
+ const input=document.querySelector('[data-bind="applyNumbers"]');if(input)input.value=applyNumbers;
+ document.querySelectorAll('#v8-assign-grid [data-v8-assign="number"]').forEach(b=>{const active=chosen.has(Number(b.dataset.n));b.classList.toggle('is-selected',active);b.setAttribute('aria-pressed',active?'true':'false')});
+}
+document.addEventListener('input',e=>{if(e.target.dataset.bind==='applyNumbers'){applyNumbers=e.target.value;v8SyncChips()}});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v8-assign]');if(!b)return;
+ const c=cur();
+ if(b.dataset.v8Assign==='unfilled'){applyNumbers=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!c.missing.includes(n)&&!getEnt(c,activeType,n).text.trim()).join(',')}
+ else if(b.dataset.v8Assign==='preset'){applyNumbers=b.dataset.group||''}
+ else{const num=Number(b.dataset.n),set=new Set(v8Chosen(c));if(c.missing.includes(num))return;if(set.has(num))set.delete(num);else set.add(num);applyNumbers=[...set].sort((a,b)=>a-b).join(',')}
+ v8SyncChips();
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-action="apply-bank"]');if(!b)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const c=cur(),item=S.bank.find(x=>x.id===Number(applySelected)),nums=v8Chosen(c);
+ if(!item||!nums.length){toast('文例と番号を選んでください');return}
+ if(item.grade!==c.grade&&!confirm('文例と対象クラスの学年が異なります。続けますか？'))return;
+ if(applyMode==='replace'&&nums.some(n=>getEnt(c,activeType,n).text.trim())&&!confirm('既存の文章を置き換えますか？'))return;
+ let changed=0,skipped=0;
+ for(const n of nums){
+  const row=getEnt(c,activeType,n);
+  if(applyMode==='empty'&&row.text.trim()){skipped++;continue}
+  if(applyMode==='append'&&row.text.includes(item.text)){skipped++;continue}
+  const text=applyMode==='append'&&row.text.trim()?row.text.trimEnd()+'\n'+item.text:item.text;
+  editEnt(c,activeType,n,{text,status:'下書き',touched:true,sourceBankId:item.id});changed++;
+ }
+ if(applyMode==='empty'){applyNumbers=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!c.missing.includes(n)&&!getEnt(c,activeType,n).text.trim()).join(',')}
+ render();toast(changed+'名へ配置'+(skipped?'（既存文章など '+skipped+'名を除外）':'')+'しました。次は未配置の'+applyNumbers.split(',').filter(Boolean).length+'名を選べます');
+},true);
+</script><script>
+/* bundled v8-edit.js */
+/* Shoken STUDIO v0.8 per-number unit/example selection */
+let v8RowSelection={};
+function v8RowKey(c,t,n){return c.id+'|'+t+'|'+n}
+function v8Selection(c,t,n){
+ const key=v8RowKey(c,t,n);
+ if(!v8RowSelection[key])v8RowSelection[key]={subject:t==='総合所見'?'':t,unit:'',example:'',mode:'append'};
+ return v8RowSelection[key];
+}
+function v8Subjects(c,t){
+ if(t!=='総合所見')return [t];
+ let subjects=SUBJECTS.filter(x=>x!=='要検討');
+ if(c.grade<=2)subjects=subjects.filter(x=>!['社会','理科','家庭','外国語'].includes(x));
+ else if(c.grade<=4)subjects=subjects.filter(x=>!['生活','家庭','外国語'].includes(x));
+ else subjects=subjects.filter(x=>x!=='生活');
+ return [...subjects,'学習全般','生活・特別活動'];
+}
+function v8Available(c,subject){
+ if(!subject)return [];
+ const store=new Map(),publisher=v4Pub(c.grade,subject);
+ function key(u){return [u.publisher||'',u.domain||'',u.unit||'自由文例'].join('┃')}
+ function ensure(u){
+  const k=key(u);
+  if(!store.has(k))store.set(k,{id:k,unit:u.unit||'自由文例',publisher:u.publisher||'',domain:u.domain||'',choices:[]});
+  return store.get(k);
+ }
+ function add(u,choices){
+  const target=ensure(u);
+  choices.forEach(x=>{if(x.text&&!target.choices.some(y=>y.id===x.id))target.choices.push(x)});
+ }
+ for(const u of V6_EXAMPLES){
+  if(u.grade!==c.grade||u.subject!==subject||u.publisher!==publisher)continue;
+  const choices=[];for(const axis of V6_AXES)u[axis.id].forEach((text,i)=>choices.push({id:axis.id+':'+i,axis:axis.label,text}));
+  add(u,choices);
+ }
+ if(subject==='体育'){
+  const healthPublisher=(S.textbooks||{})[c.grade+':体育']||'未設定';
+  for(const u of V7_PE_UNITS){
+   if(u.grade!==c.grade||(u.domain==='保健'&&u.publisher!==healthPublisher))continue;
+   const choices=[];for(const axis of V6_AXES)u[axis.id].forEach((text,i)=>choices.push({id:axis.id+':'+i,axis:axis.label,text}));
+   add(u,choices);
+  }
+ }
+ for(const u of V4_UNITS){
+  if(u.grade!==c.grade||u.subject!==subject||u.publisher!==publisher||store.has(key(u)))continue;
+  add(u,u.texts.map((text,i)=>({id:'draft:'+i,axis:'編集用文例',text})));
+ }
+ for(const u of S.customUnitsV5||[]){
+  if(u.grade!==c.grade||u.subject!==subject||u.publisher!==publisher)continue;ensure(u);
+ }
+ for(const b of S.bank){
+  if(b.grade!==c.grade||b.subject!==subject)continue;
+  let u=[...store.values()].find(x=>x.unit===(b.unit||'自由文例')&&(!b.publisher||x.publisher===b.publisher)&&(!b.domain||x.domain===b.domain));
+  if(!u)u=ensure({unit:b.unit||'自由文例',publisher:b.publisher||'',domain:b.domain||''});
+  u.choices.push({id:'bank:'+b.id,axis:v6Category(b.criterion)||b.tag||'自作文例',text:b.text});
+ }
+ return [...store.values()];
+}
+function v8Select(field,n,items,current,placeholder){
+ return '<select data-v8-field="'+field+'" data-n="'+n+'"><option value="">'+E(placeholder)+'</option>'+
+ items.map(x=>'<option value="'+E(x.id)+'"'+(x.id===current?' selected':'')+'>'+E(x.label)+'</option>').join('')+'</select>';
+}
+function v8Picker(c,t,n){
+ const st=v8Selection(c,t,n),subjects=v8Subjects(c,t);
+ if(st.subject&&!subjects.includes(st.subject)){st.subject='';st.unit='';st.example=''}
+ const units=v8Available(c,st.subject),unit=units.find(x=>x.id===st.unit);
+ if(!unit){st.unit='';st.example=''}
+ const chosen=unit?.choices.find(x=>x.id===st.example);
+ return '<div class="v8-picker"><div class="section-kicker">FIND AND PLACE</div>'+
+ '<div class="field"><label>教科・領域</label>'+v8Select('subject',n,subjects.map(x=>({id:x,label:x})),st.subject,'教科を選ぶ')+'</div>'+
+ '<div class="field"><label>単元名</label>'+v8Select('unit',n,units.map(x=>({id:x.id,label:(x.domain?x.domain+'｜':'')+x.unit})),st.unit,'単元を選ぶ')+'</div>'+
+ '<div class="field"><label>文例</label>'+v8Select('example',n,(unit?.choices||[]).map((x,i)=>({id:x.id,label:x.axis+' '+(i+1)+'｜'+x.text.slice(0,26)+'…'})),st.example,'文例を選ぶ')+'</div>'+
+ (chosen?'<div class="v8-preview">'+E(chosen.text)+'</div>':'<p class="hint" style="margin:6px 0">文例を選ぶとここに全文を表示します。登録されていない文例は文例バンクから追加できます。</p>')+
+ '<div class="v8-row-tools"><label class="small">配置方法 <select data-v8-field="mode" data-n="'+n+'"><option value="append"'+(st.mode==='append'?' selected':'')+'>文末に追加</option><option value="replace"'+(st.mode==='replace'?' selected':'')+'>全文置き換え</option></select></label>'+
+ '<button class="btn softbtn" data-v8-row-action="apply" data-n="'+n+'"'+(chosen?'':' disabled')+'>この番号に配置</button></div></div>';
+}
+const v8PrevEdit=editHTML;
+editHTML=function(){
+ const c=cur(),t=activeType,cnt=stateCount(c,t),lengthLimit=v8Limits(t),progress=v8Count(c,t);
+ const headerBlock='<div class="two">'+field('対象クラス','<select data-bind="class">'+classOpts()+'</select>')+
+ field('所見の種類','<select data-bind="type">'+typeOpts()+'</select>')+'</div>'+
+ '<div class="inline" style="margin:12px 0"><span class="tag done">確定 '+cnt.done+'</span><span class="tag draft">下書き '+cnt.draft+'</span><span class="tag need">要検討 '+cnt.need+'</span>'+
+ '<label class="small"><input type="checkbox" data-bind="editOnly"'+(editOnly?' checked':'')+'> 未完成・要検討だけ</label></div>'+
+ '<div class="notice" style="margin:6px 0 15px">文字数クリア '+progress.good+'/'+progress.total+'名（'+progress.pct+'%）／確定＋文字数クリア '+progress.confirmed+'/'+progress.total+'名（'+progress.confirmedPct+'%）／条件 '+lengthLimit.min+'〜'+lengthLimit.max+'字</div>';
+ const nums=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!editOnly||(!c.missing.includes(n)&&getEnt(c,t,n).status!=='確定'));
+ const html=nums.map(n=>{
+  const x=getEnt(c,t,n),missing=c.missing.includes(n),len=v8Length(x.text),valid=len>=lengthLimit.min&&len<=lengthLimit.max;
+  const sub=t==='総合所見'?'<div class="field"><label>教科の仮配置</label>'+x.subjects.slice(0,S.prefs.mainCount).map((s,i)=>'<select data-bind="row-subject" data-n="'+n+'" data-index="'+i+'">'+SUBJECTS.map(v=>option(v,s)).join('')+'</select>').join('')+'</div>':'';
+  const textarea='<textarea class="celltext" data-bind="row-text" data-n="'+n+'" placeholder="文例を選んで配置、または直接入力">'+E(x.text)+'</textarea>'+
+  '<div class="textcount">'+len+'字</div><div class="v8-mini" data-v8-flag="'+n+'">'+(valid?'✓ 文字数クリア':'文字数条件未達')+'（'+lengthLimit.min+'〜'+lengthLimit.max+'字）</div>';
+  const status='<label class="small">状態 <select data-bind="row-status" data-n="'+n+'">'+['未作成','下書き','要検討','確定'].map(s=>option(s,x.status)).join('')+'</select></label>';
+  return '<section id="v8-num-'+n+'" class="v8-row"><div class="inline between" style="margin-bottom:12px"><strong>作業番号 '+n+'</strong><span class="tag '+(x.status==='確定'?'done':x.status==='要検討'?'need':'draft')+'">'+(missing?'欠番':E(x.status))+'</span></div>'+
+  (missing?'<p class="muted">欠番のため編集・集計の対象外</p>':
+   '<div class="v8-row-main"><div>'+sub+v8Picker(c,t,n)+'</div><div><div class="field"><label>所見（選んだ後も修正できます）</label>'+textarea+'</div>'+
+   '<div class="v8-row-tools">'+status+(x.text.trim()?'<button class="btn" data-action="save-from-row" data-n="'+n+'">この文章を文例にする ↗</button>':'')+'</div></div></div>')+'</section>';
+ }).join('');
+ return header('一覧編集','作業番号ごとに「教科 → 単元 → 文例」を選択。文章は後から自由に修正できます。')+
+ '<div class="grid"><div class="panel wide">'+headerBlock+html+
+ '<div class="warning small">実際の児童情報に対応させる場合は、学校の承認された端末・保存先でのみ利用してください。</div></div></div>';
+};
+function v8UpdateFlag(n){
+ const x=getEnt(cur(),activeType,n),len=v8Length(x.text),limit=v8Limits(activeType);
+ const el=document.querySelector('[data-v8-flag="'+n+'"]');if(el)el.textContent=(len>=limit.min&&len<=limit.max?'✓ 文字数クリア':'文字数条件未達')+'（'+limit.min+'〜'+limit.max+'字）';
+}
+document.addEventListener('input',e=>{if(e.target.dataset.bind==='row-text')v8UpdateFlag(Number(e.target.dataset.n))});
+document.addEventListener('change',e=>{
+ const field=e.target.dataset.v8Field;if(!field)return;
+ const c=cur(),n=Number(e.target.dataset.n),st=v8Selection(c,activeType,n);
+ st[field]=e.target.value;
+ if(field==='subject'){st.unit='';st.example=''}
+ if(field==='unit')st.example='';
+ if(field!=='mode'){const scroll=window.scrollY||0;render();window.scrollTo?.(0,scroll)}
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v8-row-action="apply"]');if(!b)return;
+ const c=cur(),n=Number(b.dataset.n),st=v8Selection(c,activeType,n),u=v8Available(c,st.subject).find(x=>x.id===st.unit),choice=u?.choices.find(x=>x.id===st.example);
+ if(!choice||c.missing.includes(n)){toast('単元と文例を選んでください');return}
+ const row=getEnt(c,activeType,n),text=choice.text;
+ if(row.text.includes(text)){toast('同じ文例がすでに入っています');return}
+ if(st.mode==='replace'&&row.text.trim()&&!confirm('作業番号'+n+'の文章を置き換えますか？'))return;
+ const value=st.mode==='replace'||!row.text.trim()?text:row.text.trimEnd()+'\n'+text;
+ editEnt(c,activeType,n,{text:value,status:'下書き',touched:true});
+ const scroll=window.scrollY||0;render();window.scrollTo?.(0,scroll);
+ toast('作業番号'+n+'へ配置しました。本文を直接修正できます');
+});
+</script><script>
+/* bundled v9-paste.js */
+/* Shoken STUDIO v0.9: one-paste import for foreign language activity and morality */
+let v9Mode='examples',v9Type='外国語活動',v9Unit='',v9Buffer='',v9Replace=false,v9Preview=null;
+const v9Css=document.createElement('style');
+v9Css.textContent='.v9-paste-area{width:100%;min-height:235px;border:1px solid #c7d8c9;border-radius:13px;padding:13px 15px;background:#fff;line-height:1.8;font-size:14px;resize:vertical}.v9-mode-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v9-option{padding:14px;border:1px solid #d9e6da;border-radius:13px;background:#f8fbf7;cursor:pointer;text-align:left}.v9-option.active{border-color:#598774;background:#e9f2eb;box-shadow:inset 0 0 0 1px #598774}.v9-option strong{display:block;color:#315b4c}.v9-option small{color:#627769}.v9-preview{border:1px solid #e1e9de;background:#fffefb;padding:15px;border-radius:12px;max-height:330px;overflow:auto}.v9-preview-row{display:grid;grid-template-columns:75px minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid #e7ede5;font-size:12px}.v9-preview-row:last-child{border-bottom:0}.v9-alert{color:#945943;background:#fff2eb;padding:9px 12px;border-radius:9px;margin-top:10px}.v9-good{background:#eaf4ed;color:#35694f;padding:9px 12px;border-radius:9px;margin-top:10px}@media(max-width:680px){.v9-mode-row{grid-template-columns:1fr}.v9-preview-row{grid-template-columns:45px minmax(0,1fr)}}';
+document.head.appendChild(v9Css);
+function v9ParseExamples(raw){
+ const text=String(raw||'').replace(/\r\n/g,'\n').trim();
+ if(!text)return {items:[],errors:[]};
+ const groups=/\n[ \t]*\n/.test(text)?text.split(/\n[ \t]*\n+/):text.split(/\n+/);
+ const items=groups.map(x=>x.trim()).filter(Boolean).map((txt,i)=>({number:i+1,text:txt}));
+ return {items,errors:[]};
+}
+function v9ParseRows(raw,c){
+ const lines=String(raw||'').replace(/\r\n/g,'\n').split('\n');
+ const items=[],errors=[],seen=new Set();
+ lines.forEach((line,i)=>{
+  if(!line.trim())return;
+  if(/^(?:作業番号|仮番号|番号|No\.?)\s*[\t,、]/i.test(line.trim()))return;
+  let n=0,txt='';
+  const fields=line.split('\t');
+  if(fields.length>=2&&/^\s*\d{1,2}\s*$/.test(fields[0])){
+   n=Number(fields[0].trim());txt=fields.slice(1).join('\t').trim();
+  }else{
+   const hit=line.match(/^\s*(\d{1,2})[.．、）)\s]+\s*(.+)\s*$/);
+   if(hit){n=Number(hit[1]);txt=hit[2].trim()}
+  }
+  if(!n||!txt){errors.push('行'+(i+1)+'：番号と文章を読み取れません');return}
+  if(n<1||n>c.count){errors.push('行'+(i+1)+'：'+n+'番は設定人数の範囲外');return}
+  if(c.missing.includes(n)){errors.push('行'+(i+1)+'：'+n+'番は欠番なので除外');return}
+  if(seen.has(n)){errors.push('行'+(i+1)+'：'+n+'番が重複しています');return}
+  seen.add(n);items.push({number:n,text:txt});
+ });
+ return {items,errors};
+}
+function v9Parsed(){return v9Mode==='examples'?v9ParseExamples(v9Buffer):v9ParseRows(v9Buffer,cur())}
+function v9PreviewHTML(){
+ if(!v9Preview)return '<div class="notice">貼り付け後に「内容を確認」を押すと、登録前にプレビューできます。内容は外部に送信されません。</div>';
+ const p=v9Preview;
+ const label=v9Mode==='examples'?'文例':'番号';
+ return '<div class="v9-preview"><div class="inline between"><strong>取り込み候補 '+p.items.length+'件</strong><span class="tag">'+(v9Mode==='examples'?'文例バンク':'作業番号ごと')+'</span></div>'+
+ p.items.slice(0,20).map(x=>'<div class="v9-preview-row"><strong>'+label+' '+x.number+'</strong><span>'+E(x.text)+'</span></div>').join('')+
+ (p.items.length>20?'<div class="hint" style="margin-top:10px">ほか '+(p.items.length-20)+'件</div>':'')+'</div>'+
+ (p.errors.length?'<div class="v9-alert">確認が必要な行：'+p.errors.length+'件<br>'+p.errors.slice(0,10).map(E).join('<br>')+(p.errors.length>10?'<br>ほか '+(p.errors.length-10)+'件':'')+'</div>':'')+
+ (p.items.length?'<div class="v9-good">問題のない '+p.items.length+'件を取り込めます。既存の文章は初期設定で保護します。</div>':'');
+}
+function v9PasteHTML(){
+ const c=cur(),isBank=v9Mode==='examples';
+ return header('まとめて貼り付け','外国語活動・道徳などの文例や、番号別の文章をまとめて取り込めます。')+
+ '<div class="grid"><div class="panel c7"><div class="section-kicker">PASTE AND ORGANIZE</div><h2 style="margin:4px 0 12px">どちらを貼り付ける？</h2>'+
+ '<div class="v9-mode-row"><button type="button" class="v9-option'+(isBank?' active':'')+'" data-v9-action="mode" data-mode="examples"><strong>① 文例をまとめて登録</strong><small>今までに書いた文例を、バンクへ一気に追加</small></button>'+
+ '<button type="button" class="v9-option'+(!isBank?' active':'')+'" data-v9-action="mode" data-mode="rows"><strong>② 番号ごとに所見を配置</strong><small>Excelの「番号｜所見」を2列コピーして取り込み</small></button></div>'+
+ '<div class="two" style="margin-top:17px">'+
+ field('対象クラス（学年設定に使用）','<select data-v9-field="class">'+classOpts()+'</select>')+
+ field('所見の種類','<select data-v9-field="type">'+['外国語活動','道徳','総合所見','総合的な学習の時間'].map(x=>option(x,v9Type)).join('')+'</select>')+
+ '</div>'+
+ (isBank?'<div style="margin-top:12px">'+field('文例の単元名・内容項目','<input data-v9-field="unit" value="'+E(v9Unit)+'" placeholder="例：This is for you.／規則の尊重">')+'</div>':
+ '<div class="notice" style="margin-top:12px">コピーした番号をそのまま使用。欠番は飛ばし、番号を振り直しません。</div>')+
+ '<div class="field" style="margin-top:17px"><label>'+(isBank?'文例をまとめて貼り付け':'番号と所見の2列を貼り付け')+'</label>'+
+ '<textarea id="v9-paste-text" class="v9-paste-area" data-v9-field="buffer" placeholder="'+(isBank?'文例1をここに貼り付け\n\n文例2をここに貼り付け\n\n文例3をここに貼り付け':'1	外国語活動の「This is for you.」では、…\n3	外国語活動の「This is for you.」では、…')+'">'+E(v9Buffer)+'</textarea></div>'+
+ (isBank?'<div class="hint">文例ごとに改行、または1行空けて貼り付けてね。全文は修正せず保存します。</div>':
+ '<div class="hint">Excelで「番号」と「所見」の2列を選び、コピーして貼り付けてね。番号なしの文章は誤配置防止のため取り込みません。</div>'+
+ '<label class="small inline" style="margin-top:12px"><input type="checkbox" data-v9-field="replace"'+(v9Replace?' checked':'')+'> 既存の所見を置き換える（確認あり）</label>')+
+ '<div class="inline" style="margin-top:20px"><button class="btn primary" data-v9-action="preview">内容を確認する</button>'+
+ '<button class="btn softbtn" data-v9-action="import"'+(v9Preview?.items?.length?'':' disabled')+'>確認した'+(isBank?'文例を登録':'所見を配置')+'</button></div>'+
+ '<div class="warning small" style="margin-top:15px">実際の児童と番号が対応するデータは、学校が承認した端末・保存先でのみ扱ってください。アプリは試作版で自動保存されません。入力内容のJSONバックアップも取扱いに注意してください。</div>'+
+ '</div><div class="panel c5"><div class="section-kicker">PREVIEW</div><h2 style="margin:4px 0 12px">貼り付け内容の確認</h2>'+v9PreviewHTML()+
+ '<div class="notice" style="margin-top:14px"><strong>取り込み先</strong><div>クラス'+c.id+'（'+c.grade+'年・'+c.count+'名）</div><div>'+E(v9Type)+'</div><div>'+(isBank?'文例バンク／'+E(v9Unit||'単元名なし'):'番号ごとの所見（下書き）')+'</div></div></div></div>';
+}
+const v9OldTop=renderTop;
+renderTop=function(){
+ v9OldTop();
+ const t=$('tabs');if(!t||t.querySelector('[data-page="paste"]'))return;
+ const b=document.createElement('button');b.className='tab'+(page==='paste'?' active':'');b.dataset.action='page';b.dataset.page='paste';b.textContent='⎘ まとめて貼り付け';
+ const target=t.querySelector('[data-page="edit"]');
+ t.insertBefore(b,target);
+};
+const v9OldRender=render;
+render=function(){if(page==='paste'){renderTop();$('main').innerHTML=v9PasteHTML();return}v9OldRender()};
+document.addEventListener('input',e=>{
+ if(e.target?.dataset?.v9Field==='buffer'){v9Buffer=e.target.value;v9Preview=null}
+ else if(e.target?.dataset?.v9Field==='unit'){v9Unit=e.target.value;v9Preview=null}
+});
+document.addEventListener('change',e=>{
+ const f=e.target?.dataset?.v9Field;if(!f)return;
+ if(f==='class'){activeClass=Number(e.target.value);v9Preview=null;render()}
+ else if(f==='type'){v9Type=e.target.value;v9Preview=null;render()}
+ else if(f==='replace'){v9Replace=!!e.target.checked;v9Preview=null;render()}
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v9-action]');if(!b)return;
+ if(b.dataset.v9Action==='mode'){
+  v9Mode=b.dataset.mode==='rows'?'rows':'examples';v9Buffer='';v9Preview=null;render();return;
+ }
+ if(b.dataset.v9Action==='preview'){
+  v9Preview=v9Parsed();
+  if(!v9Preview.items.length)toast('取り込める文章がありません。書式を確認してください');
+  render();return;
+ }
+ if(b.dataset.v9Action!=='import')return;
+ if(!v9Preview||!v9Preview.items.length){toast('内容を確認してください');return}
+ const current=v9Parsed();
+ if(JSON.stringify(current)!==JSON.stringify(v9Preview)){v9Preview=null;render();toast('入力内容が変わりました。もう一度確認してください');return}
+ let added=0,skipped=0;
+ if(v9Mode==='examples'){
+  const c=cur();
+  for(const item of current.items){
+   if(S.bank.some(x=>x.grade===c.grade&&x.subject===v9Type&&x.unit===v9Unit.trim()&&x.text===item.text)){skipped++;continue}
+   S.bank.push({id:S.nextId++,grade:c.grade,subject:v9Type,unit:v9Unit.trim(),text:item.text,tag:'一括貼り付け・確認済み'});added++;
+  }
+  v9Buffer='';v9Preview=null;bankFilter=v9Type;page='bank';render();
+  toast(added+'件の文例を追加'+(skipped?'（重複'+skipped+'件を除外）':''));
+ }else{
+  const c=cur(),conflicts=current.items.filter(x=>getEnt(c,v9Type,x.number).text.trim()).length;
+  if(v9Replace&&conflicts&&!confirm('既存の'+conflicts+'件の所見を置き換えますか？'))return;
+  for(const item of current.items){
+   if(getEnt(c,v9Type,item.number).text.trim()&&!v9Replace){skipped++;continue}
+   editEnt(c,v9Type,item.number,{text:item.text,status:'下書き',touched:true});added++;
+  }
+  v9Buffer='';v9Preview=null;activeType=v9Type;page='edit';render();
+  toast(added+'名に所見を配置'+(skipped?'（既存'+skipped+'名は維持）':''));
+ }
+});
+
+</script><script>
+/* bundled v10-sequence.js */
+/* Shoken STUDIO v1.0 - optional round-robin tentative placement */
+let v10Choices=[],v10Context='',v10Scope='empty',v10PreviewVisible=false;
+const v10Css=document.createElement('style');
+v10Css.textContent='.v10-panel{margin-top:17px}.v10-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v10-choice{background:#f6faf4;border:1px solid #e0e9dc;border-radius:12px;padding:10px}.v10-choice select{width:100%;min-width:0;padding:9px;border:1px solid #d2ddcf;border-radius:8px;color:#314b3e;background:white}.v10-plan{max-height:320px;overflow-y:auto;background:#fffdf7;border:1px solid #e6eadf;border-radius:11px;margin-top:12px;padding:12px}.v10-plan-line{display:grid;grid-template-columns:75px 80px minmax(0,1fr);gap:6px;padding:7px 0;border-bottom:1px solid #ebefe7;align-items:baseline;font-size:12px}.v10-plan-line:last-child{border:0}.v10-plan-line span{overflow-wrap:anywhere}.v10-warning{font-size:12px;color:#865a36;background:#fdf5e7;border:1px solid #edddbd;border-radius:11px;padding:11px;margin:14px 0}@media(max-width:680px){.v10-choice-grid{grid-template-columns:1fr}.v10-plan-line{grid-template-columns:64px 64px minmax(0,1fr)}}';
+document.head.appendChild(v10Css);
+function v10Available(){
+ const c=cur();
+ return S.bank.filter(b=>Number(b.grade)===Number(c.grade)&&inferredType(b.subject)===activeType);
+}
+function v10Sync(){
+ const key=cur().id+'|'+activeType;
+ if(key===v10Context)return;
+ v10Context=key;v10Scope='empty';v10PreviewVisible=false;
+ v10Choices=v10Available().slice(0,6).map(x=>String(x.id));
+ while(v10Choices.length<6)v10Choices.push('');
+}
+function v10TargetNumbers(){
+ const c=cur();
+ const base=v10Scope==='selected'?v8Chosen(c):Array.from({length:c.count},(_,i)=>i+1);
+ return base.filter(n=>!c.missing.includes(n)&&!getEnt(c,activeType,n).text.trim());
+}
+function v10Plan(){
+ const list=v10Available(),selected=v10Choices.filter(Boolean).map(id=>list.find(x=>String(x.id)===String(id))).filter(Boolean);
+ const used=new Set(),items=selected.filter(x=>{if(used.has(x.id))return false;used.add(x.id);return true});
+ return {templates:items,assignments:v10TargetNumbers().map((n,i)=>({number:n,bank:items.length?items[i%items.length]:null}))};
+}
+function v10PlanHTML(){
+ const p=v10Plan(),num=p.assignments.length;
+ if(!p.templates.length)return '<p class="hint">配置する文例を選んでね。文例が少ない場合は「まとめて登録」で追加できます。</p>';
+ if(!num)return '<div class="notice">対象の未配置番号はありません。必要なら一覧編集で個別に修正できます。</div>';
+ return '<div class="v10-plan"><div class="inline between"><strong>仮配置のプレビュー</strong><span class="tag">'+num+'名・'+p.templates.length+'文例を順番に利用</span></div>'+
+ p.assignments.slice(0,40).map((x,i)=>'<div class="v10-plan-line"><strong>作業番号'+x.number+'</strong><span>文例'+(i%p.templates.length+1)+'</span><span>'+E(x.bank.text.slice(0,65))+(x.bank.text.length>65?'…':'')+'</span></div>').join('')+'</div>'+
+ '<p class="hint" style="margin:8px 0 0">ここに表示した番号と文例の対応で仮配置します。割り振った文章は「要検討」になり、後から変更できます。</p>';
+}
+function v10Panel(){
+ v10Sync();
+ const available=v10Available(),p=v10Plan();
+ return '<div class="panel wide v10-panel"><div class="section-kicker">TENTATIVE BULK PLACEMENT</div>'+
+ '<h2 style="margin:4px 0 6px">複数文例を順番に仮配置</h2>'+
+ '<p class="muted small">道徳や外国語活動の文例を最大6種類選び、未配置の番号に1→2→3→4→5→6→1…と割り振ります。</p>'+
+ '<div class="inline" style="margin:14px 0 8px"><span class="tag">'+E(labelClass(cur()))+'</span><span class="tag">'+E(activeType)+'</span><button class="btn softbtn" data-v10="paste">文例をまとめて登録 →</button></div>'+
+ '<div class="v10-choice-grid">'+v10Choices.map((id,i)=>'<div class="v10-choice"><div class="field"><label>文例 '+(i+1)+'</label><select data-v10-pattern="'+i+'"><option value="">選ばない</option>'+
+ available.map(b=>'<option value="'+b.id+'"'+(String(b.id)===id?' selected':'')+'>'+E((b.unit||'自由文例')+'｜'+b.text.slice(0,35)+(b.text.length>35?'…':''))+'</option>').join('')+
+ '</select></div></div>').join('')+'</div>'+
+ (available.length<6?'<p class="hint" style="margin-top:8px">このクラス・所見には現在'+available.length+'文例が登録されています。6種類使う場合は、先に文例をまとめて登録してください。</p>':'')+
+ '<div class="field" style="margin-top:14px"><label>仮配置する番号</label><select data-v10-scope="scope"><option value="empty"'+(v10Scope==='empty'?' selected':'')+'>クラスの未配置全員（おすすめ）</option><option value="selected"'+(v10Scope==='selected'?' selected':'')+'>上で選択した番号のうち未配置だけ</option></select></div>'+
+ '<div class="v10-warning">これは一時的な仮置きです。文例の順番は児童の実態と無関係なので、<strong>必ず個別に内容を確認・修正</strong>してください。欠番・文章が入っている番号・確定済みの文章は変更しません。</div>'+
+ '<div class="inline"><button class="btn softbtn" data-v10="preview">割り振りを確認する（'+p.assignments.length+'名）</button><button class="btn primary" data-v10="apply"'+(!p.assignments.length||!p.templates.length?' disabled':'')+'>順番に仮配置する</button></div>'+
+ (v10PreviewVisible?v10PlanHTML():'<p class="hint" style="margin:11px 0 0">先に「割り振りを確認する」を押すと、誰にどの文例が入るか確認できます。</p>')+'</div>';
+}
+const v10OldAssign=assignHTML;
+assignHTML=function(){return v10OldAssign()+v10Panel()};
+document.addEventListener('change',e=>{
+ if(e.target?.dataset?.v10Pattern!==undefined){
+  v10Choices[Number(e.target.dataset.v10Pattern)]=String(e.target.value||'');v10PreviewVisible=false;render();return;
+ }
+ if(e.target?.dataset?.v10Scope){
+  v10Scope=e.target.value==='selected'?'selected':'empty';v10PreviewVisible=false;render();
+ }
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v10]');if(!b)return;
+ if(b.dataset.v10==='paste'){
+  v9Mode='examples';v9Type=activeType;v9Preview=null;page='paste';render();return;
+ }
+ if(b.dataset.v10==='preview'){
+  v10PreviewVisible=true;render();return;
+ }
+ if(b.dataset.v10!=='apply')return;
+ const p=v10Plan();
+ if(!p.assignments.length||!p.templates.length){toast('文例と未配置番号を確認してください');return}
+ if(!v10PreviewVisible){v10PreviewVisible=true;render();toast('まず割り振りプレビューを確認してください');return}
+ if(!confirm('未配置の'+p.assignments.length+'名へ、'+p.templates.length+'文例を順番に仮配置します。各番号の学習状況に合わせて必ず見直しますか？'))return;
+ const c=cur(),type=activeType;let changed=0;
+ for(const pair of p.assignments){
+  if(!pair.bank||c.missing.includes(pair.number))continue;
+  if(getEnt(c,type,pair.number).text.trim())continue;
+  editEnt(c,type,pair.number,{text:pair.bank.text,status:'要検討',touched:true,sourceBankId:pair.bank.id,tentative:true});changed++;
+ }
+ applyNumbers=Array.from({length:c.count},(_,i)=>i+1).filter(n=>!c.missing.includes(n)&&!getEnt(c,type,n).text.trim()).join(',');
+ v10PreviewVisible=false;page='edit';render();toast(changed+'名に仮配置しました。内容を確認して修正してください');
+});
+
+</script><script>
+/* bundled v11-common.js */
+/* Shoken STUDIO v1.1: common-activity text -> many pupils -> individualized adjustment */
+let v11Type='総合的な学習の時間',v11Category='係',v11Activity='',v11Text='',v11Numbers='全員',v11Mode='append',v11BankId='',v11Preview=null,v11SaveBank=true;
+const v11Categories=['友達との関わり','行動','クラブ','委員会','係','当番','実行委員','代表委員会','その他'];
+const v11Style=document.createElement('style');
+v11Style.textContent='.v11-box{background:#fafcf9;border:1px solid #e0e9de;border-radius:14px;padding:13px}.v11-toolbar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:12px 0}.v11-chips{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:7px}.v11-chips .share-chip{min-width:0;padding:10px 0}.v11-preview{background:white;border:1px solid #dbe5d8;border-radius:12px;padding:12px;max-height:380px;overflow:auto}.v11-preview-row{display:grid;grid-template-columns:62px 100px minmax(0,1fr);gap:10px;padding:8px 0;font-size:12px;border-bottom:1px solid #e7ece5;align-items:start}.v11-preview-row:last-child{border-bottom:0}.v11-preview-row span{overflow-wrap:anywhere}.v11-preview-row .skip{color:#a26851}.v11-textarea{width:100%;min-height:155px;background:#fffefb;border:1px solid #c7dacb;border-radius:11px;padding:13px;font-size:14px;line-height:1.9;resize:vertical}@media(max-width:690px){.v11-chips{grid-template-columns:repeat(5,minmax(0,1fr))}.v11-preview-row{grid-template-columns:48px 74px minmax(0,1fr);gap:5px}}';
+document.head.appendChild(v11Style);
+function v11BankList(){
+ const c=cur(),sub=v11Type==='総合的な学習の時間'?'総合的な学習の時間':'生活・特別活動';
+ return S.bank.filter(b=>Number(b.grade)===Number(c.grade)&&b.subject===sub);
+}
+function v11Selected(){
+ const c=cur();
+ return parseNumbers(v11Numbers,c.count).filter(n=>!c.missing.includes(n));
+}
+function v11UnitKey(){
+ return JSON.stringify([v11Type,v11Type==='総合所見'?v11Category:'総合的な学習の時間',v11Activity.trim()]);
+}
+function v11Prepare(){
+ const c=cur(),text=v11Text.trim(),numbers=v11Selected(),key=v11UnitKey(),result=[];
+ for(const n of numbers){
+  const row=getEnt(c,v11Type,n);
+  let status='追加';
+  if(!text)status='文章未入力';
+  else if(!v11Activity.trim())status='活動名が未入力';
+  else if(row.status==='確定')status='確定済み・変更しない';
+  else if((row.commonAppliedKeys||[]).includes(key)||row.text.includes(text))status='同じ活動の配置済み';
+  else if(v11Mode==='empty'&&row.text.trim())status='文章あり・変更しない';
+  result.push({number:n,status,text:row.text.trim()&&v11Mode==='append'?row.text.trimEnd()+'\n'+text:text});
+ }
+ return result;
+}
+function v11PreviewToken(){
+ return JSON.stringify([cur().id,cur().count,cur().missing,v11Type,v11Category,v11Activity,v11Text,v11Numbers,v11Mode,v11Prepare().map(x=>[x.number,x.status])]);
+}
+function v11MiniPanel(){
+ return '<div class="panel wide" style="margin-top:17px"><div class="inline between"><div><div class="section-kicker">ONE BASE / MANY INDIVIDUALS</div><h2 style="margin:3px 0">共通活動の文章を一括配置</h2></div><button class="btn softbtn" data-v11="go">専用画面で作成 ↗</button></div>'+
+ '<p class="muted small">総合の共通活動や係・委員会などは、1つの文章をまとめて配置してから個別に微調整。すでに書いた文章は残せます。</p></div>';
+}
+const v11OldAssign=assignHTML;
+assignHTML=function(){return v11OldAssign()+v11MiniPanel()};
+const v11OldTop=renderTop;
+renderTop=function(){
+ v11OldTop();const bar=$('tabs');if(!bar||bar.querySelector('[data-page="common"]'))return;
+ const btn=document.createElement('button');btn.className='tab'+(page==='common'?' active':'');btn.dataset.page='common';btn.dataset.action='page';btn.textContent='✦ 共通活動を一括配置';
+ const ref=bar.querySelector('[data-page="edit"]');bar.insertBefore(btn,ref);
+};
+function v11Buttons(){
+ const c=cur(),sel=new Set(v11Selected());
+ return '<div class="v11-toolbar">'+['全員','奇数','偶数'].map(x=>'<button class="btn softbtn" data-v11="preset" data-group="'+x+'">'+x+'</button>').join('')+
+ '<button class="btn" data-v11="preset" data-group="">解除</button><span class="tag">'+sel.size+'名選択</span></div>'+
+ '<div class="v11-chips">'+Array.from({length:c.count},(_,i)=>i+1).map(n=>'<button class="share-chip'+(sel.has(n)?' is-selected':'')+(c.missing.includes(n)?' is-missing':'')+
+ '" aria-pressed="'+(sel.has(n)?'true':'false')+'" data-v11="number" data-n="'+n+'" '+(c.missing.includes(n)?'disabled':'')+'>'+n+'</button>').join('')+'</div>';
+}
+function v11ExampleOptions(){
+ return '<option value="">自分で文章を入力</option>'+v11BankList().map(b=>'<option value="'+b.id+'"'+(String(b.id)===v11BankId?' selected':'')+'>'+E((b.unit||'活動')+'｜'+b.text.slice(0,35)+'…')+'</option>').join('');
+}
+function v11PreviewHTML(){
+ const rows=v11Prepare(),count=rows.filter(x=>x.status==='追加').length;
+ if(!v11Preview)return '<div class="notice">先に文章を入力し、番号を選んで「配置内容を確認」を押してください。</div>';
+ return '<div class="v11-preview"><div class="inline between"><strong>確認用プレビュー</strong><span class="tag">'+count+'名に配置可能</span></div>'+
+ rows.map(x=>'<div class="v11-preview-row"><strong>'+x.number+'番</strong><span class="'+(x.status==='追加'?'':'skip')+'">'+x.status+'</span><span>'+E(x.status==='追加'?x.text:x.status==='同じ活動の配置済み'?'すでに配置済み':'既存文章は保護します')+'</span></div>').join('')+
+ '</div><p class="hint" style="margin-top:9px">配置後は「一覧編集」で各番号の所見を自由に修正できます。</p>';
+}
+function v11CommonHTML(){
+ const c=cur(),base=v11Type==='総合所見';
+ const options=['総合的な学習の時間','総合所見'];
+ return header('共通活動を一括配置','同じ活動の文章を土台にして、該当する番号へ配置。完成させるのは個別の微調整から。')+
+ '<div class="grid"><div class="panel c7"><div class="section-kicker">COMMON ACTIVITY</div><h2 style="margin:4px 0 8px">活動と共通文を決める</h2>'+
+ '<div class="two">'+field('対象クラス','<select data-v11-field="class">'+classOpts()+'</select>')+
+ field('配置先の所見','<select data-v11-field="type">'+options.map(x=>option(x,v11Type)).join('')+'</select>')+'</div>'+
+ (base?'<div class="field" style="margin-top:12px"><label>生活・特別活動の種類</label><select data-v11-field="category">'+v11Categories.map(x=>option(x,v11Category)).join('')+'</select></div>':
+ '<div class="notice" style="margin-top:12px">総合的な学習の時間の文章に配置します。教科学習・係活動の欄には混ざりません。</div>')+
+ '<div class="field" style="margin-top:13px"><label>活動名・テーマ</label><input data-v11-field="activity" value="'+E(v11Activity)+'" placeholder="'+(base?'例：新聞係・実行委員・給食当番':'例：地域調べ・福祉・防災')+'"></div>'+
+ '<div class="field" style="margin-top:13px"><label>登録済み文例を使う（任意）</label><select data-v11-field="bank">'+v11ExampleOptions()+'</select></div>'+
+ '<div class="field" style="margin-top:13px"><label>共通の文章（ここをコピーして配置）</label>'+
+ '<textarea class="v11-textarea" data-v11-field="text" placeholder="'+(base?'係活動では、友だちと協力して取り組み、学級のために自分の役割を果たしていました。':'総合的な学習の時間では、地域の特色について資料を集め、調べたことを分かりやすく整理していました。')+'">'+E(v11Text)+'</textarea></div>'+
+ '<div class="notice" style="margin-top:9px">文章は自動で不自然につなぎません。書いた内容をそのまま配置し、各番号の一覧から修正できます。</div>'+
+ '<label class="inline small" style="margin-top:14px"><input type="checkbox" id="v11-save-bank"'+(v11SaveBank?' checked':'')+'> 共通文を文例バンクにも保存する（同じ活動で再利用）</label>'+ 
+ '<hr class="hr"><h2 style="margin-bottom:5px">配置する番号を選ぶ</h2>'+
+ field('番号指定（カンマやハイフンも使えます）','<input data-v11-field="numbers" value="'+E(v11Numbers)+'" placeholder="例：1,3,5-12 または 全員">')+
+ v11Buttons()+
+ '<div class="field" style="margin-top:12px"><label>すでに文章がある場合</label><select data-v11-field="mode">'+
+ '<option value="append"'+(v11Mode==='append'?' selected':'')+'>既存文章の後ろに追加（おすすめ）</option>'+
+ '<option value="empty"'+(v11Mode==='empty'?' selected':'')+'>空欄の番号だけに配置</option></select></div>'+
+ '<div class="warning small" style="margin-top:12px">欠番・確定済み・同じ活動の配置済み番号は変更しません。学習状況を確認せずに全員「確定」にはしません。</div>'+
+ '<div class="inline" style="margin-top:16px"><button class="btn primary" data-v11="preview">配置内容を確認する</button>'+
+ '<button class="btn softbtn" data-v11="apply"'+(v11Preview?'':' disabled')+'>確認した文章を一括配置</button></div></div>'+
+ '<div class="panel c5"><div class="section-kicker">PREVIEW / INDIVIDUAL ADJUSTMENT</div><h2 style="margin:4px 0 12px">番号別のプレビュー</h2>'+
+ v11PreviewHTML()+
+ '<div class="v11-box" style="margin-top:16px"><strong>配置後の流れ</strong>'+
+ '<p class="small muted" style="margin:8px 0">①共通文を配置 → ②一覧から各番号の文章を修正 → ③文字数・内容を確認 → ④確定。配置するだけでは完成扱いにしません。</p>'+
+ '<button class="btn" data-v11="edit">一覧で微調整する →</button></div></div></div>';
+}
+const v11OldRender=render;
+render=function(){if(page==='common'){renderTop();$('main').innerHTML=v11CommonHTML();return}v11OldRender()};
+document.addEventListener('input',e=>{
+ const field=e.target?.dataset?.v11Field;if(!field)return;
+ if(field==='activity'){v11Activity=e.target.value;v11Preview=null}
+ else if(field==='text'){v11Text=e.target.value;v11Preview=null}
+ else if(field==='numbers'){v11Numbers=e.target.value;v11Preview=null}
+});
+document.addEventListener('change',e=>{
+ const field=e.target?.dataset?.v11Field;if(!field)return;
+ if(field==='class'){activeClass=Number(e.target.value);v11Preview=null;v11BankId='';render()}
+ else if(field==='type'){v11Type=e.target.value;v11Preview=null;v11BankId='';render()}
+ else if(field==='category'){v11Category=e.target.value;v11Preview=null;render()}
+ else if(field==='mode'){v11Mode=e.target.value;v11Preview=null;render()}
+ else if(field==='numbers'){v11Numbers=e.target.value;v11Preview=null;render()}
+ else if(field==='bank'){v11BankId=e.target.value;const b=S.bank.find(x=>String(x.id)===v11BankId);if(b){v11Text=b.text;v11Activity=b.unit||v11Activity}v11Preview=null;render()}
+});
+document.addEventListener('change',e=>{if(e.target?.id==='v11-save-bank')v11SaveBank=!!e.target.checked});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v11]');if(!b)return;
+ const action=b.dataset.v11;
+ if(action==='go'){v11Type=activeType==='総合的な学習の時間'?'総合的な学習の時間':'総合所見';v11Preview=null;page='common';render();return}
+ if(action==='edit'){activeType=v11Type;page='edit';render();return}
+ if(action==='preset'){v11Numbers=b.dataset.group||'';v11Preview=null;render();return}
+ if(action==='number'){
+  const c=cur(),n=Number(b.dataset.n),selected=new Set(v11Selected());if(c.missing.includes(n))return;
+  if(selected.has(n))selected.delete(n);else selected.add(n);
+  v11Numbers=[...selected].sort((a,z)=>a-z).join(',');v11Preview=null;render();return;
+ }
+ if(action==='preview'){
+  if(!v11Text.trim()||!v11Activity.trim()){toast('活動名と共通文を入力してください');return}
+  const values=v11Prepare();if(!values.length){toast('配置対象の番号を選んでください');return}
+  v11Preview=v11PreviewToken();render();return;
+ }
+ if(action!=='apply')return;
+ const token=v11PreviewToken();
+ if(!v11Preview||v11Preview!==token){v11Preview=null;render();toast('内容が変更されました。もう一度プレビューを確認してください');return}
+ const p=v11Prepare(),allowed=p.filter(x=>x.status==='追加'),c=cur(),type=v11Type;
+ if(!allowed.length){toast('配置できる番号はありません');return}
+ if(!confirm(allowed.length+'名へ共通文を仮配置します。配置後に一人ひとりの学習の姿を確認しますか？'))return;
+ const text=v11Text.trim(),unit=v11Activity.trim(),key=v11UnitKey();
+ if(v11SaveBank){
+  const subject=type==='総合所見'?'生活・特別活動':'総合的な学習の時間';
+  if(!S.bank.some(x=>x.grade===c.grade&&x.subject===subject&&x.unit===unit&&x.text===text)){
+   S.bank.push({id:S.nextId++,grade:c.grade,subject,unit,text,tag:'共通活動の文例（確認・微調整用）',activityCategory:type==='総合所見'?v11Category:'総合的な学習の時間'});
+  }
+ }
+ for(const x of allowed){
+  const row=getEnt(c,type,x.number),keys=Array.isArray(row.commonAppliedKeys)?row.commonAppliedKeys:[];
+  editEnt(c,type,x.number,{text:x.text,status:row.status==='要検討'?'要検討':'下書き',touched:true,commonAppliedKeys:[...keys,key]});
+ }
+ v11Preview=null;activeType=type;page='edit';render();toast(allowed.length+'名に配置しました。各番号の文章を調整できます');
+});
+
+</script><script>
+/* bundled v12-guide.js */
+/* Shoken STUDIO v1.2: guided, observation-grounded comment authoring */
+let v12Guide=null;
+const V12_ACTIONS=[
+ {id:'evidence',label:'根拠をもとに考えた',text:'学習したことを振り返り、根拠を示しながら自分の考えをまとめることができました。',
+  question:'どのような根拠を使っていましたか？',suggestions:[
+  '教科書や資料の言葉を確かめ、自分の説明に生かしていました。',
+  '記録を見返して理由を考え、自分の言葉で説明していました。',
+  '友だちに理由を伝えるため、根拠になる部分を探していました。']},
+ {id:'compare',label:'比べて考えた',text:'複数の結果や考えを比べ、共通点や違いに着目して考えることができました。',
+  question:'何を比べて、どのような様子がありましたか？',suggestions:[
+  '比べて分かったことを、ノートに整理していました。',
+  '違いに気付いた理由を、資料に戻って確かめていました。',
+  '友だちの考えと自分の考えの共通点を見つけていました。']},
+ {id:'communicate',label:'考えを伝えた',text:'自分の考えを整理し、相手に伝わるように説明することができました。',
+  question:'どんな伝え方を工夫していましたか？',suggestions:[
+  '説明の順番を工夫しながら、分かりやすく伝えていました。',
+  '自分の考えを伝える前に、理由を確かめ直していました。',
+  '相手の反応を見ながら、言葉を選んで伝えていました。']},
+ {id:'revise',label:'考えを見直した',text:'友だちの意見や学習の結果を手がかりに、自分の考えを見直していました。',
+  question:'どんなきっかけで考えを見直しましたか？',suggestions:[
+  '友だちの説明を聞いた後、自分の考えをノートに書き直していました。',
+  '予想と結果が違うことに気付き、理由を確かめ直していました。',
+  '新しい気付きを、振り返りに付け加えていました。']},
+ {id:'persist',label:'繰り返し工夫した',text:'うまくいかない場面でも方法を工夫し、粘り強く取り組んでいました。',
+  question:'どんな工夫を繰り返していましたか？',suggestions:[
+  'できなかったところを確かめ、方法を変えて試していました。',
+  '前回の反省を生かし、目標をもって取り組んでいました。',
+  'やり方を友だちと確かめ合い、よりよい方法を探していました。']},
+ {id:'team',label:'友だちと協力した',text:'友だちと協力しながら、自分の役割を考えて活動していました。',
+  question:'どんな協力の姿が見られましたか？',suggestions:[
+  '友だちの意見を聞き、役割を分担して進めていました。',
+  '困っている友だちに気付き、自分から声をかけていました。',
+  '周りの様子を見て、必要な仕事に取り組んでいました。']},
+ {id:'initiative',label:'自分から取り組んだ',text:'活動の中で必要なことを自分から見つけ、進んで取り組んでいました。',
+  question:'自分から行動したのは、どんなときですか？',suggestions:[
+  '次に必要な準備を考え、自分から取りかかっていました。',
+  '疑問に感じたことを、資料や友だちの考えを手がかりに確かめていました。',
+  '活動を振り返り、次に生かしたいことを考えていました。']},
+ {id:'organize',label:'調べたことを整理した',text:'調べたことを整理し、分かったことを相手に伝えることができました。',
+  question:'どのように整理・表現していましたか？',suggestions:[
+  '集めた情報を比べ、必要な内容を選んでまとめていました。',
+  '図や言葉を使い、伝えたいことを分かりやすく整理していました。',
+  '伝え方を見直しながら、発表の準備を進めていました。']}
+];
+const V12_MORAL=[
+ {id:'moral-reflect',label:'自分の考えをもった',text:'登場人物の行動や気持ちを考え、自分の思いを理由とともに話していました。',
+ question:'どんな考え方が見られましたか？',suggestions:[
+ '自分だったらどうするかを考え、理由を添えて発言していました。',
+ '物語の場面を振り返り、登場人物の立場から考えていました。',
+ '日頃の生活と結び付け、自分の考えをまとめていました。']},
+ {id:'moral-dialogue',label:'友だちの考えから学んだ',text:'友だちの意見に耳を傾け、さまざまな考え方があることに気付いていました。',
+ question:'話し合いでどんな様子がありましたか？',suggestions:[
+ '自分とは異なる意見も受け止め、考えを付け加えていました。',
+ '友だちの考えと自分の考えを比べて話していました。',
+ '新しく気付いたことを、振り返りに書いていました。']},
+ {id:'moral-depth',label:'考えを深めた',text:'登場人物の気持ちの変化に着目し、自分の考えを深めていました。',
+ question:'何を手がかりに考えていましたか？',suggestions:[
+ '登場人物の言葉を手がかりに、行動の理由を考えていました。',
+ '友だちと意見を交わし、別の見方についても考えていました。',
+ '授業の始めと終わりで考えが変わった理由を振り返っていました。']}
+];
+const V12_FOREIGN=[
+ {id:'foreign-speak',label:'やり取りを工夫した',text:'学習した表現を使い、友だちと進んでやり取りしていました。',
+ question:'どんな工夫をしていましたか？',suggestions:[
+ '相手に伝わるように、声の大きさや身振りを工夫していました。',
+ '相手の答えを聞き、さらに質問しようとしていました。',
+ '学習した言い方を確かめながら、繰り返し伝えていました。']},
+ {id:'foreign-listen',label:'相手の話をよく聞いた',text:'相手の話をよく聞き、分かったことをもとにやり取りしていました。',
+ question:'聞くときの様子はどうでしたか？',suggestions:[
+ '相手の表情や身振りにも注目して聞いていました。',
+ '聞き取れた表現を手がかりに、質問に答えていました。',
+ '分からないときは、もう一度確かめようとしていました。']},
+ {id:'foreign-try',label:'繰り返し挑戦した',text:'新しい表現にも関心をもち、繰り返し使おうとしていました。',
+ question:'どの場面で挑戦していましたか？',suggestions:[
+ '友だちとの活動で、学習した言い方を何度も使っていました。',
+ '表現を確かめながら、自分から声をかけていました。',
+ '振り返りで、次に使いたい表現を考えていました。']}
+];
+const v12CSS=document.createElement('style');
+v12CSS.textContent='.v12-panel{border:1px solid #dce7dc;border-radius:18px;background:#fffdf8;padding:20px}.v12-heading{font-size:12px;font-weight:800;color:#47745c;letter-spacing:.03em;margin-bottom:9px}.v12-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v12-choice{border:1px solid #d4e1d7;background:#f7faf6;border-radius:12px;padding:12px;text-align:left;line-height:1.55;cursor:pointer;color:#3a5e4c;font-weight:650}.v12-choice.selected{border-color:#59846c;background:#e4f0e5;box-shadow:inset 0 0 0 1px #6c957b}.v12-suggest{display:flex;flex-direction:column;gap:8px}.v12-suggest button{text-align:left}.v12-textarea{width:100%;min-height:125px;padding:13px;border:1px solid #c7d8c9;border-radius:12px;background:white;resize:vertical;line-height:1.9}.v12-info{color:#64786c;font-size:12px;line-height:1.8}.v12-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}@media(max-width:700px){.v12-grid{grid-template-columns:1fr}.v12-panel{padding:14px}}';
+document.head.appendChild(v12CSS);
+function v12GetAction(){return V12_ACTIONS.concat(V12_MORAL,V12_FOREIGN).find(x=>x.id===v12Guide?.action)}
+function v12ActionChoices(){
+ if(!v12Guide)return V12_ACTIONS;
+ if(v12Guide.type==='道徳')return V12_MORAL;
+ if(v12Guide.type==='外国語活動')return V12_FOREIGN;
+ return V12_ACTIONS;
+}
+function v12LessonName(){
+ const g=v12Guide;
+ if(!g)return '';
+ const unit=g.unit.trim(),sub=g.subject;
+ if(sub==='生活・特別活動')return unit?unit+'では、':'係・当番活動では、';
+ if(g.type==='総合的な学習の時間')return unit?'総合的な学習の時間の「'+unit+'」では、':'総合的な学習の時間では、';
+ if(g.type==='道徳')return unit?'道徳の「'+unit+'」では、':'道徳の学習では、';
+ if(g.type==='外国語活動')return unit?'外国語活動の「'+unit+'」では、':'外国語活動では、';
+ if(sub==='学習全般')return unit?'「'+unit+'」の学習では、':'学習の中で、';
+ return unit?sub+'の「'+unit+'」の学習では、':sub+'の学習では、';
+}
+function v12Sentence(text){
+ return String(text||'').trim().replace(/[。！？]+$/,'')+'。';
+}
+function v12NaturalPreview(){
+ const g=v12Guide,a=v12GetAction();
+ if(!g||!a)return '';
+ let text=v12LessonName()+v12Sentence(a.text);
+ const detail=String(g.detail||'').trim();
+ if(detail){text+=v12Sentence(detail)}
+ return applyRules(text);
+}
+function v12Start(n){
+ const c=cur(),t=activeType;
+ if(c.missing.includes(n)){toast('欠番は選べません');return}
+ const row=v8Selection(c,t,n),units=v8Available(c,row.subject),chosen=units.find(x=>x.id===row.unit);
+ const available=v8Subjects(c,t);
+ const sub=available.includes(row.subject)?row.subject:(t==='総合所見'?'学習全般':t);
+ v12Guide={classId:c.id,type:t,number:n,subject:sub,unit:chosen?.unit||'',action:'',detail:'',draft:'',mode:getEnt(c,t,n).text.trim()?'append':'replace'};
+ page='guide';render();
+}
+const v12PreviousPicker=v8Picker;
+v8Picker=function(c,t,n){
+ return v12PreviousPicker(c,t,n)+
+ '<div class="v12-actions"><button class="btn softbtn" data-v12="start" data-n="'+n+'">✦ ぴったりの文例がない → 質問から考える</button></div>';
+};
+const v12PreviousRender=render;
+render=function(){
+ if(page==='guide'){renderTop();$('main').innerHTML=v12HTML();return}
+ v12PreviousRender();
+};
+function v12HTML(){
+ const g=v12Guide;if(!g)return header('質問から文章を作る','一覧編集から作業番号を選んでください。');
+ const c=S.classes.find(x=>x.id===g.classId),src=getEnt(c,g.type,g.number);
+ const a=v12GetAction(),choices=v12ActionChoices();
+ const subjectList=v8Subjects(c,g.type),detailSelected=!!g.detail;
+ return header('その子らしい文章を考える','ちょうどよい文例がなくても大丈夫。3つの問いから、実際に見られた姿を文章にします。')+
+ '<div class="inline" style="margin:0 0 15px"><span class="tag">'+E(labelClass(c))+'</span><span class="tag">作業番号 '+g.number+'</span><span class="tag">'+E(g.type)+'</span><button class="btn" data-v12="back">一覧へ戻る</button></div>'+
+ '<div class="grid"><div class="panel c7"><div class="stack">'+
+ '<div class="v12-panel"><div class="v12-heading">質問 1｜どの単元・活動での姿？</div>'+
+ '<div class="two"><div class="field"><label>教科・領域</label><select data-v12-field="subject"'+(g.type==='総合所見'?'':' disabled')+'>'+
+ subjectList.map(s=>option(s,g.subject)).join('')+'</select></div>'+
+ '<div class="field"><label>単元・活動名</label><input data-v12-field="unit" value="'+E(g.unit)+'" placeholder="例：ちいちゃんのかげおくり／誕生日係"></div></div>'+
+ '<p class="v12-info" style="margin:10px 0 0">単元名は一覧で選んだ内容を引き継ぎます。選ばれていない場合はここで入力できます。</p></div>'+
+ '<div class="v12-panel"><div class="v12-heading">質問 2｜一番近い学習の姿は？</div>'+
+ '<div class="v12-grid">'+choices.map(x=>'<button type="button" class="v12-choice'+(x.id===g.action?' selected':'')+'" data-v12="action" data-id="'+x.id+'">'+E(x.label)+'</button>').join('')+'</div>'+
+ '<p class="v12-info" style="margin:10px 0 0">この児童に実際に見られた姿だけを選んでね。</p></div>'+
+ '<div class="v12-panel"><div class="v12-heading">質問 3｜その子らしさが表れた具体的な場面は？</div>'+
+ (a?'<p><strong>'+E(a.question)+'</strong></p><div class="v12-suggest">'+a.suggestions.map((x,i)=>
+ '<button type="button" class="v12-choice'+(x===g.detail?' selected':'')+'" data-v12="detail" data-i="'+i+'">'+E(x)+'</button>').join('')+'</div>':
+ '<p class="v12-info">先に質問2を選ぶと、考えるヒントが表示されます。</p>')+
+ '<div class="field" style="margin-top:12px"><label>見られた事実を自分の言葉で（任意・完成した一文）</label>'+
+ '<textarea class="v12-textarea" data-v12-field="detail" placeholder="例：二つのかげおくりを比べ、本文の言葉を根拠に説明していました。">'+E(g.detail)+'</textarea></div>'+
+ '<p class="v12-info" style="margin:7px 0 0">提案の文はヒント。事実と違えば選ばずに、下の欄に観察した行動を書いてね。名前など個人を特定できる情報は入力しないでください。</p></div>'+
+ '</div></div>'+
+ '<div class="panel c5"><div class="section-kicker">YOUR DRAFT</div><h2 style="margin:3px 0 10px">下書きを確認・修正</h2>'+
+ '<p class="v12-info">選択した内容だけで下書きにします。アプリが児童の姿を推測して書き足すことはありません。</p>'+
+ '<button class="btn primary" data-v12="make"'+(a?'':' disabled')+'>回答から下書きを作る</button>'+
+ '<div class="field" style="margin-top:14px"><label>所見文（自由に修正）</label><textarea id="v12-draft" class="v12-textarea" data-v12-field="draft" placeholder="質問2を選んで「回答から下書きを作る」を押してください">'+E(g.draft)+'</textarea></div>'+
+ '<div class="v12-info">'+Array.from(g.draft).length+'字／文字数条件 '+v8Limits(g.type).min+'〜'+v8Limits(g.type).max+'字</div>'+
+ (src.text.trim()?'<div class="notice" style="margin-top:12px"><strong>現在の所見</strong><p style="white-space:pre-wrap;margin:5px 0 0">'+E(src.text.slice(0,500))+'</p></div>':'')+
+ '<div class="field" style="margin-top:12px"><label>今の文章への配置方法</label><select data-v12-field="mode">'+
+ '<option value="append"'+(g.mode==='append'?' selected':'')+'>後ろに追加する</option>'+
+ '<option value="replace"'+(g.mode==='replace'?' selected':'')+'>この下書きで置き換える</option></select></div>'+
+ '<div class="v12-actions"><button class="btn primary" data-v12="insert"'+(!g.draft.trim()?' disabled':'')+'>作業番号'+g.number+'に配置</button><button class="btn" data-v12="back">キャンセル</button></div>'+
+ '<div class="warning small" style="margin-top:15px">文例の自動生成AIではなく、観察した姿から文章を組み立てるオフライン補助機能です。配置後は「要検討」とし、個別に事実を確認してから確定してください。確定済みの所見は変更しません。</div>'+
+ '</div></div>';
+}
+document.addEventListener('input',e=>{
+ const field=e.target?.dataset?.v12Field;if(!field||!v12Guide)return;
+ if(field==='unit'||field==='detail'||field==='draft')v12Guide[field]=e.target.value;
+ if(field==='unit'||field==='detail')v12Guide.draft='';
+});
+document.addEventListener('change',e=>{
+ const field=e.target?.dataset?.v12Field;if(!field||!v12Guide)return;
+ if(field==='subject'){v12Guide.subject=e.target.value;v12Guide.draft='';render()}
+ else if(field==='mode')v12Guide.mode=e.target.value;
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v12]');if(!b)return;
+ const name=b.dataset.v12;
+ if(name==='start'){v12Start(Number(b.dataset.n));return}
+ if(!v12Guide)return;
+ const g=v12Guide,c=S.classes.find(x=>x.id===g.classId);
+ if(name==='back'){activeClass=g.classId;activeType=g.type;page='edit';render();return}
+ if(name==='action'){g.action=b.dataset.id;g.detail='';g.draft='';render();return}
+ if(name==='detail'){const a=v12GetAction();if(!a)return;const pick=a.suggestions[Number(b.dataset.i)];g.detail=g.detail===pick?'':pick;g.draft='';render();return}
+ if(name==='make'){
+  if(!v12GetAction()){toast('質問2の学習の姿を選んでください');return}
+  g.draft=v12NaturalPreview();render();toast('下書きを作りました。内容を確認し、必要な部分を修正してください');return;
+ }
+ if(name==='insert'){
+  const row=getEnt(c,g.type,g.number),text=g.draft.trim();
+  if(!text){toast('下書きを入力してください');return}
+  if(c.missing.includes(g.number)){toast('欠番には配置できません');return}
+  if(row.status==='確定'){toast('確定済みの文章はこの機能では変更できません');return}
+  if(row.text.includes(text)){toast('同じ文章がすでに入っています');return}
+  if(g.mode==='replace'&&row.text.trim()&&!confirm('作業番号'+g.number+'の文章を置き換えますか？'))return;
+  const result=g.mode==='append'&&row.text.trim()?row.text.trimEnd()+'\n'+text:text;
+  editEnt(c,g.type,g.number,{text:result,status:'要検討',touched:true,guideUsed:true});
+  activeClass=c.id;activeType=g.type;page='edit';render();toast('下書きを配置しました。観察した姿と合うか確認してください');
+ }
+});
+
+</script><script>
+/* bundled v13-school-layout.js */
+/* Shoken Studio v1.3 school-wide comprehensive comment format */
+const V13_TEMPLATE=[
+ {id:'general',label:'学習全般',on:true,target:45},
+ {id:'s0',label:'教科①',on:true,target:60},
+ {id:'s1',label:'教科②',on:true,target:60},
+ {id:'s2',label:'教科③',on:false,target:60},
+ {id:'life',label:'生活面',on:true,target:55},
+ {id:'activity',label:'係・当番・特別活動',on:false,target:55}
+];
+let v13Draft=null;
+let v13DetailsOpen=false;
+const v13Style=document.createElement('style');
+v13Style.textContent='.v13-config-row{display:grid;grid-template-columns:2fr 1fr 76px 34px 34px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #e4ebe2}.v13-config-row input[type=number]{width:100%}.v13-config-row input[type=checkbox]{width:17px;height:17px}.v13-config-row button{padding:6px;min-width:30px}.v13-subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.v13-subject-grid .field{margin:0}.v13-row-extra{font-size:11px;color:#597465;margin-left:5px}.v13-layout-card{padding:14px;border:1px solid #dbe6dd;border-radius:14px;background:#f8faf7;margin:0 0 11px}.v13-layout-card textarea{width:100%;min-height:100px;border:1px solid #c8d9cc;border-radius:10px;padding:12px;background:#fff;line-height:1.85}.v13-preview{white-space:pre-wrap;line-height:1.95;background:#fff;border:1px solid #d5e4d7;padding:14px;border-radius:12px;min-height:85px;overflow-wrap:anywhere}.v13-highlight{font-size:25px;font-weight:800;color:#315c4d}.v13-draft-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.v13-meter{height:7px;border-radius:7px;background:#e7eee6;overflow:hidden;margin-top:5px}.v13-meter>div{height:100%;background:#7d9f87}.v13-mini{font-size:12px;color:#5c7666}.v13-stale{background:#fff1e9;border:1px solid #ecd0be;padding:12px;border-radius:12px;color:#8f5541;margin:10px 0}.v13-good{color:#316f50}.v13-warning{color:#a45d49}@media(max-width:700px){.v13-config-row{grid-template-columns:minmax(0,1.6fr) 45px 63px 26px 26px;gap:5px}.v13-config-row button{padding:5px;min-width:23px}.v13-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}';
+document.head.appendChild(v13Style);
+function v13Config(){
+ S.prefs=S.prefs||{};
+ let s=S.prefs.comprehensiveLayout;
+ if(!s||!Array.isArray(s.slots)){
+  s={slots:V13_TEMPLATE.map(x=>({...x})),breaks:'single',countBreaks:false,subjectTargets:{}};
+  S.prefs.comprehensiveLayout=s;
+ }
+ if(!s.subjectTargets)s.subjectTargets={};
+ if(!['none','single','blank'].includes(s.breaks))s.breaks='single';
+ return s;
+}
+function v13Order(c){return c.slots.filter(x=>x.on)}
+function v13Target(slot,c,row){
+ if(slot.id.charAt(0)==='s'){
+  const i=Number(slot.id.charAt(1)),subject=row.subjects?.[i]||'要検討';
+  return Math.max(0,Number(c.subjectTargets[subject]??slot.target)||0);
+ }
+ return Math.max(0,Number(slot.target)||0);
+}
+function v13Name(slot,row){
+ if(slot.id.charAt(0)==='s'&&slot.id.length===2){
+  const i=Number(slot.id.slice(1)),name=row.subjects?.[i]||'要検討';
+  return slot.label+(name!=='要検討'?'・'+name:'・教科未設定');
+ }
+ return slot.label;
+}
+function v13SettingsHTML(){
+ const c=v13Config(),lim=v8Limits('総合所見');
+ const subjects=SUBJECTS.filter(x=>x!=='要検討');
+ return '<div class="panel wide" style="margin-top:18px"><div class="section-kicker">SCHOOL FORMAT / COMPREHENSIVE REPORT</div><h2 style="margin:4px 0">学校に合わせた総合所見の構成</h2>'+
+ '<p class="muted small">ここでの設定は、アプリ内のすべてのクラスで共通です。学校名などの個人情報は必要ありません。</p>'+
+ '<div class="two">'+field('総合所見全体の下限（字）','<input type="number" min="1" max="1500" data-v13-limit="min" value="'+lim.min+'">')+
+ field('総合所見全体の上限（字）','<input type="number" min="1" max="1500" data-v13-limit="max" value="'+lim.max+'">')+'</div>'+
+ '<div class="notice" style="margin:10px 0 16px">全体の下限・上限はホームの「文字数クリア率」と連動。各教科・生活面の文字数は目安で、全体の合否と分けて表示します。初期の1〜300字は仮設定です。</div>'+
+ '<h3>配置する項目と順番</h3><div class="v13-draft-actions" style="margin-bottom:11px">'+
+ '<button class="btn softbtn" data-v13="preset" data-way="study">学習面 → 生活面</button>'+
+ '<button class="btn softbtn" data-v13="preset" data-way="life">生活面 → 学習面</button></div>'+
+ '<div class="v13-mini">チェックで項目を使用。↑↓で並び順を調整。文字数は項目ごとの目安です。</div>'+
+ c.slots.map((x,i)=>'<div class="v13-config-row"><label class="inline" style="gap:5px"><input type="checkbox" data-v13-slot="on" data-id="'+x.id+'"'+(x.on?' checked':'')+'> <strong>'+E(x.label)+'</strong></label>'+
+ '<div class="field"><label>目安字数</label><input type="number" min="0" max="1000" data-v13-slot="target" data-id="'+x.id+'" value="'+x.target+'"></div>'+
+ '<span class="v13-mini">'+(x.id.charAt(0)==='s'?'教科別優先':'')+'</span>'+
+ '<button class="btn" data-v13="move" data-index="'+i+'" data-delta="-1"'+(i===0?' disabled':'')+'>↑</button>'+
+ '<button class="btn" data-v13="move" data-index="'+i+'" data-delta="1"'+(i===c.slots.length-1?' disabled':'')+'>↓</button></div>').join('')+
+ '<div class="two" style="margin-top:16px">'+field('項目間の区切り','<select data-v13-select="breaks">'+
+ [['none','改行なし'],['single','1回改行'],['blank','空行を入れる（2回改行）']].map(x=>'<option value="'+x[0]+'"'+(x[0]===c.breaks?' selected':'')+'>'+x[1]+'</option>').join('')+'</select>')+
+ field('文字数の数え方','<label class="inline" style="margin-top:10px"><input type="checkbox" data-v13-check="countBreaks"'+(c.countBreaks?' checked':'')+'> 改行も1文字として数える</label>')+'</div>'+
+ '<details id="v13-subject-details" style="margin-top:18px"'+(v13DetailsOpen?' open':'')+'><summary><strong>国語・算数・理科など、教科ごとの目安字数</strong></summary>'+
+ '<p class="v13-mini" style="margin:10px 0">各番号の教科①②③に設定した教科名に応じて、この目安字数を優先して表示します。空欄は上の「教科①②③」の目安を使います。</p>'+
+ '<div class="v13-subject-grid">'+subjects.map(subject=>field(subject,'<input type="number" min="0" max="1000" data-v13-subject="'+E(subject)+'" value="'+(c.subjectTargets[subject]??'')+'" placeholder="共通目安">')).join('')+'</div></details>'+
+ '<div class="warning small" style="margin-top:15px">構成や改行を変更しても、すでに入力・確定した文章は自動で書き換えません。各番号の「構成別に編集」で確認し、明示的に配置したときだけ本文が更新されます。</div></div>';
+}
+const v13OldSettings=v4Settings;
+v4Settings=function(){v13OldSettings();const root=document.createElement('div');root.innerHTML=v13SettingsHTML();$('main').appendChild(root)};
+const v13OldLen=v8Length;
+v8Length=function(s){let x=String(s||'').trim();if(!v13Config().countBreaks)x=x.replace(/\r\n|\r|\n/g,'');return Array.from(x).length};
+document.addEventListener('click',e=>{
+ if(e.target.closest('#v13-subject-details > summary'))v13DetailsOpen=!v13DetailsOpen;
+});
+document.addEventListener('change',e=>{
+ const node=e.target,conf=v13Config();
+ if(node.dataset.v13Limit){
+  const t=node.dataset.v13Limit,lim={...v8Limits('総合所見')},n=Math.max(1,Math.min(1500,Number(node.value)||1));
+  lim[t]=n;if(lim.max<lim.min){if(t==='min')lim.max=lim.min;else lim.min=lim.max}
+  S.prefs.charLimits=S.prefs.charLimits||{};S.prefs.charLimits['総合所見']=lim;render();toast('全体文字数の条件を更新しました');return;
+ }
+ if(node.dataset.v13Slot){
+  const slot=conf.slots.find(x=>x.id===node.dataset.id);if(!slot)return;
+  if(node.dataset.v13Slot==='on')slot.on=!!node.checked;
+  else slot.target=Math.max(0,Math.min(1000,Number(node.value)||0));
+  render();return;
+ }
+ if(node.dataset.v13Subject){
+  const name=node.dataset.v13Subject;if(node.value==='')delete conf.subjectTargets[name];
+  else conf.subjectTargets[name]=Math.max(0,Math.min(1000,Number(node.value)||0));
+  render();return;
+ }
+ if(node.dataset.v13Select==='breaks'){conf.breaks=node.value;render();return}
+ if(node.dataset.v13Check==='countBreaks'){conf.countBreaks=!!node.checked;render();return}
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v13]');if(!b)return;
+ const conf=v13Config();
+ if(b.dataset.v13==='move'){
+  const i=Number(b.dataset.index),j=i+Number(b.dataset.delta);
+  if(j<0||j>=conf.slots.length)return;
+  const copy=conf.slots.slice(),temp=copy[i];copy[i]=copy[j];copy[j]=temp;conf.slots=copy;render();
+ }else if(b.dataset.v13==='preset'){
+  const list=conf.slots.slice(),isLife=x=>['life','activity'].includes(x.id);
+  conf.slots=(b.dataset.way==='life'?list.filter(isLife).concat(list.filter(x=>!isLife(x))):list.filter(x=>!isLife(x)).concat(list.filter(isLife)));
+  render();toast('順番の見本を設定しました。使用する項目と目安を確認してください');
+ }
+});
+
+</script><script>
+/* bundled v13-composer.js */
+/* Shoken Studio v1.3 structured comprehensive comment composer */
+function v13Stored(c,n){return getEnt(c,'総合所見',n).comprehensiveParts||null}
+function v13SubjectsKey(row){return JSON.stringify((row.subjects||[]).slice(0,3))}
+function v13CopyParts(parts){const out={};for(const [k,v] of Object.entries(parts||{}))out[k]=String(v||'');return out}
+function v13Start(n){
+ const c=cur(),t='総合所見',row=getEnt(c,t,n);
+ if(c.missing.includes(n)){toast('欠番は編集できません');return}
+ const stored=v13Stored(c,n);
+ const coherent=stored&&row.text===stored.lastGenerated;
+ v13Draft={classId:c.id,number:n,parts:coherent?v13CopyParts(stored.parts):{},
+ legacy:coherent?String(stored.legacy||''):String(row.text||''),
+ basedOn:String(row.text||''),stored:stored||null,stale:!!stored&&!coherent,
+ subjectMismatch:!!(stored&&stored.subjectsKey&&stored.subjectsKey!==v13SubjectsKey(row)),
+ choice:{},live:''};
+ page='structure';render();
+}
+function v13CurrentRow(){
+ if(!v13Draft)return null;
+ const c=S.classes.find(x=>x.id===v13Draft.classId);
+ return c?getEnt(c,'総合所見',v13Draft.number):null;
+}
+function v13Assemble(){
+ if(!v13Draft)return '';
+ const c=v13Config(),delim=c.breaks==='blank'?'\n\n':c.breaks==='single'?'\n':'';
+ const items=v13Order(c).map(slot=>String(v13Draft.parts[slot.id]||'').trim()).filter(Boolean);
+ const legacy=String(v13Draft.legacy||'').trim();if(legacy)items.push(legacy);
+ return c.breaks==='none'?items.map(x=>x.replace(/[\r\n]+/g,'')).join(''):items.join(delim);
+}
+function v13CharInfo(s,t){const n=v8Length(s);return t?{length:n,delta:n-t}:{length:n,delta:null}}
+function v13ProgressLabel(len,lim){
+ return len>=lim.min&&len<=lim.max?'✓ 総合所見の文字数クリア':len<lim.min?'あと'+(lim.min-len)+'字で下限に到達':'上限を'+(len-lim.max)+'字超えています';
+}
+function v13BankForSlot(slot,row,c){
+ const s=slot.id;
+ let subject='';
+ if(s==='general')subject='学習全般';
+ else if(s==='life'||s==='activity')subject='生活・特別活動';
+ else if(/^s[0-2]$/.test(s))subject=row.subjects?.[Number(s.slice(1))]||'';
+ if(!subject||subject==='要検討')return [];
+ return S.bank.filter(b=>Number(b.grade)===Number(c.grade)&&b.subject===subject);
+}
+function v13SectionHTML(slot,row,c){
+ const draft=v13Draft,count=v8Length(draft.parts[slot.id]||''),target=v13Target(slot,v13Config(),row);
+ const names=v13Name(slot,row),choices=v13BankForSlot(slot,row,c);
+ const pick=draft.choice[slot.id]||'';
+ return '<div class="v13-layout-card"><div class="inline between"><strong>'+E(names)+'</strong>'+
+ '<span class="v13-mini" data-v13-count="'+slot.id+'">'+count+'字'+(target?' ／ 目安'+target+'字':' ／ 目安なし')+'</span></div>'+
+ (target?'<div class="v13-meter"><div data-v13-meter="'+slot.id+'" style="width:'+Math.min(100,count/target*100)+'%"></div></div>':'')+
+ '<div class="field" style="margin-top:12px"><label>この項目の文章</label>'+
+ '<textarea data-v13-part="'+slot.id+'" placeholder="実際に見られた学習の姿を入力。文例を入れた後も修正できます">'+E(draft.parts[slot.id]||'')+'</textarea></div>'+
+ '<div class="inline" style="margin-top:8px;gap:6px"><select style="flex:1;min-width:145px" data-v13-bank="'+slot.id+'"><option value="">'+(choices.length?'文例バンクから選ぶ':'この項目の登録文例はまだありません')+'</option>'+
+ choices.map(x=>'<option value="'+x.id+'"'+(String(x.id)===String(pick)?' selected':'')+'>'+E((x.unit||'自由文例')+'｜'+x.text.slice(0,30)+'…')+'</option>').join('')+'</select>'+
+ '<button class="btn softbtn" data-v13="insert-bank" data-slot="'+slot.id+'"'+(pick?'':' disabled')+'>文例を追加</button></div></div>';
+}
+function v13StructureHTML(){
+ if(!v13Draft)return header('総合所見の構成編集','一覧編集から番号を選んでください。');
+ const draft=v13Draft,c=S.classes.find(x=>x.id===draft.classId),row=getEnt(c,'総合所見',draft.number);
+ const config=v13Config(),lim=v8Limits('総合所見'),sections=v13Order(config),text=v13Assemble(),len=v8Length(text);
+ const stale=row.text!==draft.basedOn||draft.stale,locked=row.status==='確定';
+ const subjectWarn=draft.subjectMismatch;
+ const hidden=config.slots.filter(x=>!x.on&&String(draft.parts[x.id]||'').trim());
+ const actual=String(row.text||''),oldChar=v8Length(actual);
+ return header('総合所見の構成別編集','学習面と生活面を分けて入力。学校の順番と改行設定で仕上げてから、本文に反映します。')+
+ '<div class="inline" style="margin:0 0 16px"><span class="tag">'+E(labelClass(c))+'</span><span class="tag">作業番号 '+draft.number+'</span>'+
+ '<span class="tag">'+E(row.status)+'</span><button class="btn" data-v13="back">一覧編集に戻る</button></div>'+
+ (locked?'<div class="v13-stale">この番号は確定済みです。修正する場合は、先に一覧編集で「下書き」または「要検討」に戻してください。</div>':'')+
+ (stale?'<div class="v13-stale"><strong>この文章は、前回の構成入力後にほかの画面で更新されています。</strong><p style="margin:6px 0">上書き事故を防ぐため、このまま反映できません。現在の本文を「既存の文章」へ引き継ぐか、保存済みの構成を再開するか選んでください。</p>'+
+ '<div class="v13-draft-actions"><button class="btn softbtn" data-v13="keep-current">現在の本文を引き継ぐ</button>'+
+ (draft.stored?'<button class="btn" data-v13="restore-stored">前回の構成を再開する</button>':'')+'</div></div>':'')+
+ (subjectWarn?'<div class="warning small" style="margin-bottom:12px">教科①②③の設定が前回と変わっています。文章と教科名が合っているか、確認してから反映してください。</div>':'')+
+ '<div class="grid"><div class="panel c7"><div class="section-kicker">SECTIONS IN SCHOOL ORDER</div><h2 style="margin:4px 0 10px">項目ごとに書く</h2>'+
+ '<p class="v13-mini">現在の学校設定：'+E(config.breaks==='none'?'改行なし':config.breaks==='single'?'項目間で1回改行':'項目間に空行')+
+ '。目安字数は参考値で、全体の文字数クリアとは別に表示します。</p>'+
+ sections.map(slot=>v13SectionHTML(slot,row,c)).join('')+
+ (hidden.length?'<div class="v13-stale">現在は使わない設定の項目に文章があります（'+hidden.map(x=>E(x.label)).join('、')+'）。保存済みの文章自体は残しますが、完成文に含まれません。</div>':'')+
+ '<div class="v13-layout-card"><strong>これまでの文章（未分類・引き継ぎ用）</strong><p class="v13-mini" style="margin:6px 0">過去に作った所見は、消さずにここに引き継ぎます。内容を項目別へ移した後は重複しないようこの欄から削除してください。完成文では末尾に配置します。</p>'+
+ '<textarea data-v13-legacy="true" placeholder="これまでの文章がある場合はここに残ります">'+E(draft.legacy)+'</textarea></div>'+
+ '</div><div class="panel c5"><div class="section-kicker">TOTAL CHARACTER CHECK</div>'+
+ '<h2 style="margin:4px 0 12px">総合所見全体の文字数</h2>'+
+ '<div class="v13-highlight" id="v13-total">'+len+'字</div>'+
+ '<p class="v13-mini">学校設定：'+lim.min+'〜'+lim.max+'字（改行'+(config.countBreaks?'も数える':'は数えない')+'）</p>'+
+ '<p id="v13-status" class="'+(len>=lim.min&&len<=lim.max?'v13-good':'v13-warning')+'">'+v13ProgressLabel(len,lim)+'</p>'+
+ '<div class="v13-meter"><div id="v13-total-meter" style="width:'+Math.min(100,len/lim.max*100)+'%"></div></div>'+
+ '<h3 style="margin-top:20px">完成プレビュー</h3><div id="v13-preview" class="v13-preview">'+E(text||'まだ文章がありません。')+'</div>'+
+ '<div class="v13-draft-actions"><button class="btn primary" data-v13="apply"'+(locked||stale||!text.trim()?' disabled':'')+'>この文章を総合所見に反映</button>'+
+ '<button class="btn" data-v13="back">閉じる</button></div>'+
+ '<p class="v13-mini" style="margin-top:12px">ここで反映するまで現在の所見本文は変わりません。反映しても状態は「下書き／要検討」で、確定は一覧編集から行います。</p>'+
+ (actual?'<div class="notice" style="margin-top:15px"><strong>現在の登録本文（'+oldChar+'字）</strong><p style="white-space:pre-wrap;overflow-wrap:anywhere;margin:7px 0 0">'+E(actual.slice(0,500))+(actual.length>500?'…':'')+'</p></div>':'')+
+ '</div></div>';
+}
+const v13OldEdit=editHTML;
+editHTML=function(){
+ const s=v13OldEdit();
+ if(activeType!=='総合所見')return s;
+ return s.replace(/(<strong>作業番号 (\d+)<\/strong>)/g,(whole,tag,n)=>{
+  const c=cur(),row=getEnt(c,'総合所見',Number(n)),len=v8Length(row.text),lim=v8Limits('総合所見');
+  const status=len>=lim.min&&len<=lim.max?'✓':'△';
+  const p=row.comprehensiveParts;
+  const category=p?(p.lastGenerated===row.text?'構成入力済み':'構成と本文を要確認'):'';
+  return tag+' <button class="btn softbtn small" data-v13="open" data-n="'+n+'"'+(c.missing.includes(Number(n))?' disabled':'')+'>構成別に編集</button> <span class="v13-row-extra">'+status+len+'字'+(category?'・'+E(category):'')+'</span>';
+ });
+};
+const v13OldRender=render;
+render=function(){
+ if(page==='structure'){renderTop();$('main').innerHTML=v13StructureHTML();return}
+ v13OldRender();
+};
+function v13UpdateLive(){
+ if(!v13Draft||page!=='structure')return;
+ const text=v13Assemble(),len=v8Length(text),lim=v8Limits('総合所見'),c=S.classes.find(x=>x.id===v13Draft.classId),row=getEnt(c,'総合所見',v13Draft.number);
+ const total=$('v13-total'),status=$('v13-status'),preview=$('v13-preview'),bar=$('v13-total-meter');
+ if(total)total.textContent=len+'字';
+ if(status){status.textContent=v13ProgressLabel(len,lim);status.className=len>=lim.min&&len<=lim.max?'v13-good':'v13-warning'}
+ if(preview)preview.textContent=text||'まだ文章がありません。';
+ if(bar)bar.style.width=Math.min(100,len/lim.max*100)+'%';
+ for(const slot of v13Order(v13Config())){
+  const n=v8Length(v13Draft.parts[slot.id]||''),target=v13Target(slot,v13Config(),row);
+  const label=document.querySelector('[data-v13-count="'+slot.id+'"]'),meter=document.querySelector('[data-v13-meter="'+slot.id+'"]');
+  if(label)label.textContent=n+'字'+(target?' ／ 目安'+target+'字':' ／ 目安なし');
+  if(meter)meter.style.width=Math.min(100,n/Math.max(1,target)*100)+'%';
+ }
+ const btn=document.querySelector('[data-v13="apply"]');
+ if(btn)btn.disabled=!!v13Draft.stale||!text.trim()||row.status==='確定';
+}
+document.addEventListener('input',e=>{
+ if(!v13Draft)return;
+ if(e.target.dataset.v13Part){v13Draft.parts[e.target.dataset.v13Part]=e.target.value;v13UpdateLive()}
+ else if(e.target.dataset.v13Legacy!==undefined){v13Draft.legacy=e.target.value;v13UpdateLive()}
+});
+document.addEventListener('change',e=>{
+ if(!v13Draft)return;
+ const id=e.target.dataset.v13Bank;
+ if(id!==undefined){
+  v13Draft.choice[id]=e.target.value;
+  const parent=e.target.parentElement,button=parent?.querySelector('[data-v13="insert-bank"]');
+  if(button)button.disabled=!e.target.value;
+ }
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v13]');if(!b)return;
+ const action=b.dataset.v13;
+ if(action==='open'){v13Start(Number(b.dataset.n));return}
+ if(!v13Draft)return;
+ const draft=v13Draft,c=S.classes.find(x=>x.id===draft.classId),row=getEnt(c,'総合所見',draft.number);
+ if(action==='back'){activeClass=draft.classId;activeType='総合所見';page='edit';render();return}
+ if(action==='keep-current'){
+  draft.parts={};draft.legacy=row.text;draft.basedOn=row.text;draft.stale=false;draft.subjectMismatch=false;render();return;
+ }
+ if(action==='restore-stored'){
+  if(!draft.stored)return;
+  if(!confirm('現在の本文よりも前回の構成入力を優先します。現在の本文は反映時に置き換わりますが、続けますか？'))return;
+  draft.parts=v13CopyParts(draft.stored.parts);draft.legacy=String(draft.stored.legacy||'');draft.basedOn=row.text;draft.stale=false;draft.subjectMismatch=true;render();return;
+ }
+ if(action==='insert-bank'){
+  const id=Number(draft.choice[b.dataset.slot]),bank=S.bank.find(x=>x.id===id);
+  if(!bank){toast('差し込む文例を選んでください');return}
+  const old=String(draft.parts[b.dataset.slot]||'').trim(),extra=bank.text.trim();
+  draft.parts[b.dataset.slot]=old?(old.includes(extra)?old:old+'\n'+extra):extra;
+  render();toast('文例を構成欄に追加しました。児童の姿に合わせて修正できます');return;
+ }
+ if(action==='apply'){
+  if(row.status==='確定'){toast('確定済みなので先に下書きに戻してください');return}
+  if(row.text!==draft.basedOn||draft.stale){toast('所見が更新されています。現在の文章を引き継いで確認してください');render();return}
+  const full=v13Assemble();if(!full.trim()){toast('文章を入力してください');return}
+  const hidden=v13Config().slots.filter(x=>!x.on&&String(draft.parts[x.id]||'').trim());
+  if(hidden.length&&!confirm('非表示の項目に文章が残っています。完成文には含まれません。続けますか？'))return;
+  const oldText=String(row.text||'');
+  if(oldText&&oldText!==full&&!confirm('現在の総合所見の本文を、この構成に沿った文章へ更新しますか？'))return;
+  editEnt(c,'総合所見',draft.number,{
+   text:full,status:row.status==='要検討'?'要検討':'下書き',touched:true,
+   comprehensiveParts:{parts:v13CopyParts(draft.parts),legacy:String(draft.legacy||''),lastGenerated:full,subjectsKey:v13SubjectsKey(row)}
+  });
+  activeClass=draft.classId;activeType='総合所見';page='edit';render();
+  const len=v8Length(full),lim=v8Limits('総合所見');
+  toast('総合所見を更新しました（'+len+'字）'+(len>=lim.min&&len<=lim.max?'・文字数クリア':'・文字数要確認'));
+ }
+});
+
+</script><script src="v14-proofread.js"></script><script src="v15-smart-import.js"></script><script src="v16-storage.js"></script><script src="v17-workflow.js"></script><script src="v18-textbooks.js"></script><script src="v19-unit-catalog.js"></script><script src="v20-curated-examples.js"></script><script src="v21-pe-and-inquiry.js"></script><script src="v22-example-search.js"></script><script src="v28-theme-switcher.js"></script><script>render();</script></body></html>
