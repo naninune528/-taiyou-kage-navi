@@ -1867,4 +1867,2876 @@ document.addEventListener('click',e=>{
  }
 });
 
-</script><script src="v14-proofread.js"></script><script src="v15-smart-import.js"></script><script src="v16-storage.js"></script><script src="v17-workflow.js"></script><script src="v18-textbooks.js"></script><script src="v19-unit-catalog.js"></script><script src="v20-curated-examples.js"></script><script src="v21-pe-and-inquiry.js"></script><script src="v22-example-search.js"></script><script src="v28-theme-switcher.js"></script><script>render();</script></body></html>
+</script><script>
+/* bundled v14-proofread.js */
+/* Shoken Studio v1.4: privacy-preserving typo / consistency proofing
+   Local heuristic checks only; never claims to fully check Japanese grammar. */
+const V14_TYPES=['総合所見','総合的な学習の時間','外国語活動','道徳'];
+let v14Scope='all',v14Filter='issues',v14ClassId=0;
+const v14Style=document.createElement('style');
+v14Style.textContent='.v14-tally{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.v14-tally>div{padding:12px;background:#f7faf6;border:1px solid #dce8df;border-radius:12px}.v14-tally strong{display:block;font-size:21px;color:#325b4a}.v14-row{border:1px solid #dbe6dd;border-radius:14px;padding:14px;margin-top:13px;background:#fffefb}.v14-warning{padding:10px;margin:8px 0;background:#fff5ed;border:1px solid #ecd7c6;border-radius:10px;font-size:13px;line-height:1.8}.v14-warning strong{color:#955535}.v14-text{line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f9f5;padding:10px;border-radius:9px;font-size:13px;margin-top:9px}.v14-text mark{background:#ffe5a2;color:#47391e;border-radius:3px;padding:1px}.v14-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:10px}.v14-small{font-size:11px;color:#667a6d}.v14-summary{padding:12px;background:#eff5ee;border-radius:13px;margin:10px 0}.v14-filter{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px}.v14-filter .field{min-width:0}@media(max-width:700px){.v14-filter{grid-template-columns:1fr 1fr}.v14-filter .field:first-child{grid-column:span 2}.v14-tally{grid-template-columns:repeat(2,minmax(0,1fr))}}';
+document.head.appendChild(v14Style);
+function v14Push(out,id,index,len,text,title,replacement,type){
+ if(index<0||len<1)return;
+ if(out.some(x=>x.index===index&&x.length===len&&x.id===id))return;
+ out.push({id,index,length:len,found:text,title,replacement,type:type||'表記'});
+}
+function v14Checks(text){
+ const s=String(text||''),out=[];
+ if(!s.trim())return out;
+ // School-specific spelling rules: never automatically rewrite.
+ for(const rule of (Array.isArray(S.rules)?S.rules:[])){
+  if(!rule?.on||!rule.from||rule.from===rule.to)continue;
+  let start=0,k=0;
+  while((k=s.indexOf(rule.from,start))>=0){
+   v14Push(out,'school:'+rule.from,k,rule.from.length,rule.from,'学校の表記ルール：「'+rule.to+'」への統一を確認',rule.to,'表記');
+   start=k+rule.from.length;
+  }
+ }
+ const known=[
+  ['しましたた','しました'],['できましたた','できました'],['していましたた','していました'],
+  ['しましした','しました'],['できましした','できました'],['取り組みみ','取り組み'],
+  ['学習習','学習'],['考ええ','考え'],['話しし合','話し合'],['ましたました','ました']
+ ];
+ for(const [bad,good] of known){let at=0,k;while((k=s.indexOf(bad,at))>=0){v14Push(out,'typo:'+bad,k,bad.length,bad,'誤入力の可能性があります',good,'誤入力候補');at=k+bad.length}}
+ const patterns=[
+  {id:'punct',regex:/[、。，．]{2,}/g,title:'句読点が続いています',fix:m=>m.includes('。')||m.includes('．')?'。':'、'},
+  {id:'particle',regex:/(をを|がが)/g,title:'助詞の重複かもしれません',fix:m=>m.slice(0,1)},
+  {id:'space',regex:/[ 　]{3,}/g,title:'空白が多い可能性があります',fix:()=> ' '}
+ ];
+ for(const p of patterns){
+  for(const match of s.matchAll(p.regex)){
+   // Leading indentation is legitimate in some school templates.
+   if(p.id==='space'&&(!s.slice(0,match.index).trim()||s.charAt(match.index-1)==='\n'))continue;
+   v14Push(out,p.id,match.index,match[0].length,match[0],p.title,p.fix(match[0]),'体裁');
+  }
+ }
+ const end=s.trimEnd();
+ if(end&&!/[。！？!?」』）)]$/.test(end)){
+  const last=end[end.length-1];
+  if(!/[、，,：:;；]$/.test(end)){
+   v14Push(out,'end',end.length-1,1,last,'文末の句点「。」が必要か確認してください',null,'句読点');
+  }else v14Push(out,'end-comma',end.length-1,1,last,'文末が読点で終わっています',null,'句読点');
+ }
+ // 「〜たり、〜たり」の対応を提案として点検する。単独の「たり」も誤りと断定しない。
+ for(const match of s.matchAll(/たり[、，,][^。！？\n]{1,65}(?:[。！？]|$)/g)){
+  const text=match[0],next=text.slice(text.indexOf('たり')+2);
+  if(next.includes('たり'))continue;
+  v14Push(out,'tari-style',match.index,2,'たり',
+   '「〜たり、〜たり」の対応を確認してください。単独の「たり」も誤りとは限りません。',
+   null,'表現の確認');
+ }
+ // Some checks could overlap. Report each location once, prioritizing explicit school rules and known typos.
+ return out.sort((a,b)=>a.index-b.index).filter((x,i,array)=>!array.some((y,j)=>j<i&&y.index===x.index&&y.length===x.length));
+}
+function v14Records(c){
+ const types=v14Scope==='all'?V14_TYPES:[v14Scope];
+ const out=[];
+ for(const type of types){
+  for(let n=1;n<=c.count;n++){
+   if(c.missing.includes(n))continue;
+   const row=getEnt(c,type,n);
+   if(!row.text.trim())continue;
+   const issues=v14Checks(row.text),reviewed=row.proofreadCheckedText===row.text;
+   out.push({type,number:n,text:row.text,issues,reviewed,status:row.status});
+  }
+ }
+ return out;
+}
+function v14Totals(records){
+ return {entries:records.length,flags:records.reduce((sum,r)=>sum+r.issues.length,0),
+   flagged:records.filter(r=>r.issues.length).length,
+   reviewed:records.filter(r=>r.reviewed).length,
+   pending:records.filter(r=>!r.reviewed).length};
+}
+function v14Marked(text,issues){
+ if(!issues.length)return E(text);
+ const taken=[],html=[];let pos=0;
+ for(const issue of issues){
+  if(issue.index<pos)continue;
+  html.push(E(text.slice(pos,issue.index)));
+  html.push('<mark title="'+E(issue.title)+'">'+E(text.slice(issue.index,issue.index+issue.length))+'</mark>');
+  pos=issue.index+issue.length;taken.push(issue);
+ }
+ html.push(E(text.slice(pos)));
+ return html.join('');
+}
+function v14ProofHTML(){
+ const c=S.classes.find(x=>x.id===Number(v14ClassId))||cur();
+ const records=v14Records(c),totals=v14Totals(records);
+ const show=records.filter(x=>v14Filter==='all'||(v14Filter==='issues'?x.issues.length>0:!x.reviewed));
+ return header('誤字脱字・表記チェック','4種類の所見をまとめて点検。疑わしい表記を示し、修正と目視確認は先生が行います。')+
+ '<div class="grid"><div class="panel wide"><div class="v14-filter">'+
+ field('対象クラス','<select data-v14-field="class">'+S.classes.map(x=>'<option value="'+x.id+'"'+(x.id===c.id?' selected':'')+'>'+E(labelClass(x))+'</option>').join('')+'</select>')+
+ field('所見の種類','<select data-v14-field="scope"><option value="all"'+(v14Scope==='all'?' selected':'')+'>4種類すべて</option>'+V14_TYPES.map(x=>option(x,v14Scope)).join('')+'</select>')+
+ field('表示対象','<select data-v14-field="filter"><option value="issues"'+(v14Filter==='issues'?' selected':'')+'>気になる箇所のみ</option><option value="unchecked"'+(v14Filter==='unchecked'?' selected':'')+'>目視未確認のみ</option><option value="all"'+(v14Filter==='all'?' selected':'')+'>入力済みをすべて</option></select>')+
+ '</div><div class="v14-tally" style="margin:15px 0">'+
+ '<div><strong>'+totals.entries+'</strong><span class="v14-small">入力済みの文章</span></div>'+
+ '<div><strong>'+totals.flags+'</strong><span class="v14-small">確認候補（箇所）</span></div>'+
+ '<div><strong>'+totals.reviewed+'</strong><span class="v14-small">目視確認済み</span></div>'+
+ '<div><strong>'+totals.pending+'</strong><span class="v14-small">目視未確認</span></div></div>'+
+ '<p class="notice">このチェックは端末内で動く簡易チェックです。日本語のすべての誤字脱字・文法誤りを検出できるわけではありません。<strong>検出0件＝誤りなし、ではありません。</strong>個人情報を外部に送信しません。</p>'+
+ '<div class="inline" style="margin:15px 0"><button class="btn softbtn" data-v14="show-all">全文を目視確認する</button>'+
+ '<button class="btn" data-v14="back">所見の編集へ戻る</button></div>'+
+ (show.length?show.map((r)=>{
+  const actual=records.findIndex(x=>x===r),n=r.number;
+  return '<div class="v14-row"><div class="inline between"><strong>作業番号 '+n+'｜'+E(r.type)+'</strong><span class="tag '+(r.reviewed?'done':r.issues.length?'need':'draft')+'">'+(r.reviewed?'目視確認済み':r.issues.length+'件の候補')+'</span></div>'+
+  '<div class="v14-text">'+v14Marked(r.text,r.issues)+'</div>'+
+  r.issues.map((p,i)=>'<div class="v14-warning"><strong>'+E(p.title)+'</strong><div class="v14-small">対象：「'+E(p.found)+'」'+(p.replacement?' → 候補：「'+E(p.replacement)+'」':'')+'</div>'+
+   (p.replacement?'<div style="margin-top:5px"><button class="btn softbtn small" data-v14="fix" data-record="'+actual+'" data-issue="'+i+'"'+(r.status==='確定'?' disabled':'')+'>この候補に修正</button></div>':'')+
+   '</div>').join('')+
+  '<div class="v14-actions"><button class="btn" data-v14="edit" data-record="'+actual+'">この番号を編集</button>'+
+  '<button class="btn softbtn" data-v14="review" data-record="'+actual+'">'+(r.reviewed?'確認を取り消す':'文章を目視確認済みにする')+'</button>'+
+  (r.status==='確定'?'<span class="v14-small">確定済み。修正する場合は一覧編集で下書きに戻してください。</span>':'')+'</div></div>';
+ }).join(''):'<div class="v14-summary"><strong>'+ (v14Filter==='issues'?'自動で検出された確認候補はありません。':'該当する文章はありません。')+
+ '</strong><p class="v14-small">疑わしい箇所がなくても、内容・事実関係・「てにをは」は最終的な目視確認が必要です。</p></div>')+
+ '</div></div>';
+}
+function v14ReadRecords(){
+ const c=S.classes.find(x=>x.id===Number(v14ClassId))||cur();
+ return {c,records:v14Records(c)};
+}
+const v14Top=renderTop;
+renderTop=function(){
+ v14Top();const tabs=$('tabs');if(!tabs||tabs.querySelector('[data-page="proof"]'))return;
+ const b=document.createElement('button');b.className='tab'+(page==='proof'?' active':'');b.dataset.action='page';b.dataset.page='proof';b.textContent='⌕ 誤字脱字チェック';
+ const dest=tabs.querySelector('[data-page="export"]');tabs.insertBefore(b,dest);
+};
+const v14Render=render;
+render=function(){
+ if(page==='proof'){renderTop();$('main').innerHTML=v14ProofHTML();return}
+ v14Render();
+};
+const v14OldExport=exportHTML;
+exportHTML=function(){
+ return '<div class="panel wide" style="margin-bottom:17px"><div class="inline between"><div><strong>書き出し前の誤字脱字・表記確認</strong><p class="muted small" style="margin:5px 0 0">各所見の表記揺れ、助詞の重複、句読点などをチェックできます。</p></div>'+
+ '<button class="btn softbtn" data-v14="proof">誤字脱字チェックへ →</button></div></div>'+v14OldExport();
+};
+document.addEventListener('change',e=>{
+ const f=e.target?.dataset?.v14Field;if(!f)return;
+ if(f==='class'){v14ClassId=Number(e.target.value);render()}
+ else if(f==='scope'){v14Scope=e.target.value;render()}
+ else if(f==='filter'){v14Filter=e.target.value;render()}
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v14]');if(!b)return;
+ const op=b.dataset.v14;
+ if(op==='proof'){v14Scope='all';v14ClassId=cur().id;v14Filter='issues';page='proof';render();return}
+ if(op==='back'){activeClass=v14ClassId||activeClass;page='edit';render();return}
+ if(op==='show-all'){v14Filter='unchecked';render();return}
+ if(!['edit','review','fix'].includes(op))return;
+ const {c,records}=v14ReadRecords(),r=records[Number(b.dataset.record)];
+ if(!r){toast('対象を確認できませんでした。再読み込みしてください');return}
+ const current=getEnt(c,r.type,r.number);
+ if(current.text!==r.text){render();toast('本文が更新されています。再度チェックしてください');return}
+ if(op==='edit'){
+  activeClass=c.id;activeType=r.type;page='edit';render();
+  const target=document.getElementById('v8-num-'+r.number);
+  if(target?.scrollIntoView)target.scrollIntoView({behavior:'smooth',block:'center'});
+  return;
+ }
+ if(op==='review'){
+  if(!r.reviewed&&r.issues.length&&!confirm(r.issues.length+'件の候補があります。誤字ではないと確認したうえで目視確認済みにしますか？'))return;
+  editEnt(c,r.type,r.number,{proofreadCheckedText:r.reviewed?'':current.text});
+  render();toast(r.reviewed?'目視確認を取り消しました':'この文章を目視確認済みにしました');return;
+ }
+ if(op==='fix'){
+  if(current.status==='確定'){toast('確定済みです。一覧編集で状態を戻してから修正してください');return}
+  const issue=r.issues[Number(b.dataset.issue)];
+  if(!issue||issue.replacement===null){toast('修正候補がありません');return}
+  if(current.text.slice(issue.index,issue.index+issue.length)!==issue.found){render();toast('文章が変わっています。再チェックしてください');return}
+  if(!confirm('「'+issue.found+'」を「'+issue.replacement+'」へ修正しますか？'))return;
+  const revised=current.text.slice(0,issue.index)+issue.replacement+current.text.slice(issue.index+issue.length);
+  editEnt(c,r.type,r.number,{text:revised,status:'要検討',touched:true});
+  render();toast('候補を修正しました。全文を確認してください');
+ }
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-action="download-xlsx"]');if(!b)return;
+ const c=cur(),savedScope=v14Scope;v14Scope='all';
+ const checks=v14Records(c);v14Scope=savedScope;
+ const warnings=checks.reduce((s,x)=>s+x.issues.length,0),unreviewed=checks.filter(x=>!x.reviewed).length;
+ if(warnings||unreviewed){
+  if(!confirm('書き出し前チェック：自動検出'+warnings+'件、目視未確認'+unreviewed+'件。まず「誤字脱字チェック」で確認することをおすすめします。確認せず出力しますか？')){
+   e.preventDefault();e.stopImmediatePropagation();page='proof';v14ClassId=c.id;v14Scope='all';v14Filter='issues';render();
+  }
+ }
+},true);
+
+</script><script>
+/* bundled v15-smart-import.js */
+/* Shoken STUDIO v1.5 - paste many examples, choose grade, then review classifications */
+let v15Raw='',v15Grade=3,v15Items=null,v15Mode='paragraph',v15Reviewed=false;
+const V15_SUBJECTS=['未分類','国語','算数','理科','社会','生活','音楽','図工','体育','家庭','外国語','外国語活動','道徳','総合的な学習の時間','学習全般','生活・特別活動'];
+const V15_HEADING=[
+ ['総合的な学習の時間','総合的な学習の時間'],['外国語活動','外国語活動'],['生活・特別活動','生活・特別活動'],
+ ['生活面','生活・特別活動'],['係活動','生活・特別活動'],['当番活動','生活・特別活動'],['委員会活動','生活・特別活動'],
+ ['特別活動','生活・特別活動'],['学習全般','学習全般'],['生活科','生活'],['国語','国語'],['算数','算数'],
+ ['理科','理科'],['社会','社会'],['体育','体育'],['音楽','音楽'],['図工','図工'],['家庭科','家庭'],
+ ['家庭','家庭'],['外国語','外国語'],['道徳','道徳'],['総合','総合的な学習の時間'],['生活','生活・特別活動']
+];
+const v15Style=document.createElement('style');
+v15Style.textContent='.v15-paste{width:100%;min-height:230px;border:1px solid #c8dacb;padding:14px;border-radius:12px;line-height:1.8}.v15-card{padding:14px;border:1px solid #dce7db;background:#fffefb;border-radius:14px;margin:12px 0}.v15-card.warning{border-color:#e5c6aa}.v15-fields{display:grid;grid-template-columns:1fr 1.2fr;gap:10px;margin:12px 0}.v15-card textarea{width:100%;min-height:100px;border-radius:10px;border:1px solid #c6d8c9;padding:12px;line-height:1.8}.v15-card select,.v15-card input{width:100%;min-width:0}.v15-alert{padding:9px 10px;background:#fff1e4;color:#895b39;border-radius:9px;font-size:12px;margin-top:9px}.v15-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.v15-stats>div{padding:12px;border:1px solid #deeadb;background:#f5faf3;border-radius:12px}.v15-stats b{font-size:23px;color:#37634d}.v15-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}.v15-small{font-size:11px;color:#637969}@media(max-width:680px){.v15-fields{grid-template-columns:1fr}}';
+document.head.appendChild(v15Style);
+function v15Heading(line){
+ const text=String(line||'').trim().replace(/^[【［\[]/,'').replace(/[】］\]]$/,'').trim();
+ if(!text||text.length>42||/[。！？]/.test(text))return null;
+ for(const [label,subject] of V15_HEADING){
+  if(!text.startsWith(label))continue;
+  const tail=text.slice(label.length);
+  if(tail&&!/^[\s　:：／/・\-「『（(]/.test(tail))continue;
+  const unit=tail.replace(/^[\s　:：／/・\-「『（(]+/,'').replace(/[」』）)]+$/,'').trim();
+  if(unit.length>30)continue;
+  return {subject,unit};
+ }
+ return null;
+}
+function v15Meta(line){
+ const x=String(line||'').trim();
+ return /^\d{4}年\s*\d{1,2}月\d{1,2}日/.test(x)||/^\d+\s*(?:文字|字)$/.test(x)||
+        /^(?:AD|広告|Sponsored)$/i.test(x);
+}
+function v15Infer(body){
+ const s=String(body||'').trim(),lead=s.slice(0,140);
+ for(const [label,subject] of V15_HEADING){
+  if(lead.startsWith(label)&&/^[のでは「『\s　:：]/.test(lead.slice(label.length)))return subject;
+ }
+ if(/^(?:誕生日係|[一-龥ぁ-んァ-ンー]{1,10}係|当番活動|委員会活動)/.test(lead))return '生活・特別活動';
+ return '未分類';
+}
+function v15GuessUnit(body,subject){
+ const s=String(body||'').trim();
+ const q=s.match(/^[^。！？\n]{0,80}[「『]([^」』]{2,40})[」』]/);
+ if(q)return q[1];
+ if(subject==='生活・特別活動'){
+  const m=s.match(/^(誕生日係|[一-龥ぁ-んァ-ンー]{1,10}係|当番活動|委員会活動)/);if(m)return m[1];
+ }
+ if(subject==='体育'){const m=s.match(/^(?:体育の)?(サッカー|ハンドボール|跳び箱運動|跳び箱|マット運動|鉄棒運動|プレルボール|ベースボール|短なわ|長なわ|リレー|走り幅跳び)(?:の学習|の授業|では|で|に)/);if(m)return m[1]}
+ if(['国語','算数','理科','社会','体育','音楽','図工','家庭'].includes(subject)){
+  const match=s.match(new RegExp('^'+subject+'(?:科)?の([^。！？、]{1,26}?)の(?:授業|学習|活動)では'));if(match)return match[1];
+ }
+ return '';
+}
+function v15Truncated(t){return /(?:…|\.{3,}|．．．)\s*$/.test(String(t||'').trim())}
+function v15Norm(t){return String(t||'').normalize('NFKC').replace(/[\s\u3000]+/g,'').trim()}
+function v15Duplicate(x){
+ return S.bank.some(b=>Number(b.grade)===Number(v15Grade)&&b.subject===x.subject&&v15Norm(b.text)===v15Norm(x.text));
+}
+function v15NewItem(text,heading){
+ const body=String(text||'').trim();if(!body)return null;
+ const subject=heading?.subject||v15Infer(body),unit=heading?.unit||v15GuessUnit(body,subject);
+ return {subject,unit,text:body,selected:subject!=='未分類'&&!v15Truncated(body)&&body.length>=12,
+   source:heading?'見出し':'本文から推定'};
+}
+function v15Parse(raw){
+ const lines=String(raw||'').replace(/\r\n?/g,'\n').split('\n');
+ const out=[];let head=null,section=[];
+ function flush(){
+  const item=v15NewItem(section.join('\n').trim(),head);if(item)out.push(item);section=[];
+ }
+ for(const line of lines){
+  if(v15Meta(line))continue;
+  const h=v15Heading(line);
+  if(h){flush();head=h;continue}
+  if(/^\s*[-=_━─]{3,}\s*$/.test(line)){flush();head=null;continue}
+  if(!line.trim()){
+   if(v15Mode==='paragraph')flush();
+   else if(section.length)section.push('');
+  }else section.push(line);
+ }
+ flush();
+ return out;
+}
+function v15Issues(item){
+ const out=[];
+ if(item.subject==='未分類')out.push('教科・領域が未分類');
+ if(v15Truncated(item.text))out.push('文末が省略されています。全文を確認');
+ if(item.text.trim().length<12)out.push('短すぎる文例。コピー漏れに注意');
+ if(v15Duplicate(item))out.push('登録済みの同一文例');
+ if(!item.unit.trim())out.push('単元・活動名を確認');
+ return out;
+}
+function v15CanSave(x){return x.subject!=='未分類'&&!!x.text.trim()&&x.text.trim().length>=12&&!v15Truncated(x.text)&&!v15Duplicate(x)}
+function v15HTML(){
+ const counts={total:v15Items?.length||0,selected:v15Items?.filter(x=>x.selected).length||0,
+  unknown:v15Items?.filter(x=>x.subject==='未分類').length||0,dup:v15Items?.filter(v15Duplicate).length||0};
+ return header('文例のまとめ取り込み','学年を選び、複数の文例を貼り付け。教科・単元を仕分けして確認後に登録します。')+
+ '<div class="grid"><div class="panel c7"><h2>① 学年を選んで貼り付け</h2>'+
+ '<div class="two">'+field('文例を登録する学年','<select data-v15-field="grade">'+Array.from({length:6},(_,i)=>option(i+1,v15Grade)).join('')+'</select>')+
+ field('文例の区切り','<select data-v15-field="mode"><option value="paragraph"'+(v15Mode==='paragraph'?' selected':'')+'>見出し＋空行ごと（おすすめ）</option>'+
+ '<option value="heading"'+(v15Mode==='heading'?' selected':'')+'>見出しごとに1つ</option></select>')+'</div>'+
+ '<div class="field" style="margin-top:12px"><label>複数の文例を貼り付け</label>'+
+ '<textarea class="v15-paste" data-v15-field="raw" placeholder="生活\n誰に対しても公平に接し、落ち着いた行動をとることができました。\n\n算数　面積\n面積の学習では、図を使って求め方を考えました。\n\n体育\nサッカーでは、友だちと協力して取り組んでいました。">'+E(v15Raw)+'</textarea></div>'+
+ '<div class="notice" style="margin-top:12px"><strong>画像からの取り込み</strong><p class="small" style="margin:6px 0">iPhoneの写真アプリの文字認識で文章をコピーし、この欄に貼り付けてください。現行アプリに画像直接OCRはまだありません。ChatGPTで画像を見ながら文例だけを文字起こししてから貼り付けてもOK。</p></div>'+
+ '<div class="v15-bar"><button class="btn primary" data-v15="parse">文章を自動仕分け</button><button class="btn" data-v15="clear">入力を消す</button></div>'+
+ '<div class="warning small">見出しや本文からの推定です。出版社や指導要領との一致は保証しません。児童名や個人固有の事情がある文章は、必ず一般化してから文例バンクへ保存してください。</div>'+
+ '</div><div class="panel c5"><h2>② 分類を確認して登録</h2>'+
+ (v15Items?'<div class="v15-stats"><div><b>'+counts.total+'</b><div class="v15-small">読取候補</div></div><div><b>'+counts.selected+'</b><div class="v15-small">登録対象</div></div><div><b>'+counts.unknown+'</b><div class="v15-small">未分類</div></div><div><b>'+counts.dup+'</b><div class="v15-small">重複候補</div></div></div>'+
+ '<div class="v15-bar"><button class="btn softbtn" data-v15="select-valid">安全な候補を選択</button><button class="btn" data-v15="unselect">全選択を解除</button></div>'+
+ v15Items.map((x,i)=>{
+ const issue=v15Issues(x);
+ return '<div class="v15-card'+(issue.some(t=>/未分類|省略|短すぎ|同一/.test(t))?' warning':'')+'"><div class="v15-bar">'+
+ '<label class="inline"><input type="checkbox" data-v15-item="selected" data-i="'+i+'"'+(x.selected?' checked':'')+'> 登録する</label>'+
+ '<span class="tag">'+E(x.source)+'</span><span class="v15-small">候補'+(i+1)+'</span></div>'+
+ '<div class="v15-fields">'+field('教科・領域','<select data-v15-item="subject" data-i="'+i+'">'+V15_SUBJECTS.map(v=>option(v,x.subject)).join('')+'</select>')+
+ field('単元・活動名','<input data-v15-item="unit" data-i="'+i+'" value="'+E(x.unit)+'" placeholder="未設定なら入力">')+'</div>'+
+ '<div class="field"><label>文例の全文</label><textarea data-v15-item="text" data-i="'+i+'">'+E(x.text)+'</textarea></div>'+
+ (issue.length?'<div class="v15-alert">'+issue.map(E).join('／')+'</div>':'<div class="v15-small">文章と分類を確認してください。</div>')+'</div>';
+ }).join('')+
+ '<div class="v15-bar"><label class="inline small"><input type="checkbox" id="v15-reviewed"'+(v15Reviewed?' checked':'')+'> 選択した文例の内容と分類を確認しました</label></div>'+
+ '<button class="btn primary" data-v15="save"'+(counts.selected?'':' disabled')+'>選んだ文例を一括登録</button>'+
+ '<p class="v15-small" style="margin-top:10px">未分類・重複・文末が省略された候補は登録できません。登録後はJSONバックアップを保存してください。</p>':
+ '<div class="notice">文例を貼り付けて「文章を自動仕分け」を押すと、教科・単元の候補が一覧表示されます。学年は左側でまとめて選択できます。</div>')+
+ '</div></div>';
+}
+const v15PrevTop=renderTop;
+renderTop=function(){
+ v15PrevTop();const tabs=$('tabs');if(!tabs||tabs.querySelector('[data-page="smartimport"]'))return;
+ const button=document.createElement('button');
+ button.className='tab'+(page==='smartimport'?' active':'');button.dataset.action='page';button.dataset.page='smartimport';button.textContent='▤ 文例まとめ登録';
+ tabs.insertBefore(button,tabs.querySelector('[data-page="bank"]'));
+};
+const v15PrevBank=bankHTML;
+bankHTML=function(){
+ return '<div class="panel wide" style="margin:0 0 15px"><div class="inline between"><div><strong>文例をまとめて仕分け・登録</strong>'+
+ '<p class="small muted" style="margin:5px 0">過去の文例メモを一気に貯める。画像は文字認識でコピーして貼り付け。</p></div>'+
+ '<button class="btn softbtn" data-v15="go">まとめ取り込みへ →</button></div></div>'+v15PrevBank();
+};
+const v15PrevRender=render;
+render=function(){if(page==='smartimport'){renderTop();$('main').innerHTML=v15HTML();return}v15PrevRender()};
+document.addEventListener('input',e=>{
+ if(e.target.dataset?.v15Field==='raw'){v15Raw=e.target.value;v15Items=null;v15Reviewed=false}
+ const kind=e.target.dataset?.v15Item,ix=Number(e.target.dataset?.i);
+ if((kind==='text'||kind==='unit')&&v15Items?.[ix]){v15Items[ix][kind]=e.target.value;v15Reviewed=false}
+});
+document.addEventListener('change',e=>{
+ const fld=e.target.dataset?.v15Field;
+ if(fld==='grade'){v15Grade=Number(e.target.value);v15Items=null;v15Reviewed=false;render();return}
+ if(fld==='mode'){v15Mode=e.target.value;v15Items=null;v15Reviewed=false;render();return}
+ const kind=e.target.dataset?.v15Item,i=Number(e.target.dataset?.i),item=v15Items?.[i];
+ if(item){
+  if(kind==='subject')item.subject=e.target.value;
+  if(kind==='selected')item.selected=!!e.target.checked;
+  if(kind==='unit'||kind==='text')item[kind]=e.target.value;
+  v15Reviewed=false;render();return;
+ }
+ if(e.target.id==='v15-reviewed')v15Reviewed=!!e.target.checked;
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v15]');if(!b)return;
+ const action=b.dataset.v15;
+ if(action==='go'){v15Grade=cur().grade;page='smartimport';render();return}
+ if(action==='clear'){if(v15Raw&&!confirm('入力した文章を消しますか？'))return;v15Raw='';v15Items=null;v15Reviewed=false;render();return}
+ if(action==='parse'){v15Items=v15Parse(v15Raw);v15Reviewed=false;render();if(!v15Items.length)toast('読み取れる文例がありませんでした');return}
+ if(action==='select-valid'){v15Items?.forEach(x=>x.selected=v15CanSave(x));v15Reviewed=false;render();return}
+ if(action==='unselect'){v15Items?.forEach(x=>x.selected=false);v15Reviewed=false;render();return}
+ if(action!=='save')return;
+ const chosen=(v15Items||[]).filter(x=>x.selected);
+ if(!chosen.length){toast('登録する文例を選んでください');return}
+ if(!v15Reviewed){toast('文章と分類を確認し、チェックを入れてください');return}
+ if(chosen.some(x=>!v15CanSave(x))){toast('未分類・重複・省略された文章を修正してください');return}
+ const keys=new Set();
+ for(const item of chosen){const k=item.subject+'|'+v15Norm(item.text);if(keys.has(k)){toast('今回の候補内に同じ文例があります');return}keys.add(k)}
+ if(!confirm(v15Grade+'年の文例'+chosen.length+'件を登録しますか？'))return;
+ for(const item of chosen){
+  S.bank.push({id:S.nextId++,grade:v15Grade,subject:item.subject,unit:item.unit.trim(),text:item.text.trim(),tag:'まとめ取り込み・確認済み'});
+ }
+ v15Raw='';v15Items=null;v15Reviewed=false;bankFilter='すべて';page='bank';render();
+ toast(chosen.length+'件を文例バンクに登録しました。JSONバックアップを保存してください');
+});
+
+</script><script>
+/* bundled v16-storage.js */
+/* STUDIO v1.6 - opt-in local autosave, recovery, safe manual restore */
+const V16_KEY='shoken-studio.autosave.v1',V16_PREV='shoken-studio.autosave.previous.v1',V16_OPT='shoken-studio.autosave.optin.v1';
+let v16Enabled=false,v16State='off',v16Last='',v16Timer=null,v16Broken=false,v16StorageAvailable=true,v16Dirty=false;
+function v16StorageTest(){
+ try{const key='__shoken_storage_check';localStorage.setItem(key,'ok');localStorage.removeItem(key);return true}catch(e){return false}
+}
+v16StorageAvailable=v16StorageTest();
+function v16ValidState(s){
+ if(!s||typeof s!=='object'||!Array.isArray(s.classes)||s.classes.length<1||s.classes.length>9||!Array.isArray(s.bank)||s.bank.length>50000)return false;
+ if(!s.prefs||typeof s.prefs!=='object'||!Array.isArray(s.rules))return false;
+ const ids=new Set();
+ for(const c of s.classes){
+  if(!c||!Number.isInteger(c.id)||c.id<1||c.id>9||ids.has(c.id)||!Number.isInteger(c.grade)||c.grade<1||c.grade>6||
+      !Number.isInteger(c.count)||c.count<1||c.count>40||!Array.isArray(c.missing)||!c.entries||typeof c.entries!=='object'||Array.isArray(c.entries))return false;
+  ids.add(c.id);
+  if(c.missing.some(n=>!Number.isInteger(n)||n<1||n>c.count))return false;
+  for(const row of Object.values(c.entries)){if(!row||typeof row!=='object'||typeof row.text!=='string'||row.text.length>200000)return false}
+ }
+ for(const b of s.bank){if(!b||typeof b!=='object'||typeof b.text!=='string'||b.text.length>200000)return false}
+ return true;
+}
+function v16Envelope(raw){
+ if(!raw)return null;
+ const obj=JSON.parse(raw);
+ if(obj?.format!==1||!v16ValidState(obj.state))throw Error('保存ファイルの構造が正しくありません');
+ return obj;
+}
+function v16Snapshot(){
+ return JSON.stringify({format:1,state:S,activeClass,activeType,savedAt:new Date().toISOString()});
+}
+function v16Write(){
+ if(!v16Enabled||!v16StorageAvailable||v16Broken)return false;
+ try{
+  const current=v16Snapshot();
+  const existing=localStorage.getItem(V16_KEY);
+  // Keep the previous successful version as a recovery slot.
+  if(existing&&existing!==current)localStorage.setItem(V16_PREV,existing);
+  localStorage.setItem(V16_KEY,current);
+  v16Dirty=false;v16State='saved';v16Last=new Date().toLocaleString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+  window.SHOKEN_AUTOSAVE_SYNCED=true;
+  v16UpdateBanner();
+  return true;
+ }catch(e){
+  v16Dirty=true;v16State='failed';window.SHOKEN_AUTOSAVE_SYNCED=false;
+  v16UpdateBanner();return false;
+ }
+}
+function v16Schedule(){
+ if(!v16Enabled||v16Broken)return;
+ v16Dirty=true;v16State='pending';window.SHOKEN_AUTOSAVE_SYNCED=false;
+ v16UpdateBanner();
+ if(v16Timer!==null)clearTimeout(v16Timer);
+ v16Timer=setTimeout(()=>{v16Timer=null;v16Write()},400);
+}
+function v16Flush(){
+ if(v16Timer!==null){clearTimeout(v16Timer);v16Timer=null}
+ if(!v16Enabled)return false;
+ if(v16Dirty)return v16Write();
+ return v16State==='saved'&&!v16Broken&&!!window.SHOKEN_AUTOSAVE_SYNCED;
+}
+window.SHOKEN_AUTOSAVE_FLUSH=v16Flush;
+function v16RestoreLocal(){
+ if(!v16StorageAvailable)return;
+ try{
+  v16Enabled=localStorage.getItem(V16_OPT)==='yes';
+  if(!v16Enabled)return;
+  const primary=localStorage.getItem(V16_KEY),previous=localStorage.getItem(V16_PREV);
+  if(!primary&&!previous)return;
+  let saved=null,fromPrev=false;
+  try{saved=v16Envelope(primary)}catch(e){
+   if(previous){saved=v16Envelope(previous);fromPrev=true}else throw e;
+  }
+  if(!saved){v16State='no-data';return}
+  S=saved.state;
+  const c=S.classes.find(c=>c.id===saved.activeClass);
+  activeClass=c?c.id:S.classes[0].id;
+  activeType=TYPES.includes(saved.activeType)?saved.activeType:'総合所見';
+  page='home';
+  v16State=fromPrev?'recovered':'saved';
+  v16Last=saved.savedAt?new Date(saved.savedAt).toLocaleString('ja-JP',{hour:'2-digit',minute:'2-digit'}):'';
+  // Do not discard a damaged primary automatically before the user makes a backup.
+  if(fromPrev){v16Broken=true;window.SHOKEN_AUTOSAVE_SYNCED=false}
+  else{window.SHOKEN_AUTOSAVE_SYNCED=true}
+ }catch(e){
+  v16State='failed';v16Broken=true;window.SHOKEN_AUTOSAVE_SYNCED=false;
+ }
+}
+window.SHOKEN_AUTOSAVE_ENABLED=false;window.SHOKEN_AUTOSAVE_SYNCED=false;
+v16RestoreLocal();
+window.SHOKEN_AUTOSAVE_ENABLED=v16Enabled;
+const v16CSS=document.createElement('style');
+v16CSS.textContent='.v16-status{margin:8px 0 12px;padding:11px 14px;border:1px solid #dce9dc;border-radius:13px;background:#f5faf5;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}.v16-status.warn{border-color:#ebccbb;background:#fff6ed}.v16-status .v16-info{font-size:12px;line-height:1.7;color:#537460}.v16-status.warn .v16-info{color:#95634f}.v16-actions{display:flex;gap:7px;flex-wrap:wrap}.v16-actions button{font-size:11px;padding:8px 12px}@media(max-width:700px){.v16-status{align-items:flex-start}.v16-actions{width:100%}}';
+document.head.appendChild(v16CSS);
+function v16StatusText(){
+ if(!v16StorageAvailable)return '端末内保存を利用できません。JSONバックアップを使ってください。';
+ if(!v16Enabled)return '自動保存はオフです。編集内容はJSONバックアップで保存してください。';
+ if(v16Broken)return '保存データの確認が必要です。JSONバックアップを作成してから復旧してください。';
+ if(v16State==='failed')return '自動保存に失敗しました。容量・ブラウザ設定を確認し、JSONバックアップを保存してください。';
+ if(v16State==='pending')return '保存中です。まだ画面を閉じないでください。';
+ if(v16State==='saved')return 'この端末に保存済み'+(v16Last?'（'+v16Last+'）':'')+'。別の端末には同期されません。';
+ return 'この端末への自動保存が有効です。';
+}
+function v16BannerHTML(){
+ const warn=!v16StorageAvailable||v16State==='failed'||v16Broken;
+ return '<div id="v16-save-indicator" class="v16-status'+(warn?' warn':'')+'"><div class="v16-info"><strong>'+
+ (v16Enabled?'◉ 自動保存 '+(warn?'要確認':v16State==='saved'?'保存済み':'有効'):'○ 自動保存 OFF')+
+ '</strong><div>'+E(v16StatusText())+'</div></div><div class="v16-actions">'+
+ '<button class="btn softbtn" data-v16="toggle"'+(!v16StorageAvailable?' disabled':'')+'>'+
+ (v16Enabled?'自動保存をオフにする':'この端末で自動保存する')+'</button>'+
+ '<button class="btn" data-v16="backup">JSON保存</button>'+
+ '<button class="btn" data-v16="import">JSON読込</button></div></div>';
+}
+function v16UpdateBanner(){
+ const e=$('v16-save-indicator');
+ if(e){const helper=document.createElement('div');helper.innerHTML=v16BannerHTML();e.replaceWith(helper.firstElementChild)}
+}
+const v16PreviousTop=renderTop;
+renderTop=function(){v16PreviousTop();$('headline').innerHTML+=v16BannerHTML()};
+const v16PreviousRender=render;
+render=function(){v16PreviousRender();v16Schedule()};
+const v16OldEditEnt=editEnt;
+editEnt=function(c,t,n,patch){v16OldEditEnt(c,t,n,patch);v16Schedule()};
+const v16OriginalRestore=restoreJSON;
+restoreJSON=function(file){
+ const rd=new FileReader();
+ rd.onload=()=>{
+  try{
+   if(rd.result.length>20*1024*1024)throw Error('バックアップが大きすぎます（20MB超）');
+   const obj=JSON.parse(rd.result),state=obj?.state;
+   if(![1,2].includes(obj?.version)||!v16ValidState(state))throw Error('JSONファイルの形式が不正です');
+   if(!confirm('JSONを読み込むと現在の作業内容に置き換わります。必要なら先に現在のJSONバックアップを保存してください。続けますか？'))return;
+   if(v16Enabled&&!v16Broken){
+    // Preserve previous work before importing.
+    v16Flush();
+   }
+   S=state;
+   S.nextId=Math.max(Number(S.nextId)||1,...S.bank.map(b=>Number(b.id)||0).slice(0,50000))+1;
+   activeClass=S.classes[0].id;activeType='総合所見';page='home';v16Broken=false;v16State='pending';
+   render();
+   const savedOnDevice=v16Enabled&&v16Flush();
+   if(v16Enabled&&!savedOnDevice){
+    toast('JSONから復元しましたが、端末への自動保存に失敗しました。JSONバックアップを保存してください');
+   }else{
+    toast('JSONから復元しました'+(savedOnDevice?'。端末にも保存しました':'。JSONバックアップを保管してください'));
+   }
+  }catch(e){alert('復元できませんでした：'+e.message)}
+ };
+ rd.onerror=()=>alert('ファイルを読み取れませんでした');
+ rd.readAsText(file);
+};
+const v16OldBackup=jsonBackup;
+jsonBackup=function(){v16Flush();v16OldBackup()};
+document.addEventListener('input',()=>v16Schedule());
+document.addEventListener('change',()=>v16Schedule());
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v16]');if(!b)return;
+ if(b.dataset.v16==='backup'){jsonBackup();return}
+ if(b.dataset.v16==='import'){$('importfile').click();return}
+ if(b.dataset.v16!=='toggle')return;
+ if(!v16Enabled){
+  if(!confirm('この端末のブラウザ内に所見と文例を保存します。共有端末・私物端末での個人情報の保存は学校の規則を確認してください。自動保存を有効にしますか？'))return;
+  if(!v16StorageAvailable){toast('この端末では保存できません');return}
+  const old=localStorage.getItem(V16_KEY);
+  if(old&&!v16Broken&&!confirm('この端末には以前の保存データがあります。今の画面のデータで保存内容を更新しますか？'))return;
+  try{localStorage.setItem(V16_OPT,'yes');v16Enabled=true;v16Broken=false;window.SHOKEN_AUTOSAVE_ENABLED=true;v16Dirty=true;v16Write();render()}catch(e){v16Enabled=false;v16State='failed';v16UpdateBanner()}
+ }else{
+  if(!confirm('自動保存を停止し、この端末内の保存データも削除します。別途JSONバックアップを保存してから行ってください。続けますか？'))return;
+  v16Flush();
+  try{localStorage.removeItem(V16_OPT);localStorage.removeItem(V16_KEY);localStorage.removeItem(V16_PREV)}catch(e){toast('保存データの削除に失敗しました');return}
+  v16Enabled=false;v16State='off';v16Dirty=false;window.SHOKEN_AUTOSAVE_ENABLED=false;window.SHOKEN_AUTOSAVE_SYNCED=false;render();
+  toast('端末内の保存データを削除しました。画面上の内容は残っています');
+ }
+});
+window.addEventListener('pagehide',()=>v16Flush());
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')v16Flush()});
+
+</script><script>
+/* bundled v17-workflow.js */
+/* STUDIO v1.7 - PC-first three-stage navigation, preserve all legacy features */
+const V17_STAGES=[
+ {page:'stage-prepare',key:'prepare',name:'① 文例を準備',subtitle:'集める・仕分ける・蓄積'},
+ {page:'stage-create',key:'create',name:'② 所見を作成',subtitle:'配置する・個別に直す'},
+ {page:'stage-review',key:'review',name:'③ 確認・出力',subtitle:'点検する・Excelに出す'}
+];
+const V17_GROUPS={
+ 'stage-prepare':'prepare',smartimport:'prepare',bank:'prepare',paste:'prepare',compose:'prepare',saveexample:'prepare',
+ 'stage-create':'create',edit:'create',assign:'create',common:'create',share:'create',guide:'create',structure:'create',
+ 'stage-review':'review',proof:'review',export:'review'
+};
+const V17_TOOLNAMES={
+ smartimport:'文例まとめ登録',bank:'文例バンク',paste:'複数文例を貼り付け',compose:'文例を作る',
+ edit:'番号別に編集',assign:'一括割り振り',common:'共通活動を配置',share:'クラス横断配置',
+ proof:'誤字脱字チェック',export:'Excel出力'
+};
+const V17_TOOLPAGES={
+ prepare:['smartimport','bank','paste','compose'],
+ create:['edit','assign','common','share'],
+ review:['proof','export']
+};
+const v17Style=document.createElement('style');
+v17Style.textContent='.tabs.v17-tabs{gap:9px;flex-wrap:wrap;overflow:visible;padding-bottom:0;margin:12px 0 13px}.v17-tabs .tab{background:#f4f7f1;border:1px solid #dfe8dd;font-weight:700;padding:12px 16px;white-space:normal}.v17-tabs .tab.active{background:#e0ece3;border-color:#9fbea9;color:#285741;box-shadow:0 2px 0 #a8c7b1}.v17-subnav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;padding:9px 12px;border-radius:13px;border:1px solid #dce7dc;background:#f9faf5}.v17-subnav .v17-link{border:1px solid transparent;background:transparent;color:#526d5a;padding:7px 11px;border-radius:9px;font-size:12px;font-weight:650}.v17-subnav .v17-link.active{background:#e4eee4;border-color:#cbdacb;color:#275944}.v17-stage-intro{padding:21px 23px;background:#f5f9f2;border:1px solid #d6e5d8;border-radius:18px;margin-bottom:18px}.v17-stage-intro h2{font-size:19px;margin:4px 0 7px}.v17-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.v17-stepcard{border:1px solid #dde7dc;border-radius:16px;background:#fffdfa;padding:15px;min-height:165px;display:flex;flex-direction:column;gap:8px}.v17-stepcard.main{border-color:#b4cdb6;background:#f3f8f0}.v17-stepcard .v17-eyebrow{font-size:10px;letter-spacing:.07em;font-weight:800;color:#52745f}.v17-stepcard strong{font-size:16px;line-height:1.5}.v17-stepcard p{font-size:12px;color:#61766b;line-height:1.75;margin:0 0 10px}.v17-stepcard .btn{margin-top:auto;align-self:flex-start}.v17-sidebox{border:1px solid #dde9db;border-radius:14px;background:#f7faf5;padding:14px;margin-top:17px}.v17-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.v17-quickcard{border:1px solid #dce8dd;background:#f7faf5;border-radius:13px;padding:12px}.v17-quickcard strong{display:block;margin:7px 0}.v17-quickcard p{font-size:11px;color:#637a6c;margin-bottom:11px}.v17-quickcard .btn{font-size:12px}.v17-intro{font-size:12px;color:#617669}.v17-stage-stat{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#52735a}.v17-stage-stat strong{font-size:17px;color:#305b47;margin-right:3px}@media(max-width:800px){.v17-steps,.v17-quick{grid-template-columns:1fr}.v17-stepcard{min-height:auto}.tabs.v17-tabs{gap:6px}.v17-tabs .tab{padding:9px 12px;font-size:12px}.v17-stage-intro{padding:16px}}';
+document.head.appendChild(v17Style);
+function v17Tool(page,title,desc,primary=false,step=''){
+ return '<div class="v17-stepcard'+(primary?' main':'')+'">'+
+ '<div class="v17-eyebrow">'+E(step||'WORKFLOW')+'</div><strong>'+E(title)+'</strong>'+
+ '<p>'+E(desc)+'</p><button class="btn '+(primary?'primary':'softbtn')+'" data-action="page" data-page="'+page+'">'+
+ E(title)+' →</button></div>';
+}
+function v17StageName(key){const s=V17_STAGES.find(x=>x.key===key);return s?.name||'ホーム'}
+function v17Subnav(){
+ const key=V17_GROUPS[page],pages=V17_TOOLPAGES[key];
+ if(!pages)return '';
+ return '<div class="v17-subnav" aria-label="この段階で使う機能">'+
+ '<span class="v17-intro" style="align-self:center;margin-right:6px">'+E(v17StageName(key))+'：</span>'+
+ pages.map(p=>'<button type="button" class="v17-link'+(page===p?' active':'')+'" data-action="page" data-page="'+p+'"'+(page===p?' aria-current="page"':'')+'>'+E(V17_TOOLNAMES[p])+'</button>').join('')+'</div>';
+}
+const v17PriorTop=renderTop;
+renderTop=function(){
+ v17PriorTop();
+ const tabs=$('tabs');
+ if(tabs){
+  tabs.className='tabs v17-tabs';
+  const tops=[{page:'home',name:'⌂ ホーム'},...V17_STAGES,{page:'settings',name:'⚙ 設定'}];
+  const group=V17_GROUPS[page];
+  tabs.innerHTML=tops.map(x=>{
+   const active=x.page===page||x.key===group;
+   return '<button type="button" class="tab'+(active?' active':'')+'" data-action="page" data-page="'+x.page+
+    '"'+(active?' aria-current="page"':'')+'>'+E(x.name)+'</button>';
+  }).join('');
+ }
+ const head=$('headline');
+ if(head)head.insertAdjacentHTML('beforeend',v17Subnav());
+};
+function v17StageHTML(){
+ const stage=V17_GROUPS[page],c=cur();
+ if(stage==='prepare')return header('① 文例を準備','以前の文例を集めて、教科・単元別に整理。作成前の準備をここでまとめます。')+
+ '<div class="v17-stage-intro"><div class="section-kicker">STEP 01 / COLLECT</div><h2>まず、使いたい文例をためる</h2>'+
+ '<p class="v17-intro">一度バンクに登録すると、あとから何度でも選べます。登録済み：<strong>'+S.bank.length+'件</strong>。</p></div>'+
+ '<div class="v17-steps">'+
+ v17Tool('smartimport','文例をまとめて登録','3年生など学年を選んで貼り付け。教科・単元を仕分けしてから登録します。',true,'おすすめ / まとめて登録')+
+ v17Tool('bank','文例バンクを開く','登録済み文例を検索し、内容を確認して作業に使います。',false,'登録した文例を探す')+
+ v17Tool('paste','複数の文章を一括貼り付け','道徳・外国語活動などの文章をまとめて保存・番号へ配置できます。',false,'複数文例を扱う')+
+ '</div><div class="v17-sidebox"><strong>文例を一から作る場合</strong><p class="v17-intro" style="margin:7px 0">教科と単元を指定して文例を作る画面もそのまま使えます。</p>'+
+ '<button class="btn softbtn" data-action="page" data-page="compose">文章づくりへ →</button></div>';
+ if(stage==='create')return header('② 所見を作成','文例を該当する番号に配置してから、その子らしく文章を調整します。')+
+ '<div class="v17-stage-intro"><div class="section-kicker">STEP 02 / WRITE</div><h2>配置して、一人ずつ仕上げる</h2>'+
+ '<div class="v17-stage-stat"><span>対象：'+E(labelClass(c))+'</span>'+
+ '<span>下書き中 <strong>'+stateCount(c,activeType).draft+'</strong>名</span>'+
+ '<span>要検討 <strong>'+stateCount(c,activeType).need+'</strong>名</span></div></div>'+
+ '<div class="v17-steps">'+
+ v17Tool('edit','番号別に編集','教科・単元・文例を選び、文章を微調整。逆質問や構成別編集もここから使えます。',true,'おすすめ / 個別編集')+
+ v17Tool('assign','文例を一括割り振り','番号をタップして文例を配置。未配置の番号だけを選ぶこともできます。',false,'まとめて配置')+
+ v17Tool('common','共通活動の文章を配置','係・当番・総合の共通部分をまとめて配置し、あとから個別修正します。',false,'共通文を使う')+
+ '</div><div class="v17-sidebox"><strong>複数クラスを担当している場合</strong><p class="v17-intro" style="margin:7px 0">クラスをまたぐ文章の配置も、これまでどおり利用できます。</p>'+
+ '<button class="btn softbtn" data-action="page" data-page="share">クラス横断配置へ →</button></div>';
+ if(stage==='review'){
+  const data=V8_TYPES.map(t=>({type:t,...v8Count(c,t)}));
+  return header('③ 確認・出力','文字数と内容を確認してからExcelに書き出し、JSONバックアップも残します。')+
+  '<div class="v17-stage-intro"><div class="section-kicker">STEP 03 / CHECK</div><h2>提出前に確認する</h2>'+
+  '<div class="v17-stage-stat">'+data.map(x=>'<span>'+E(x.type)+'：文字数 <strong>'+x.pct+'%</strong> ／ 確定 '+x.confirmedPct+'%</span>').join('')+'</div>'+
+  '<p class="v17-intro" style="margin:9px 0 0">文字数クリア率と確定率は別表示。提出OKの保証ではないので、内容は必ず目視確認してください。</p></div>'+
+  '<div class="v17-steps">'+
+  v17Tool('proof','誤字脱字・表記を点検','句読点、表記揺れ、未確認の文章をまとめて確認します。',true,'最初にチェック')+
+  v17Tool('export','Excelに書き出す','番号順に所見をExcelへ出力。ファイルを開いて最終確認します。',false,'出力する')+
+  '<div class="v17-stepcard"><div class="v17-eyebrow">データを守る</div><strong>JSONバックアップ</strong>'+
+  '<p>作業後にJSONファイルを保存。PCの保存状態も確認してください。</p>'+
+  '<button class="btn softbtn" data-action="save-json">バックアップを保存 →</button></div>'+
+  '</div>';
+ }
+ return '';
+}
+const v17PriorRender=render;
+render=function(){
+ if(page==='stage-prepare'||page==='stage-create'||page==='stage-review'){
+  renderTop();$('main').innerHTML=v17StageHTML();return;
+ }
+ v17PriorRender();
+};
+function v17HomeQuick(){
+ return '<div class="panel c8 quick-panel"><div class="section-kicker">THREE SIMPLE STEPS</div>'+
+ '<h2 style="margin:4px 0 15px">今日の作業を選ぶ</h2><div class="v17-quick">'+
+ V17_STAGES.map((s,i)=>'<div class="v17-quickcard"><div class="section-kicker">STEP 0'+(i+1)+'</div><strong>'+E(s.name)+'</strong>'+
+ '<p>'+E(s.subtitle)+'</p><button class="btn softbtn" data-action="page" data-page="'+s.page+'">ここから始める →</button></div>').join('')+
+ '</div></div>';
+}
+const v17PriorHome=homeHTML;
+homeHTML=function(){
+ const html=v17PriorHome();
+ const a=html.indexOf('<div class="panel c8 quick-panel">'),b=html.indexOf('<div class="panel c4 safety-card">',a);
+ if(a<0||b<0)return v17HomeQuick()+html;
+ return html.slice(0,a)+v17HomeQuick()+html.slice(b);
+};
+</script><script>
+/* bundled v18-textbooks.js */
+/* STUDIO v1.8 - bulk textbook preferences and observation-grounded unit drafts */
+let v18Grade=3,v18ExtraSubject='国語',v18ExtraName='',v18FreeRows={};
+const V18_GRADES=[1,2,3,4,5,6];
+function v18SubjectsForGrade(g){
+ const s=['国語','算数',...(g<=2?['生活']:['社会','理科']),'音楽','図工',...(g>=3?['体育']:[]),...(g>=5?['家庭','外国語']:g>=3?['外国語活動']:[]),'道徳'];
+ return s;
+}
+function v18Publishers(subject){
+ if(subject==='体育')return [...new Set(typeof V7_HEALTH_PUBLISHERS!=='undefined'?V7_HEALTH_PUBLISHERS:['東京書籍','学研','光文書院'])];
+ return [...new Set(V4_PUBLISHERS[subject]||[])];
+}
+function v18Ready(g){
+ const subjects=v18SubjectsForGrade(g),ready=subjects.filter(s=>!!(S.textbooks||{})[g+':'+s]&&(S.textbooks||{})[g+':'+s]!=='未設定');
+ return {total:subjects.length,ready:ready.length};
+}
+function v18Settings(){
+ const subjects=v18SubjectsForGrade(v18Grade),t=v18Ready(v18Grade);
+ return '<div class="panel wide v18-settings" id="v18-settings">'+
+ '<div class="title-row"><div><div class="section-kicker">TEXTBOOK SETUP / FIRST TIME</div>'+
+ '<h2 style="margin:5px 0">使用教科書をまとめて設定</h2>'+
+ '<p class="muted small" style="margin:4px 0">学年を選び、各教科の出版社を一度設定。教科を選んだときに、対応する単元と文例を探せるようにします。</p></div>'+
+ '<span class="tag">'+t.ready+' / '+t.total+'教科 設定済み</span></div>'+
+ '<div class="v18-setting-controls"><label class="field"><strong>設定する学年</strong>'+
+ '<select data-v18-setting="grade" aria-label="設定する学年">'+V18_GRADES.map(g=>option(g,v18Grade)).join('')+'</select></label>'+
+ '<div class="v18-footnote">変更はその場で反映されます。自動保存を有効にするか、JSONバックアップを保存してください。</div></div>'+
+ '<div class="v18-publisher-grid">'+subjects.map(s=>{
+ const val=(S.textbooks||{})[v18Grade+':'+s]||'未設定';
+ return '<label class="v18-pubrow"><strong>'+E(s==='体育'?'体育（保健教科書）':s)+'</strong>'+
+ '<select data-v18-setting="publisher" data-v18-subject="'+E(s)+'" aria-label="'+E(s)+'の教科書会社">'+
+ ['未設定',...v18Publishers(s),'その他'].map(x=>option(x,val)).join('')+'</select></label>';
+ }).join('')+'</div>'+
+ '<div class="v18-footnote" style="margin-top:12px">※ 体育の実技は教科書会社の指定不要。上の「体育」は保健用です。出版社を登録しても、未収録の単元名や文例が自動取得されるわけではありません。</div>'+
+ '</div>'+
+ '<div class="panel wide v18-settings" style="margin-top:14px"><h2 style="margin-bottom:8px">単元名だけ先に登録（任意）</h2>'+
+ '<p class="muted small">文例がなくても単元を一覧に追加できます。単元未登録でも、個人編集から直接文章を作れます。</p>'+
+ '<div class="v18-unitadd">'+
+ '<label class="field"><strong>教科</strong><select data-v18-setting="extra-subject" aria-label="追加する単元の教科">'+
+ subjects.map(s=>option(s,v18ExtraSubject)).join('')+'</select></label>'+
+ '<label class="field"><strong>単元名</strong><input data-v18-setting="extra-unit" placeholder="例：新しい単元名" value="'+E(v18ExtraName)+'" maxlength="100"></label>'+
+ '<button class="btn softbtn" type="button" data-v18-action="add-unit">単元一覧に追加</button>'+
+ '</div></div>';
+}
+const v18Style=document.createElement('style');
+v18Style.textContent='.v18-settings{background:#fcfdf9}.v18-setting-controls{display:flex;align-items:end;gap:18px;flex-wrap:wrap;margin:14px 0}.v18-setting-controls select{min-width:140px}.v18-setting-controls .field{margin-bottom:0}.v18-publisher-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v18-pubrow{border:1px solid #dde7dd;border-radius:12px;padding:9px 12px;background:#fff;display:grid;grid-template-columns:minmax(70px,1fr) minmax(140px,1.5fr);gap:9px;align-items:center}.v18-pubrow strong{font-size:12px}.v18-pubrow select{width:100%;min-width:0}.v18-unitadd{display:grid;grid-template-columns:minmax(120px,1fr) minmax(180px,2fr) auto;align-items:end;gap:10px}.v18-unitadd .field{margin-bottom:0}.v18-unitadd .btn{margin-bottom:2px}.v18-footnote{font-size:11px;line-height:1.6;color:#647e6a}.v18-freeunit{margin:13px 0 0;border:1px solid #cee0cf;border-radius:13px;padding:10px 13px;background:#f8fbf6}.v18-freeunit summary{cursor:pointer;color:#38644d;font-weight:700;font-size:13px}.v18-freeunit[open] summary{margin-bottom:12px}.v18-freeunit .field{margin-bottom:10px}.v18-freeunit textarea{min-height:68px;resize:vertical}.v18-variants{margin-top:12px;display:grid;gap:8px}.v18-variant{border:1px solid #dce9dd;border-radius:11px;padding:12px;background:#fff}.v18-variant p{font-size:12px;white-space:pre-wrap;margin:6px 0}.v18-warning{font-size:11px;color:#7e6c4f}.v18-short{font-size:12px;color:#567364}@media(max-width:760px){.v18-publisher-grid,.v18-unitadd{grid-template-columns:1fr}.v18-pubrow{grid-template-columns:minmax(70px,1fr) minmax(130px,1.5fr)}}';
+document.head.appendChild(v18Style);
+const v18OldSettings=settingsHTML;
+settingsHTML=function(){return '<div class="grid" style="margin:14px 0">'+v18Settings()+'</div>'+v18OldSettings()};
+function v18Key(c,t,n){return c.id+'|'+t+'|'+n}
+function v18Free(c,t,n){
+ const k=v18Key(c,t,n);
+ if(!v18FreeRows[k])v18FreeRows[k]={unit:'',observed:'',view:'思考・判断・表現',open:false,candidates:[],saveUnit:true,subject:''};
+ return v18FreeRows[k];
+}
+function v18ObservationText(raw){
+ const sentence=String(raw||'').trim().replace(/\s+/g,' ').replace(/[。！!？?]+$/,'');
+ if(sentence.length<8||sentence.length>400)return null;
+ if(/\n/.test(sentence))return null;
+ if(!/(ました|でした|ています|していました|できました|ています|分かりました|気付きました|です|ます)$/.test(sentence))return null;
+ return sentence+'。';
+}
+function v18GetUnit(c,t,n){
+ const st=v8Selection(c,t,n),state=v18Free(c,t,n);
+ const pre=v8Available(c,st.subject).find(x=>x.id===st.unit)?.unit||'';
+ return state.unit.trim()||pre;
+}
+function v18Drafts(subject,unit,obs){
+ const mark=['道徳','外国語活動','総合的な学習の時間','生活・特別活動','学習全般'].includes(subject);
+ const prefix=mark?'':subject+'の';
+ return [
+ {label:'A｜教科と単元を示す',text:prefix+'「'+unit+'」の学習では、'+obs},
+ {label:'B｜単元を中心にする',text:'「'+unit+'」では、'+obs},
+ {label:'C｜学習場面を示す',text:'「'+unit+'」に取り組む中で、'+obs}
+ ];
+}
+function v18FreePicker(c,t,n){
+ const st=v8Selection(c,t,n),s=v18Free(c,t,n);
+ if(!st.subject)return '<p class="v18-short">まず教科を選ぶと、登録のない単元でも文章を作れるよ。</p>';
+ if(s.subject!==st.subject){s.subject=st.subject;s.unit='';s.observed='';s.candidates=[];s.open=false}
+ const selected=v8Available(c,st.subject).find(x=>x.id===st.unit);
+ return '<details class="v18-freeunit" data-v18-details="'+n+'"'+(s.open?' open':'')+'>'+
+ '<summary>✧ 登録のない単元・文例から所見を作る</summary>'+
+ '<div class="v18-short">登録済みの文例がなくてもOK。実際に見取った姿を入力して、オフラインで下書きを組み立てます。</div>'+
+ '<div class="field" style="margin-top:12px"><label>単元名（上で選んだ単元も使えます）</label>'+
+ '<input data-v18-row="unit" data-n="'+n+'" value="'+E(s.unit)+'" placeholder="'+E(selected?.unit||'単元名を入力')+'" maxlength="100"></div>'+
+ '<div class="field"><label>評価の観点</label><select data-v18-row="view" data-n="'+n+'">'+
+ ['知識・技能','思考・判断・表現','主体的に学習に取り組む態度'].map(x=>option(x,s.view)).join('')+'</select></div>'+
+ '<div class="field"><label>実際に見取った児童の姿（文末まで入力）</label>'+
+ '<textarea data-v18-row="observed" data-n="'+n+'" placeholder="例：実験結果を比べ、理由を自分の言葉で説明していました。">'+E(s.observed)+'</textarea></div>'+
+ '<div class="v18-warning">※ 児童名や個人情報は入力しないでください。観点は整理用で、観点に応じた活動を自動で創作することはありません。</div>'+
+ '<div class="v18-row-tools" style="margin:10px 0"><label class="small">'+
+ '<input type="checkbox" data-v18-row="saveUnit" data-n="'+n+'"'+(s.saveUnit?' checked':'')+'> 入力した単元名を次回の単元一覧にも追加</label></div>'+
+ '<button class="btn softbtn" type="button" data-v18-action="generate" data-n="'+n+'">この姿から候補を作る</button>'+
+ (s.candidates.length?'<div class="v18-variants">'+s.candidates.map((x,i)=>
+ '<div class="v18-variant"><strong>'+E(x.label)+'</strong><p>'+E(x.text)+'</p>'+
+ '<button class="btn softbtn" type="button" data-v18-action="apply" data-n="'+n+'" data-variant="'+i+'">この番号に配置 →</button></div>').join('')+'</div>':'')+
+ '</details>';
+}
+const v18OldPicker=v8Picker;
+v8Picker=function(c,t,n){return v18OldPicker(c,t,n)+v18FreePicker(c,t,n)};
+document.addEventListener('input',e=>{
+ const field=e.target?.dataset?.v18Row;
+ if(field==='unit'||field==='observed'){
+  const s=v18Free(cur(),activeType,Number(e.target.dataset.n));
+  s[field]=e.target.value;
+  s.candidates=[];
+ }
+ if(e.target?.dataset?.v18Setting==='extra-unit')v18ExtraName=e.target.value;
+});
+document.addEventListener('change',e=>{
+ const el=e.target,setting=el?.dataset?.v18Setting,field=el?.dataset?.v18Row;
+ if(setting==='grade'){
+  v18Grade=Math.max(1,Math.min(6,Number(el.value)||3));
+  if(!v18SubjectsForGrade(v18Grade).includes(v18ExtraSubject))v18ExtraSubject='国語';
+  render();return;
+ }
+ if(setting==='publisher'){
+  const subj=el.dataset.v18Subject;
+  if(!v18SubjectsForGrade(v18Grade).includes(subj))return;
+  S.textbooks=S.textbooks||{};
+  S.textbooks[v18Grade+':'+subj]=el.value;
+  const section=$('v18-settings');
+  if(section){const tag=section.querySelector('.tag');if(tag){const n=v18Ready(v18Grade);tag.textContent=n.ready+' / '+n.total+'教科 設定済み'}}
+  return;
+ }
+ if(setting==='extra-subject'){v18ExtraSubject=el.value;return}
+ if(field){
+  const s=v18Free(cur(),activeType,Number(el.dataset.n));
+  if(field==='saveUnit')s.saveUnit=!!el.checked;
+  if(field==='view')s.view=el.value;
+  if(field==='unit'||field==='observed')s[field]=el.value;
+ }
+});
+function v18SaveUnit(g,subject,unit){
+ const publisher=v4Pub(g,subject);
+ if(publisher==='未設定')return false;
+ const old=v8Available({grade:g},subject).some(x=>x.unit===unit);
+ if(old)return true;
+ S.customUnitsV5=S.customUnitsV5||[];
+ S.customUnitsV5.push({grade:g,subject,publisher,unit,domain:'',activities:'',criteria:''});
+ return true;
+}
+document.addEventListener('click',e=>{
+ const btn=e.target.closest('[data-v18-action]');if(!btn)return;
+ const action=btn.dataset.v18Action,c=cur(),n=Number(btn.dataset.n);
+ if(action==='add-unit'){
+  const unit=v18ExtraName.trim(),subj=v18ExtraSubject;
+  if(!unit||unit.length>100){toast('単元名を入力してください');return}
+  if(!v18SubjectsForGrade(v18Grade).includes(subj)){toast('教科を選択してください');return}
+  if(!v18SaveUnit(v18Grade,subj,unit)){toast('先にこの教科の出版社を選択してください');return}
+  v18ExtraName='';render();toast('単元一覧に登録しました');return;
+ }
+ if(action!=='generate'&&action!=='apply')return;
+ if(!Number.isInteger(n)||n<1||n>c.count||c.missing.includes(n))return;
+ const selected=v8Selection(c,activeType,n),s=v18Free(c,activeType,n);
+ if(action==='generate'){
+  const subject=selected.subject,unit=v18GetUnit(c,activeType,n),obs=v18ObservationText(s.observed);
+  if(!subject){toast('先に教科を選んでください');return}
+  if(!unit||unit.length>100){toast('単元名を入力するか選択してください');return}
+  if(!obs){toast('見取った姿は「〜していました。」のように文末まで、8〜400文字で入力してください');return}
+  s.candidates=v18Drafts(subject,unit,obs);
+  s.open=true;
+  if(s.saveUnit&&!v18SaveUnit(c.grade,subject,unit))toast('単元名の登録には教科書設定が必要です。今回の下書きは作成できます');
+  const scroll=window.scrollY||0;render();window.scrollTo?.(0,scroll);
+  return;
+ }
+ const variant=Number(btn.dataset.variant),draft=s.candidates[variant];
+ if(!draft)return;
+ const row=getEnt(c,activeType,n);
+ if(row.status==='確定'&&!confirm('確定済みの文章を変更しますか？'))return;
+ let text=row.text.trim();
+ if(text.includes(draft.text)){toast('同じ文章はすでに入っています');return}
+ if(text&&!confirm('既存の所見の末尾に、この候補を追加しますか？'))return;
+ text=text?text+'\n'+draft.text:draft.text;
+ editEnt(c,activeType,n,{text,status:'下書き',touched:true});
+ s.open=true;
+ const scroll=window.scrollY||0;render();window.scrollTo?.(0,scroll);
+ toast('候補を配置しました。児童の実際の姿に合うよう最終修正してください');
+});
+
+</script><script>
+/* bundled v19-unit-catalog.js */
+/* STUDIO v1.9 - third-grade curriculum pilot, instant editable templates, textbook-only local preferences.
+   Unit names are reference catalogs, not a live connection to publishers or an AI service.
+   Observations and report comments never enter this catalog or its storage key. */
+const V19_PUBLISHER_KEY='shoken-studio.textbook-publishers.v1';
+const V19_CATALOG=[
+ {grade:3,subject:'理科',publisher:'東京書籍',units:[
+ '春の生き物','たねまき','チョウのかんさつ','どれぐらい育ったかな',
+ '風やゴムのはたらき','花がさいたよ','実ができたよ','こん虫のかんさつ',
+ '太陽とかげ','太陽の光','音のせいしつ','物の重さ','電気の通り道','じしゃくのせいしつ']},
+ {grade:3,subject:'国語',publisher:'光村図書',units:[
+ '春風をたどって','国語辞典を使おう','漢字の音と訓','もっと知りたい、友だちのこと',
+ 'こまを楽しむ','まいごのかぎ','俳句を楽しもう','こそあど言葉を使いこなそう',
+ '仕事のくふう、見つけたよ','本で知ったことをクイズにしよう','ローマ字',
+ 'ちいちゃんのかげおくり','修飾語を使って書こう','おすすめの一さつを決めよう',
+ 'すがたをかえる大豆','食べ物のひみつを教えます','ことわざ・故事成語',
+ '三年とうげ','わたしの町のよいところ','ありの行列','たから島のぼうけん',
+ 'お気に入りの場所、教えます','モチモチの木']},
+ {grade:3,subject:'算数',publisher:'東京書籍',units:[
+ 'かけ算','時こくと時間','わり算','たし算とひき算の筆算','長さ',
+ '表とグラフ','暗算','あまりのあるわり算','大きな数',
+ 'かけ算の筆算（１）','大きな数のわり算','円と球','小数','重さ',
+ '分数','□を使った式','かけ算の筆算（２）','倍の計算','三角形と角']}
+];
+const V19_UNIT_FOCUS={
+ '春の生き物':['見つけた生き物の姿や様子を観察して記録する','観察した生き物の特徴を比べて考える'],
+ 'たねまき':['種の形や大きさを観察して記録する','植物が育つために必要な世話について考える'],
+ 'チョウのかんさつ':['チョウの育ち方を順に整理する','幼虫と成虫の姿を比べて考える'],
+ 'こん虫のかんさつ':['こん虫のからだのつくりを捉える','複数の生き物の体の特徴を比べる'],
+ '風やゴムのはたらき':['風やゴムの力による物の動き方を確かめる','条件を変えた実験結果を比べて考える'],
+ '太陽とかげ':['太陽の位置と影の向きの関係を観察する','時刻ごとの観察結果を根拠に説明する'],
+ '太陽の光':['日光の進み方や集めた光の様子を確かめる','実験結果を比べて光の性質を考える'],
+ '音のせいしつ':['音を出している物の様子を確かめる','音の大きさと振動の様子を関係付けて考える'],
+ '物の重さ':['形や体積と重さの関係を確かめる','条件をそろえて測定結果を比べる'],
+ '電気の通り道':['豆電球がつくつなぎ方や電気を通す物を確かめる','実験結果の共通点を見つけて理由を説明する'],
+ 'じしゃくのせいしつ':['磁石につく物や極の性質を確かめる','磁石を使った結果を比較して性質を考える'],
+ 'ちいちゃんのかげおくり':['場面の様子を本文の言葉から読み取る','二つのかげおくりを比べて気持ちを考える'],
+ 'すがたをかえる大豆':['段落ごとの役割や説明の工夫を捉える','事例と筆者の伝え方を結び付けて説明する'],
+ 'こまを楽しむ':['文章の組み立てや中心となる事柄を捉える','こまの特徴を説明する部分を比べて読む'],
+ '仕事のくふう、見つけたよ':['調べたことを段落に分けて整理する','仕事の工夫とその理由を具体例で説明する'],
+ 'あまりのあるわり算':['商と余りの意味を理解して計算する','場面に応じて余りの扱いを考える'],
+ '小数':['小数の表し方や大きさを理解する','数直線などを使って数の大きさを説明する']
+};
+function v19Templates(subject,unit){
+ const focus=V19_UNIT_FOCUS[unit];
+ const pre=(subject==='道徳'||subject==='外国語活動'?'':subject+'の')+'「'+unit+'」の学習では、';
+ const one=focus?.[0]||'学習した内容や方法を確かめる';
+ const two=focus?.[1]||'学んだことを比べたり、理由を考えたりする';
+ return [
+  {id:'v19:knowledge',axis:'ひな形・知識技能',text:pre+'【実際の活動を確かめて】'+one+'ことができました。'},
+  {id:'v19:thinking',axis:'ひな形・思考判断表現',text:pre+'【実際の活動を確かめて】'+two+'ことができました。'},
+  {id:'v19:attitude',axis:'ひな形・主体的な態度',text:pre+'【実際の姿を確かめて】自分の考えを試したり見直したりしながら、学習に取り組んでいました。'}
+ ];
+}
+function v19LoadTextbooks(){
+ try{
+  const raw=localStorage.getItem(V19_PUBLISHER_KEY);
+  if(!raw)return;
+  const saved=JSON.parse(raw);
+  if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
+  S.textbooks=S.textbooks||{};
+  const allowed=Object.keys(V4_PUBLISHERS);
+  for(const [key,value] of Object.entries(saved)){
+   const match=key.match(/^([1-6]):(.+)$/);
+   if(!match||!allowed.includes(match[2])||typeof value!=='string'||value.length>80)continue;
+   if(!S.textbooks[key]||S.textbooks[key]==='未設定')S.textbooks[key]=value;
+  }
+ }catch(_){}
+}
+function v19SaveTextbooks(){
+ try{
+  const out={};
+  for(const [key,value] of Object.entries(S.textbooks||{})){
+   if(/^[1-6]:/.test(key)&&typeof value==='string'&&value.length<=80&&value!=='未設定')out[key]=value;
+  }
+  localStorage.setItem(V19_PUBLISHER_KEY,JSON.stringify(out));
+  return true;
+ }catch(_){return false}
+}
+v19LoadTextbooks();
+const v19AvailablePrior=v8Available;
+v8Available=function(c,subject){
+ const found=v19AvailablePrior(c,subject),publisher=v4Pub(c.grade,subject);
+ const catalog=V19_CATALOG.find(x=>x.grade===c.grade&&x.subject===subject&&x.publisher===publisher);
+ if(catalog){
+  for(const unit of catalog.units){
+   if(!found.some(x=>x.unit===unit))found.push({id:publisher+'┃┃'+unit,publisher,unit,domain:'',choices:[]});
+  }
+ }
+ for(const u of found){
+  if(!u.choices.length)u.choices=v19Templates(subject,u.unit);
+ }
+ return found;
+};
+const v19PickerPrior=v8Picker;
+v8Picker=function(c,t,n){
+ const html=v19PickerPrior(c,t,n),st=v8Selection(c,t,n),pub=v4Pub(c.grade,st.subject);
+ if(!st.subject)return html;
+ const units=v8Available(c,st.subject),chosen=units.find(u=>u.id===st.unit);
+ const catalog=V19_CATALOG.some(x=>x.grade===c.grade&&x.subject===st.subject&&x.publisher===pub);
+ const note='<div class="v19-advice">'+
+ (chosen&&chosen.choices.some(x=>x.id.startsWith('v19:'))?
+  'この単元の3候補は編集用のひな形です。「【実際の活動を確かめて】」などを消し、観察した姿に合わせて修正してください。':
+  catalog?'この教科書の単元を一部収録しています。表示されない単元は下の「登録のない単元・文例から所見を作る」で直接入力できます。':
+  'この出版社の全単元はまだ収録されていません。下の入力欄から単元名を直接指定できます。')+
+ '</div>';
+ return html+note;
+};
+const v19Style=document.createElement('style');
+v19Style.textContent='.v19-advice{font-size:11px;line-height:1.6;background:#fff8ec;border:1px solid #ecdfc7;color:#795c36;border-radius:9px;padding:9px 12px;margin:8px 0 12px}.v18-freeunit summary{font-size:14px!important;letter-spacing:0!important}';
+document.head.appendChild(v19Style);
+const v19SettingsPrior=settingsHTML;
+settingsHTML=function(){
+ return v19SettingsPrior()+'<div class="notice small" style="margin:12px 0">教科書会社の選択だけは、この端末に保存します。児童の所見本文は保存しません（従来どおり自動保存は別設定）。参考単元一覧は、現在3年の国語・算数・理科の一部出版社から整備中です。</div>';
+};
+document.addEventListener('change',e=>{
+ const el=e.target;
+ if(el?.dataset?.v18Setting==='publisher'||el?.id==='v4-publisher')v19SaveTextbooks();
+});
+window.addEventListener('pagehide',v19SaveTextbooks);
+
+</script><script>
+/* bundled v20-curated-examples.js */
+/* STUDIO v2.0: teacher-reviewed corpus, quality-gated search.
+ * Curated wording is a suggestion, never evidence that a pupil achieved it.
+ * References were generalized to avoid names, schools or identifiers.
+ * Publisher-neutral supplemental samples: unit-title alignment must be checked by teacher. */
+const V20_CURATED=[];
+function v20Add(grade,subject,unit,axis,text,source='共有された所見を校正'){
+ V20_CURATED.push({grade,subject,unit,axis,text,source});
+}
+function v20Pack(grade,subject,unit,spec,source){
+ const p=(subject==='外国語活動'||subject==='生活・特別活動'?'':subject+'の')+'「'+unit+'」の学習では、';
+ for(const [axis,items] of Object.entries(spec)){
+  for(const s of items)v20Add(grade,subject,unit,axis,s.startsWith('★')?s.slice(1):p+s,source);
+ }
+}
+// 光村図書3年: 読む教材と、その後の書く教材を混同しない。
+v20Pack(3,'国語','すがたをかえる大豆',{
+ knowledge:[
+ '「煮る」「いる」「ひく」など、大豆の加工の仕方を表す言葉の意味を理解し、本文の内容を確かめることができました。',
+ '「はじめ・中・終わり」という説明文の構成に気付き、それぞれに何が書かれているかを整理することができました。',
+ '大豆からできる食品とその加工の仕方を対応させながら、本文の内容を整理することができました。'],
+ thinking:[
+ '各段落の中心となる言葉や文を見つけ、大豆がどのような食品に姿を変えるかを読み取ることができました。',
+ '大豆の加工の仕方を説明する具体例に着目し、筆者が読み手に分かりやすく伝えるために工夫した点を考えることができました。',
+ '「はじめ・中・終わり」の役割や具体例の並べ方に着目し、説明の順序によって分かりやすさが変わることを考えることができました。'],
+ attitude:[
+ '大豆が姿を変える仕組みに疑問をもち、教科書の言葉や文を繰り返し確かめながら読み進めていました。',
+ '友だちの考えと自分の考えを比べ、筆者が説明を工夫している箇所を本文に戻って確かめていました。']
+},'光村3年・説明文を読む学習の校正済み参考例／観点は要確認');
+v20Pack(3,'国語','食べ物のひみつを教えます',{
+ knowledge:[
+ '調べたことを文章にまとめる際に、段落ごとの内容を分けて書くことができました。',
+ '読み手が理解しやすいよう、文のつながりや句読点に気を付けて説明文を書くことができました。',
+ '選んだ食品の材料や作られ方を説明するために、調べた言葉を適切に使って文章を書くことができました。'],
+ thinking:[
+ '興味をもった食品について、材料や作られ方を調べ、伝えたいことを整理して説明文にまとめることができました。',
+ '食品がどのような材料から作られ、どのように姿を変えるのかを、説明する順序を考えて文章にまとめることができました。',
+ '「すがたをかえる大豆」で学んだ具体例の示し方を生かし、読み手に伝わりやすい説明文を書くことができました。'],
+ attitude:[
+ '興味をもった食品について進んで資料を調べ、必要な情報をメモに整理しながら文章にまとめようとしていました。',
+ '興味をもった食品がどのような材料から作られるのかを読み手に分かりやすく伝えようと、説明する順序や言葉を見直しながら文章を書いていました。']
+},'光村3年・調べて説明文を書く学習の校正済み参考例／観点は要確認');
+v20Pack(3,'外国語活動','色',{
+ knowledge:['色を表す英語を聞き取り、外国人講師が指示した色の物を教室の中から探すことができました。'],
+ attitude:['外国人講師が指示した色の物を、教室の中から進んで探していました。']
+},'共有された外国語活動の所見');
+v20Pack(3,'外国語活動','形',{
+ knowledge:['形を表す英語を聞き取り、外国人講師が指示した形の物を教室の中から探すことができました。'],
+ thinking:['形を表す英語を手掛かりに、物を当てるクイズに積極的に参加していました。'],
+ attitude:['外国人講師が指示した形の物を、教室の中から進んで探していました。']
+},'共有された外国語活動の所見');
+v20Pack(3,'外国語活動','色・形・動物',{
+ knowledge:['ゲームを通して、色や形、動物を表す英語に親しみ、外国人講師の発音をまねして声に出していました。'],
+ attitude:['外国人講師の口の動きをよく見て、英語の発音をまねしながらゲームに参加していました。']
+},'共有された外国語活動の所見');
+v20Pack(3,'外国語活動','自己紹介',{
+ thinking:['英語で自己紹介をしてサインを交換する活動では、友だちに声をかけ、学習した表現を使って自己紹介していました。'],
+ attitude:['英語で自己紹介をし合うゲームでは、進んで友だちに声をかけ、サインを交換していました。']
+},'共有された外国語活動の所見');
+v20Pack(3,'外国語活動','好きなものを伝えよう',{
+ thinking:['好きな動物や色を英語で伝えたり、相手に尋ねたりするゲームで、学習した表現を使ってやり取りすることができました。'],
+ attitude:['好きな動物や色を伝え合う活動では、自分から友だちに声をかけ、英語でやり取りしようとしていました。']
+},'共有された外国語活動の所見');
+v20Pack(3,'算数','かけ算の筆算',{
+ knowledge:['筆算の手順を理解し、位をそろえて順序よく計算することができました。'],
+ thinking:['1桁の数と2桁の数のかけ算では、数の順序を入れ替えて筆算にすると計算しやすいことに気付き、その考えを友だちに説明していました。'],
+ attitude:['計算で位がずれないよう、位をそろえることを意識して繰り返し練習していました。']
+},'共有された算数の所見');
+v20Pack(3,'算数','三角形を調べよう',{
+ knowledge:['定規とコンパスを丁寧に使い、二等辺三角形や正三角形を正確にかくことができました。'],
+ thinking:['角の大きさは辺の長さではなく、二つの辺の開き具合で決まることに着目して、角の大小を比べることができました。'],
+ attitude:['コンパスと定規の使い方を繰り返し練習し、二等辺三角形を正確にかくことができるようになりました。']
+},'共有された算数の所見');
+v20Pack(3,'算数','円と球',{
+ knowledge:['コンパスを使って、中心からの距離が等しい点を結び、円を正確にかくことができました。'],
+ attitude:['コンパスの針と鉛筆の位置に気を付けながら練習を重ね、円をかく技能を高めていました。']
+},'共有された算数の所見');
+v20Pack(3,'算数','たし算とひき算の筆算',{
+ knowledge:['3桁のたし算やひき算で位を正しくそろえ、正確に筆算することができました。']
+},'共有された算数の所見');
+v20Pack(3,'算数','わり算',{
+ knowledge:['一人分の数を求める場合と、何人に分けられるかを求める場合の意味の違いを理解することができました。'],
+ thinking:['文章問題の場面を図や絵に表し、数量の関係を捉えて正しく式を立てることができました。',
+ 'わり算の意味を理解し、学んだことを生かして自分で文章問題を作ることができました。']
+},'共有された算数の所見');
+v20Pack(3,'算数','あまりのあるわり算',{
+ knowledge:['「余り」「割り切れる」「割り切れない」の意味を理解し、式に正しく表すことができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'算数','長さ',{
+ knowledge:['1km＝1000mの関係を理解し、長さをkmとmの両方の単位で表すことができました。',
+ '巻尺の目盛りを正しく読み取り、物の長さを測ることができました。'],
+ thinking:['巻尺を使って校内の物の長さを調べる際に、長さを予想してから測定していました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'算数','時こくと時間のもとめ方',{
+ knowledge:['秒という単位や分と秒の関係を理解し、時間を求める問題を解くことができました。'],
+ thinking:['時間の単位に着目し、時刻や時間の求め方を考えることができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'算数','かけ算のきまり',{
+ thinking:['12×4の答えの求め方を図に表し、数のまとまりに着目しながら考えることができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'国語','こまを楽しむ',{
+ thinking:['段落ごとにこまの特徴を捉え、遊んでみたいこまとその理由をノートにまとめることができました。',
+ '文章の「はじめ・中・終わり」の構成に着目し、段落同士の関係を考えながら内容を読み取ることができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'国語','まいごのかぎ',{
+ thinking:['出来事をきっかけに変わる主人公の様子に着目し、気持ちの変化を考えることができました。',
+ '主人公の行動を表す言葉を根拠に、出来事による気持ちの変化を想像することができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'国語','国語辞典を使おう',{
+ knowledge:['見出し語の並び方を理解し、調べたい言葉の意味を国語辞典で調べることができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'国語','漢字の音と訓',{
+ knowledge:['既習の漢字の音読みと訓読みを確かめ、それぞれの読み方を生かして文を作ることができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'国語','はじめて知ったことを知らせよう',{
+ thinking:['自分で選んだ科学的な読み物から初めて知ったことを取り上げ、感想を交えて伝えることができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'国語','ありの行列',{
+ thinking:['中心となる語や文を見つけ、各段落の大切な内容を短くまとめることができました。',
+ '指示語や接続語、段落の関係に着目し、問いから答えまでの説明の流れを捉えることができました。']
+},'共有された所見記録');
+v20Pack(3,'国語','ローマ字',{
+ knowledge:['ローマ字の表記を覚え、タブレット端末で文字を入力するときに活用することができました。']
+},'共有された所見記録');
+v20Pack(3,'図工','絵のぐ＋水＋ふで＝いいかんじ！',{
+ knowledge:['絵の具の水の量を調整し、太い線や細い線などを描き分けることができました。'],
+ thinking:['イメージしたTシャツを表すために、色を混ぜたり線を重ねたりして描いていました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'図工','カラフルフレンド',{
+ thinking:['ビニール袋の色や材料の組み合わせを工夫し、自分なりの「友だち」を表現することができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'図工','せんたくばさみで遊ぼう',{
+ thinking:['自分のイメージに合わせて、洗濯ばさみの色を組み合わせたり、つないだりして表現していました。',
+ '洗濯ばさみをつないだり重ねたりしながら、思い描いた形を表現することができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'音楽','リコーダー',{
+ knowledge:['タンギングに気を付けて一音一音をはっきりと吹き、きれいな音で曲を演奏することができました。',
+ '息の使い方や指づかいに気を付け、なめらかに旋律を演奏することができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'音楽','春の小川',{
+ thinking:['歌詞に表された春の情景を思い浮かべ、ブレスの記号にも気を付けながら歌うことができました。']
+},'校正済み所見.xlsx');
+v20Pack(3,'理科','磁石の性質',{
+ knowledge:['同じ極同士は退け合い、違う極同士は引き合う性質を理解することができました。'],
+ thinking:['磁石の極の性質を使って、物が動く仕組みを工夫したおもちゃを作ることができました。'],
+ attitude:['身の回りの物を調べ、磁石に引き付けられる物を進んで探して記録していました。']
+},'共有された所見記録');
+v20Pack(3,'社会','スーパーマーケット',{
+ thinking:['商品の並べ方や表示、品ぞろえなどに着目し、店がお客さんのために行っている工夫を見つけることができました。',
+ '見学で気付いた店の工夫を付箋に書き出し、友だちに紹介することができました。']
+},'共有された所見記録');
+v20Pack(3,'社会','昔の道具',{
+ attitude:['昔の道具の使い方や歴史に関心をもち、本で調べたことをカードにまとめていました。']
+},'共有された所見記録');
+v20Pack(3,'体育','跳び箱',{
+ knowledge:['かかえ込み跳びに取り組み、手を着いた位置よりも足が前に出るよう意識して練習し、技を成功させることができました。',
+ '台上前転では、マットを使って回転する動きを練習し、跳び箱の上でも前転できるようになりました。',
+ '開脚跳びでは、両足で踏切板を力強く踏み切り、着地で姿勢を保つことができました。']
+},'共有された所見記録');
+v20Pack(3,'体育','鉄棒',{
+ knowledge:['後方支持回転で腹部が鉄棒から離れないよう意識し、回転することができました。']
+},'共有された所見記録');
+v20Pack(3,'体育','ハードル走',{
+ thinking:['自分の走るリズムに合わせてハードルの間隔を選び、一定のリズムで走り越えることができました。']
+},'共有された所見記録');
+v20Pack(3,'体育','ソフトキャッチバレー',{
+ thinking:['相手のコートの空いている場所を見つけ、そこをねらってボールを返す工夫をしていました。',
+ 'ボールを落とさずにつなぐために、友だちと声をかけ合いながらパスしていました。']
+},'共有された所見記録');
+v20Pack(3,'体育','タワーボール',{
+ thinking:['相手に取られないようパスをつなぎ、ねらう場所を考えながらシュートしていました。'],
+ attitude:['ゲームの規則を理解し、自分から主審の役割に挑戦していました。']
+},'共有された所見記録');
+v20Pack(6,'外国語','This is me',{
+ knowledge:['自分のプロフィールを伝える英語表現を使い、交流相手に向けた自己紹介カードを作成することができました。'],
+ thinking:['自己紹介カードに写真を添えるなど、相手に自分のことが伝わりやすくなるよう工夫していました。'],
+ attitude:['自分のプロフィールを伝える表現を使い、英語で自己紹介することができました。']
+},'校正済み所見.xlsx');
+v20Pack(6,'外国語',"Let's go to Italy",{
+ knowledge:['行きたい国について、学習した英語表現を用いて話すことができました。'],
+ thinking:['自分の行きたい国とその理由について、英語で尋ねたり伝えたりすることができました。'],
+ attitude:['自分の行きたい国とその理由を、外国人講師に英語で詳しく伝えることができました。']
+},'校正済み所見.xlsx');
+// Add category-based, non-curricular classroom observations from the user's own source, not from outside PDF.
+v20Pack(3,'生活・特別活動','学級活動',{
+ attitude:['★学級会では、友だちの意見を聞いて自分の考えと比べ、話合いの内容を整理しながら発言していました。']
+},'共有の文例を基に作成した編集用例');
+const V20_AXES={knowledge:'知識・技能',thinking:'思考・判断・表現',attitude:'主体的に学習に取り組む態度'};
+function v20Normalize(x){return String(x||'').normalize('NFKC').replace(/[\s　・＋+（）()]/g,'').replace(/筆算/g,'ひっ算').replace(/描/g,'か').toLowerCase()}
+const V20_ALIASES={
+ 'かけ算の筆算':['かけ算のひっ算','かけ算の筆算（１）'],
+ '三角形を調べよう':['三角形と角','二等辺三角形と正三角形'],
+ '円と球':['まるい形を調べよう'],
+ '磁石の性質':['じしゃくのせいしつ','じしゃくのひみつ'],
+ 'たし算とひき算の筆算':['3桁のたし算やひき算の筆算','たし算とひき算のひっ算'],
+ '時こくと時間のもとめ方':['時こくと時間'],
+ '昔の道具':['昔の道具を調べよう']
+};
+function v20Match(a,b){
+ if(v20Normalize(a)===v20Normalize(b))return true;
+ const aa=V20_ALIASES[a]||[],bb=V20_ALIASES[b]||[];
+ return aa.some(x=>v20Normalize(x)===v20Normalize(b))||bb.some(x=>v20Normalize(x)===v20Normalize(a));
+}
+function v20Rows(grade,subject,unit){return V20_CURATED.filter(x=>x.grade===grade&&x.subject===subject&&v20Match(x.unit,unit))}
+function v20Choices(rows){return rows.map((x,i)=>({id:'v20:'+x.axis+':'+i,axis:V20_AXES[x.axis]+'｜校正済み',text:x.text,source:x.source}))}
+const v20PriorAvailable=v8Available;
+v8Available=function(c,subject){
+ const found=v20PriorAvailable(c,subject);
+ if(!subject)return found;
+ // The v1.9 generic sentences are not report-card-ready and are hidden from search.
+ for(const u of found)u.choices=u.choices.filter(x=>!String(x.id).startsWith('v19:'));
+ const groups=new Map();
+ for(const x of V20_CURATED)if(x.grade===c.grade&&x.subject===subject){
+  const key=x.unit;let row=groups.get(key);
+  if(!row){row=[];groups.set(key,row)}row.push(x);
+ }
+ for(const [unit,rows] of groups){
+  let target=found.find(x=>v20Match(unit,x.unit));
+  if(!target){target={id:'v20|'+subject+'|'+unit,publisher:'参考文例',unit,domain:'',choices:[]};found.push(target)}
+  // For edited units use the teacher-reviewed examples, not a mixture with generic drafts.
+  target.choices=v20Choices(rows);
+ }
+ return found;
+};
+const v20OldUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ const out=v20OldUnitOptions(),seen=new Set(out.map(u=>v20Normalize(u.unit)));
+ for(const row of V20_CURATED){
+  if(row.grade!==v4Grade||row.subject!==v4Subject||(row.subject==='体育'&&typeof v7PeMode!=='undefined'&&v7PeMode==='保健'))continue;
+  const unit=v20Normalize(row.unit);if(seen.has(unit))continue;
+  seen.add(unit);out.push({grade:row.grade,subject:row.subject,publisher:v4Pub(v4Grade,v4Subject),unit:row.unit,texts:[]});
+ }
+ return out;
+};
+const v20OldData=v6Data;
+v6Data=function(u){
+ if(u){
+  const rows=v20Rows(u.grade,u.subject,u.unit);
+  if(rows.length)return {knowledge:rows.filter(x=>x.axis==='knowledge').map(x=>x.text),thinking:rows.filter(x=>x.axis==='thinking').map(x=>x.text),attitude:rows.filter(x=>x.axis==='attitude').map(x=>x.text)};
+ }
+ return v20OldData(u);
+};
+const v20OldPicker=v8Picker;
+v8Picker=function(c,t,n){
+ const h=v20OldPicker(c,t,n),st=v8Selection(c,t,n),available=v8Available(c,st.subject),u=available.find(x=>x.id===st.unit);
+ if(!st.subject)return h;
+ const count=u?.choices.length||0;
+ const advisory=count?
+  '掲載されている文例は候補です。実際の児童の学習場面・成果と一致する場合のみ使い、編集してください。':
+  'この単元は校正済みの文例がまだありません。下の「登録のない単元・文例から所見を作る」から、実際の姿を入力してください。';
+ return h+'<p class="v20-guidance">'+E(advisory)+'</p>';
+};
+const v20Css=document.createElement('style');
+v20Css.textContent='.v20-guidance{font-size:11px;border-left:3px solid #8db2a2;padding:7px 12px;line-height:1.7;background:#f3f8f4;color:#355f4e;margin:9px 0}';
+document.head.appendChild(v20Css);
+
+</script><script>
+/* bundled v21-pe-and-inquiry.js */
+/* 所見メーカー STUDIO v2.1: 体育の学年帯・領域・種目・技別検索 / 総合は文章構成の参考のみ
+ * Readonly built-in references. Existing user-authored drafts and bank records are never deleted. */
+const V21_BANDS={low:'低学年（1・2年）',mid:'中学年（3・4年）',high:'高学年（5・6年）'};
+function v21Band(g){return g<=2?'low':g<=4?'mid':'high'}
+const V21_PE_CATALOG={
+ low:{
+  '体つくりの運動遊び':['体ほぐしの運動遊び','多様な動きをつくる運動遊び'],
+  '器械・器具を使っての運動遊び':['固定施設を使った運動遊び','マットを使った運動遊び','鉄棒を使った運動遊び','跳び箱を使った運動遊び'],
+  '走・跳の運動遊び':['走の運動遊び','跳の運動遊び'],
+  '水遊び':['水の中を移動する遊び','もぐる・浮く遊び'],
+  'ゲーム':['ボールゲーム','鬼遊び'],
+  '表現リズム遊び':['表現遊び','リズム遊び']
+ },
+ mid:{
+  '体つくり運動':['体ほぐしの運動','多様な動きをつくる運動'],
+  '器械運動':['マット運動','鉄棒運動','跳び箱運動'],
+  '走・跳の運動':['かけっこ・リレー','小型ハードル走','幅跳び','高跳び'],
+  '水泳運動':['浮いて進む運動','もぐる・浮く運動'],
+  'ゲーム':['ゴール型ゲーム（ハンドボール）','ネット型ゲーム（プレルボール）','ベースボール型ゲーム（ティーボール）'],
+  '表現運動':['表現','リズムダンス'],
+  '保健':['けんこうな生活','体の発育・発達']
+ },
+ high:{
+  '体つくり運動':['体ほぐしの運動','体の動きを高める運動'],
+  '器械運動':['マット運動','鉄棒運動','跳び箱運動'],
+  '陸上運動':['短距離走・リレー','ハードル走','走り幅跳び','走り高跳び'],
+  '水泳運動':['クロール','平泳ぎ','安全確保につながる運動'],
+  'ボール運動':['ゴール型（バスケットボール）','ネット型（ソフトバレーボール）','ベースボール型（ティーボール）'],
+  '表現運動':['表現','フォークダンス'],
+  '保健':['心の健康','けがの防止','病気の予防']
+ }
+};
+const V21_PE_ROWS=[];
+function v21Pe(band,domain,sport,skill,examples){
+ const intro='体育の「'+sport+'」では、';
+ for(const [axis,items] of Object.entries(examples)){
+  for(const text of items)V21_PE_ROWS.push({band,domain,sport,skill,axis,text:intro+text});
+ }
+}
+// 小学校低学年
+v21Pe('low','体つくりの運動遊び','多様な動きをつくる運動遊び','バランス・移動',{knowledge:['片足立ちや向きを変える動きに取り組み、体のバランスを保ちながら動くことができました。'],thinking:['友だちの動きを見て、体を動かす方向や速さを変えながら遊び方を工夫していました。'],attitude:['友だちと声をかけ合い、さまざまな動きを進んで試していました。']});
+v21Pe('low','器械・器具を使っての運動遊び','跳び箱を使った運動遊び','跳び乗り・跳び下り',{knowledge:['両足で踏み切って跳び箱に跳び乗り、着地する場所を確かめて跳び下りることができました。'],thinking:['跳び乗りやすい高さを選び、手を着く場所を変えて動きを試していました。'],attitude:['安全な順番や着地の場所を確かめながら、繰り返し運動遊びを楽しんでいました。']});
+v21Pe('low','器械・器具を使っての運動遊び','マットを使った運動遊び','前転がり',{knowledge:['あごを引いて背中を丸め、前に転がる動きができるようになりました。'],thinking:['体を丸めることを意識し、なめらかに転がるための動きを試していました。']});
+v21Pe('low','器械・器具を使っての運動遊び','鉄棒を使った運動遊び','支持・ぶら下がり',{knowledge:['鉄棒をしっかり握り、体を支えたりぶら下がったりすることができました。'],attitude:['できる動きを少しずつ増やそうと、鉄棒につかまる動きに繰り返し挑戦していました。']});
+v21Pe('low','走・跳の運動遊び','走の運動遊び','折り返し走・リレー',{knowledge:['合図を聞いてすばやく走り出し、目印を回って戻る運動遊びができました。'],thinking:['次の走者に交代しやすいよう、走る順番や受け渡す場所を友だちと考えていました。']});
+v21Pe('low','走・跳の運動遊び','跳の運動遊び','連続跳び',{knowledge:['片足跳びや両足跳びを組み合わせ、目印に合わせて連続して跳ぶことができました。']});
+v21Pe('low','水遊び','水の中を移動する遊び','水中歩行',{knowledge:['水の抵抗を感じながら、姿勢や進む方向を変えて水の中を移動することができました。']});
+v21Pe('low','水遊び','もぐる・浮く遊び','水に浮く',{knowledge:['息を吐いたり体の力を抜いたりして、水に浮く動きを試すことができました。'],attitude:['水への慣れ具合に応じてできる動きを選び、繰り返し挑戦していました。']});
+v21Pe('low','ゲーム','ボールゲーム','パス・的当て',{knowledge:['相手の位置を見ながらボールを投げたり受けたりすることができました。'],thinking:['相手に届きやすい投げ方や距離を考え、ボールをやり取りしていました。'],attitude:['友だちと声をかけ合い、順番や約束を守ってゲームに参加していました。']});
+v21Pe('low','ゲーム','鬼遊び','逃げる場所',{thinking:['鬼との位置を見て、つかまらないように走る方向や逃げる場所を考えていました。']});
+v21Pe('low','表現リズム遊び','表現遊び','動物の動き',{thinking:['動物の特徴を考え、歩き方や体の動かし方を工夫して表現していました。']});
+v21Pe('low','表現リズム遊び','リズム遊び','リズムに合わせる',{knowledge:['音楽のリズムに合わせて、跳んだり回ったりする動きをつなげることができました。']});
+// 小学校中学年
+v21Pe('mid','体つくり運動','多様な動きをつくる運動','体のバランス・組合せ',{thinking:['友だちと動きをつなげる順番を考え、バランスを崩さずに動けるよう工夫していました。']});
+v21Pe('mid','器械運動','跳び箱運動','開脚跳び',{knowledge:['踏切りと両手を着く位置に気を付け、開脚跳びをすることができました。','両足で力強く踏み切り、跳び箱の奥に手を着くことで、開脚跳びができるようになりました。'],thinking:['自分の跳び方を振り返り、踏切りや手を着く位置を工夫しながら練習することができました。'],attitude:['自分に合った高さや練習の場を選び、開脚跳びの成功に向けて繰り返し挑戦していました。']});
+v21Pe('mid','器械運動','跳び箱運動','台上前転',{knowledge:['あごを引いて体を丸め、跳び箱の上で前転することができました。'],thinking:['回転する際の手の着き方や体の丸め方を確かめ、自分の課題に合った練習の場を選んでいました。'],attitude:['マットを重ねた場などで回る感覚を確かめながら、段階的に挑戦していました。']});
+v21Pe('mid','器械運動','跳び箱運動','練習・友だちへの助言',{thinking:['友だちの跳び方を見て、踏切りや着手のよかった点を具体的に伝えていました。'],attitude:['友だちの挑戦を認め、安全を確かめながら練習に取り組んでいました。']});
+v21Pe('mid','器械運動','マット運動','前転・後転',{knowledge:['頭の後ろから背中へ順にマットを着け、なめらかに前転することができました。'],thinking:['回転の途中で体が横にそれないよう、手の着き方や体の丸め方を確かめていました。']});
+v21Pe('mid','器械運動','鉄棒運動','支持・回転',{knowledge:['鉄棒を握って体を支え、体を丸めることを意識して回転することができました。'],attitude:['自分に合う補助具や練習方法を選び、できる動きを増やそうとしていました。']});
+v21Pe('mid','走・跳の運動','かけっこ・リレー','バトンの受渡し',{knowledge:['次の走者が走り出すタイミングを合わせ、バトンを受け渡すことができました。'],thinking:['走る速さを落とさずにバトンをつなぐため、受け渡す位置を友だちと相談していました。']});
+v21Pe('mid','走・跳の運動','小型ハードル走','リズム走',{knowledge:['小型ハードルの間を一定のリズムで走り、続けて跳び越すことができました。'],thinking:['自分の歩幅に合ったハードルの間隔を選び、走るリズムが乱れないよう工夫していました。']});
+v21Pe('mid','走・跳の運動','幅跳び','踏切り',{knowledge:['助走から片足で踏み切り、両足で着地することができました。'],thinking:['踏切る位置を確かめながら助走の歩数を調整していました。']});
+v21Pe('mid','走・跳の運動','高跳び','踏切り',{knowledge:['助走のリズムを確かめ、片足で踏み切って跳ぶことができました。']});
+v21Pe('mid','水泳運動','浮いて進む運動','け伸び・ばた足',{knowledge:['壁を蹴って体をまっすぐに伸ばし、水に浮いた姿勢で進むことができました。'],attitude:['進める距離を少しずつ伸ばそうと、姿勢を確かめながら繰り返し練習していました。']});
+v21Pe('mid','水泳運動','もぐる・浮く運動','呼吸・浮く',{knowledge:['息をゆっくり吐き、体の力を抜いて水に浮くことができました。']});
+v21Pe('mid','ゲーム','ゴール型ゲーム（ハンドボール）','パス・シュート',{knowledge:['味方がパスを出しやすい位置に動き、ボールを受けてシュートにつなげることができました。','ボールを受けた後にゴールへ体を向け、ねらった場所へシュートすることができました。'],thinking:['チームでパスをつなげるため、相手がいない場所に動くことを意識していました。'],attitude:['友だちと声をかけ合い、役割を交代しながらゲームに参加していました。']});
+v21Pe('mid','ゲーム','ゴール型ゲーム（ハンドボール）','空間・作戦',{knowledge:['守りのいない場所へ動き、味方からパスを受けることができました。'],thinking:['相手の守りが少ない場所に着目し、チームでパスをつなぐための作戦を考えることができました。'],attitude:['試合で見つけた課題をチームで振り返り、次のゲームで試そうとしていました。']});
+v21Pe('mid','ゲーム','ネット型ゲーム（プレルボール）','つなぐ・返す',{knowledge:['味方が受け取りやすい位置へボールを送り、続けて相手コートへ返すことができました。'],thinking:['ボールを落とさずにつなぐため、味方との立つ位置を相談していました。']});
+v21Pe('mid','ゲーム','ベースボール型ゲーム（ティーボール）','打つ・走る',{knowledge:['台の上のボールをねらって打ち、決められた場所まで走ることができました。'],thinking:['守備の位置を見て、ボールを打つ方向を工夫していました。']});
+v21Pe('mid','表現運動','表現','動きの特徴',{thinking:['表したいものの特徴を捉え、速さや大きさを変えた動きを組み合わせて表現していました。']});
+v21Pe('mid','表現運動','リズムダンス','リズム・組合せ',{knowledge:['音楽のリズムに合わせて、ステップや体の動きを組み合わせて踊ることができました。'],thinking:['友だちと動きをそろえるため、踊る順番や隊形を相談していました。']});
+// 小学校高学年
+v21Pe('high','体つくり運動','体の動きを高める運動','動きの組合せ',{thinking:['自分の課題に合わせて運動を選び、体の動きを高めるための組合せを考えていました。']});
+v21Pe('high','器械運動','跳び箱運動','開脚跳び',{knowledge:['助走の速さや踏切りのタイミングを調整し、安定した開脚跳びができるようになりました。'],thinking:['自分の跳び方の課題を見つけ、助走や着手を変えて動きを確かめていました。'],attitude:['練習を重ねる中で動きを見直し、技の安定を目指して取り組んでいました。']});
+v21Pe('high','器械運動','跳び箱運動','台上前転',{knowledge:['跳び箱の上で回転する位置や体の丸め方を確かめ、安定して台上前転をすることができました。']});
+v21Pe('high','器械運動','マット運動','技の組合せ',{thinking:['技と技をつなぐ動きを考え、回転や倒立の技を組み合わせて演技を構成していました。']});
+v21Pe('high','器械運動','鉄棒運動','技の組合せ',{thinking:['得意な技を組み合わせ、姿勢や技のつながりを意識した演技を考えていました。']});
+v21Pe('high','陸上運動','短距離走・リレー','バトンパス',{knowledge:['走る速度を保ちながら、タイミングを合わせてバトンを渡すことができました。'],thinking:['チームの走順やバトンパスの位置を考え、練習で試しながら調整していました。']});
+v21Pe('high','陸上運動','ハードル走','歩幅・リズム',{knowledge:['自分の歩幅に合った間隔で、リズムよくハードルを走り越えることができました。'],thinking:['踏切りの位置や走る歩数を確かめ、ハードル間の走り方を工夫していました。']});
+v21Pe('high','陸上運動','走り幅跳び','助走・踏切り',{knowledge:['助走の速さを生かして片足で踏み切り、遠くへ跳ぶことができました。'],thinking:['踏切り位置が合うように助走の距離を調整しながら練習していました。']});
+v21Pe('high','陸上運動','走り高跳び','助走・踏切り',{knowledge:['踏切る足や助走のリズムを意識して、高く跳ぶことができました。']});
+v21Pe('high','水泳運動','クロール','呼吸・腕のかき',{knowledge:['腕のかきと呼吸のタイミングを合わせ、続けてクロールで泳ぐことができました。'],thinking:['呼吸のときに姿勢が崩れないよう、顔を上げる向きを確かめて泳いでいました。']});
+v21Pe('high','水泳運動','平泳ぎ','手足のタイミング',{knowledge:['手のかきと足の蹴りを合わせ、伸びる姿勢を意識して平泳ぎで進むことができました。']});
+v21Pe('high','水泳運動','安全確保につながる運動','背浮き',{knowledge:['体の力を抜き、呼吸を確保しながら背浮きの姿勢を保つことができました。']});
+v21Pe('high','ボール運動','ゴール型（バスケットボール）','パス・空間',{knowledge:['相手の守りを見て空いた場所へ動き、パスを受けてシュートにつなげることができました。'],thinking:['攻撃を続けるため、パスを受ける位置や味方との動き方を工夫していました。'],attitude:['試合を振り返って自分の役割を確かめ、次のゲームで生かそうとしていました。']});
+v21Pe('high','ボール運動','ネット型（ソフトバレーボール）','パス・返球',{knowledge:['ボールの落下点を予測して動き、味方が受けやすいパスを出すことができました。'],thinking:['空いている場所を見つけ、相手コートへの返し方を工夫していました。']});
+v21Pe('high','ボール運動','ベースボール型（ティーボール）','打撃・守備',{knowledge:['ボールの位置を見て打ち、塁へ進むことができました。'],thinking:['走者や打球の位置に応じて、守備の動きを判断していました。']});
+v21Pe('high','表現運動','表現','動きの構成',{thinking:['伝えたい場面の変化に合わせ、動きの強弱や隊形を工夫して表現していました。']});
+v21Pe('high','表現運動','フォークダンス','隊形・踊り',{knowledge:['音楽と踊りの特徴を捉え、友だちとタイミングを合わせて踊ることができました。']});
+const V21_AXIS={knowledge:'知識・技能',thinking:'思考・判断・表現',attitude:'主体的に学習に取り組む態度',custom:'保存した文例'};
+function v21PeUnits(grade){
+ const band=v21Band(grade),groups=new Map();
+ for(const x of V21_PE_ROWS){
+  if(x.band!==band)continue;
+  const id=['v21pe',band,x.domain,x.sport,x.skill].join('¦');
+  if(!groups.has(id))groups.set(id,{id,unit:x.sport+'｜'+x.skill,publisher:'学習指導要領',domain:x.domain,sport:x.sport,skill:x.skill,choices:[]});
+  const g=groups.get(id);
+  g.choices.push({id:'v21:'+x.axis+':'+g.choices.length,axis:V21_AXIS[x.axis],category:x.axis,text:x.text});
+ }
+ // User's bank is preserved separately and remains editable, not silently moved or deleted.
+ for(const b of S.bank.filter(x=>Number(x.grade)===Number(grade)&&x.subject==='体育')){
+  const id='v21my¦'+b.id;
+  groups.set(id,{id,unit:b.unit||'自由文例',domain:'自分の文例',publisher:'自作',sport:b.unit||'自由文例',skill:'登録済み文例',
+   choices:[{id:'bank:'+b.id,axis:v6Category(b.criterion)||'自作・保存済み',category:(['knowledge','thinking','attitude'].includes(b.criterion)?b.criterion:'custom'),text:b.text}]});
+ }
+ return [...groups.values()];
+}
+// The user's general-studies samples belong to a STRUCTURE REFERENCE, never a reusable suggestion bank.
+const v21OriginalAvailable=v8Available;
+v8Available=function(c,subject){
+ if(subject==='総合的な学習の時間')return [];
+ if(subject!=='体育')return v21OriginalAvailable(c,subject);
+ const rows=v21PeUnits(c.grade);
+ const old=v21OriginalAvailable(c,subject);
+ for(const u of old.filter(x=>x.domain==='保健')){
+  rows.push({...u,sport:u.unit,skill:'保健の学習',domain:'保健',choices:u.choices.map(x=>({...x,category:['knowledge','thinking','attitude'].find(k=>x.id.startsWith(k+':'))||'custom'}))});
+ }
+ return rows;
+};
+const V21_FILTERS={};let v21LibraryFilter={domain:'',sport:'',skill:'',axis:''};
+function v21For(c,t,n){
+ const k=c.id+'|'+t+'|'+n;
+ if(!V21_FILTERS[k])V21_FILTERS[k]={domain:'',sport:'',skill:'',axis:''};
+ return V21_FILTERS[k];
+}
+function v21Unique(items){return [...new Set(items.filter(Boolean))]}
+function v21Select(n,context,field,choices,current,placeholder){
+ return '<select data-v21-filter="'+E(field)+'" data-v21-context="'+E(context)+'"'+(context==='row'?' data-n="'+n+'"':'')+'>'+
+ '<option value="">'+E(placeholder)+'</option>'+choices.map(s=>option(s,current)).join('')+'</select>';
+}
+function v21FilterData(grade,filter){
+ const band=v21Band(grade),catalog=V21_PE_CATALOG[band],units=v8Available({grade},'体育');
+ const domains=[...Object.keys(catalog),...v21Unique(units.map(x=>x.domain)).filter(x=>!catalog[x])];
+ const sports=filter.domain?v21Unique([...(catalog[filter.domain]||[]),...units.filter(x=>x.domain===filter.domain).map(x=>x.sport)]):[];
+ const skills=filter.sport?v21Unique(units.filter(x=>x.domain===filter.domain&&x.sport===filter.sport).map(x=>x.skill)):[];
+ const current=units.find(x=>x.domain===filter.domain&&x.sport===filter.sport&&x.skill===filter.skill);
+ return {band,domains,sports,skills,current,units};
+}
+function v21Fields(grade,filter,n,context){
+ const d=v21FilterData(grade,filter);
+ return '<div class="v21-band">'+E(V21_BANDS[d.band])+' ｜ 体育実技は学習指導要領に基づく分類</div>'+
+ '<div class="v21-grid">'+
+ field('領域',v21Select(n,context,'domain',context==='library'?d.domains.filter(x=>x!=='保健'):d.domains,filter.domain,'領域を選ぶ'))+
+ field('種目・教材',v21Select(n,context,'sport',d.sports,filter.sport,'種目を選ぶ'))+
+ field('技・具体的な動き',v21Select(n,context,'skill',d.skills,filter.skill,'動きを選ぶ'))+
+ field('評価観点',v21Select(n,context,'axis',Object.keys(V21_AXIS).filter(axis=>d.current?.choices.some(x=>x.category===axis)).map(axis=>V21_AXIS[axis]),V21_AXIS[filter.axis]||'','観点を選ぶ'))+
+ '</div>'+
+ (filter.sport&&!d.skills.length?'<div class="notice v21-note">この種目の校正済み文例は準備中です。実際の児童の姿に合わせて文章を書いてください。</div>':'');
+}
+const v21OriginalPicker=v8Picker;
+v8Picker=function(c,t,n){
+ if(t==='総合的な学習の時間')return '<div class="v8-picker"><div class="section-kicker">総合｜文章構成の参考</div>'+
+ '<p class="hint">総合は学年や年度で活動が変わるため、定型文を選ぶ方式にはしません。下の構成例を参考に、右側へ実際の児童の姿を書いてください。</p>'+
+ '<button class="btn softbtn" type="button" data-action="page" data-page="inquiry-structure">総合の文章構成例を見る</button></div>';
+ const st=v8Selection(c,t,n);
+ if(st.subject!=='体育')return v21OriginalPicker(c,t,n);
+ const f=v21For(c,t,n),d=v21FilterData(c.grade,f),u=d.current;
+ if(st.unit&&u?.id!==st.unit){st.unit=u?.id||'';st.example=''}
+ const choices=u?.choices.filter(x=>x.category===f.axis)||[];
+ const chosen=choices.find(x=>x.id===st.example);
+ return '<div class="v8-picker"><div class="section-kicker">FIND AND PLACE / 体育</div>'+
+ field('教科・領域',v8Select('subject',n,v8Subjects(c,t).map(x=>({id:x,label:x})),st.subject,'教科を選ぶ'))+
+ v21Fields(c.grade,f,n,'row')+
+ field('文例',v8Select('example',n,choices.map((x,i)=>({id:x.id,label:(i+1)+'｜'+x.text.slice(0,32)+'…'})),st.example,'文例を選ぶ'))+
+ (chosen?'<div class="v8-preview">'+E(chosen.text)+'</div>':'<p class="hint">技と観点を選び、児童の実際の姿に合う文例を選んでください。</p>')+
+ '<div class="v8-row-tools"><label class="small">配置方法 <select data-v8-field="mode" data-n="'+n+'"><option value="append"'+(st.mode==='append'?' selected':'')+'>文末に追加</option><option value="replace"'+(st.mode==='replace'?' selected':'')+'>全文置き換え</option></select></label>'+
+ '<button class="btn softbtn" data-v8-row-action="apply" data-n="'+n+'"'+(chosen?'':' disabled')+'>この番号に配置</button></div></div>';
+};
+const v21OriginalUnitHtml=v4UnitHTML;
+v4UnitHTML=function(){
+ if(v4Subject!=='体育'||v7PeMode!=='実技')return v21OriginalUnitHtml();
+ const f=v21LibraryFilter,d=v21FilterData(v4Grade,f),u=d.current;
+ const content=u?Object.keys(V21_AXIS).map(axis=>{
+  const rows=u.choices.filter(x=>x.category===axis);
+  return '<section class="soft v21-section"><h3>'+E(V21_AXIS[axis])+'</h3>'+
+  (rows.length?rows.map(x=>'<div class="v21-copytext">'+E(x.text)+'</div>').join(''):
+   '<p class="muted small">この観点の校正済み文例はまだありません。</p>')+'</section>';
+ }).join(''):'<div class="notice">領域・種目・技を選ぶと、校正済みの文例が表示されます。実際の授業と児童の姿が一致する場合だけ使ってください。</div>';
+ return header('体育｜領域・種目・技から探す','学年帯の内容に合わせて、具体的な動きの文例を確認します。')+
+ '<div class="grid"><div class="panel wide"><div class="three">'+
+ field('学年','<select id="v4-grade">'+v4Opts([1,2,3,4,5,6],v4Grade)+'</select>')+
+ field('教科','<select id="v4-subject">'+v4Opts(Object.keys(V4_PUBLISHERS),v4Subject)+'</select>')+
+ v7ModeSelector()+'</div>'+
+ '<div class="notice" style="margin:12px 0">実技は教科書会社ではなく、文部科学省の学習指導要領による分類です。保健は上の「保健（教科書会社）」に切り替えてください。</div>'+
+ v21Fields(v4Grade,f,0,'library')+'</div>'+
+ '<div class="panel wide"><h2>観点別の所見文例</h2>'+content+
+ '<div class="warning small">文例は公式文ではなく編集用の参考例です。すべての技・種目に文例がそろっているわけではありません。</div></div></div>';
+};
+document.addEventListener('change',e=>{
+ if(e.target?.id==='v4-grade'||e.target?.id==='v7-pe-mode'){
+  v21LibraryFilter={domain:'',sport:'',skill:'',axis:''};
+  if(page==='unit-bank'&&v4Subject==='体育'&&v7PeMode==='実技'){const y=window.scrollY||0;render();window.scrollTo?.(0,y)}
+  return;
+ }
+ const field=e.target.dataset?.v21Filter;
+ if(!field)return;
+ const lib=e.target.dataset.v21Context==='library',filter=lib?v21LibraryFilter:v21For(cur(),activeType,Number(e.target.dataset.n));
+ const v=e.target.value;
+ if(field==='domain'){filter.domain=v;filter.sport='';filter.skill='';filter.axis=''}
+ if(field==='sport'){filter.sport=v;filter.skill='';filter.axis=''}
+ if(field==='skill'){filter.skill=v;filter.axis=''}
+ if(field==='axis')filter.axis=Object.keys(V21_AXIS).find(k=>V21_AXIS[k]===v)||'';
+ if(!lib){const st=v8Selection(cur(),activeType,Number(e.target.dataset.n)),d=v21FilterData(cur().grade,filter);st.unit=d.current?.id||'';st.example=''}
+ const y=window.scrollY||0;render();window.scrollTo?.(0,y);
+});
+// A separate reference page for writing comprehensive-study comments: no copy-and-paste achievements.
+const V21_INQUIRY_GUIDES=[
+ {title:'① 課題を見つけて調べた',parts:['学習テーマ・疑問','どんな資料や方法で調べたか','分かったこと・深まった考え'],
+  frame:'「〔テーマ〕」の学習では、〔疑問・課題〕について〔調べ方や工夫〕をし、〔分かったこと・考えたこと〕をまとめました。'},
+ {title:'② 活動を工夫して表現した',parts:['取り組んだ活動','相手に伝えるための工夫','表現できたこと・伝わったこと'],
+  frame:'「〔テーマ〕」では、〔活動内容〕に取り組み、〔伝え方や制作の工夫〕をして、〔まとめた内容〕を伝えることができました。'},
+ {title:'③ 仲間と協力して進めた',parts:['共通の目標','本人の具体的な役割と行動','協力してできたこと'],
+  frame:'「〔テーマ〕」の活動では、〔目標〕に向けて〔本人が果たした役割・行動〕をし、友だちと協力して〔成果〕につなげました。'},
+ {title:'④ 振り返って学びを深めた',parts:['最初の予想や疑問','活動後に気付いた違いや課題','考えの変化・次への見通し'],
+  frame:'「〔テーマ〕」の学習では、〔当初の考え〕について〔調査・体験で得た根拠〕をもとに見直し、〔新たに考えたこと〕をまとめていました。'}
+];
+function v21InquiryHTML(){
+ return header('総合｜文章の構成を考える','活動内容を固定した文例は使わず、文章の順序を参考にして、その子の姿を記述します。')+
+ '<div class="notice">基本形は「テーマ・課題 → 実際の行動や工夫 → 学び・成果」。〔　〕には観察した事実を入れます。児童の姿を想像して補わないでください。</div>'+
+ '<div class="grid" style="margin-top:15px">'+V21_INQUIRY_GUIDES.map(g=>
+  '<div class="panel c6"><h2>'+E(g.title)+'</h2><p class="v21-structure">'+g.parts.map(E).join('　→　')+'</p>'+
+  '<div class="v21-copytext">'+E(g.frame)+'</div><p class="small muted">文例バンクへは自動登録されません。</p></div>'
+ ).join('')+'</div>'+
+ '<div class="inline" style="margin-top:14px"><button class="btn" data-action="page" data-page="edit">一覧編集へ戻る</button></div>';
+}
+V17_GROUPS['inquiry-structure']='create';
+V17_TOOLNAMES['inquiry-structure']='総合の構成例';
+V17_TOOLPAGES.create.push('inquiry-structure');
+const v21OriginalRender=render;
+render=function(){
+ if(page==='inquiry-structure'){renderTop();$('main').innerHTML=v21InquiryHTML();return}
+ v21OriginalRender();
+};
+// A reference note rather than adding lesson-specific "comprehensive studies" statements to the saved bank.
+const v21PriorBank=bankHTML;
+bankHTML=function(){
+ return '<div class="notice" style="margin-bottom:12px">総合的な学習の時間は、年度ごとの探究内容が異なるため、共通の検索文例として新規登録しません。<button class="btn softbtn" data-action="page" data-page="inquiry-structure">総合の文章構成例へ</button><span class="small muted"> 過去に保存した文例データは削除しません。</span></div>'+v21PriorBank();
+};
+const v21PriorStage=v17StageHTML;
+v17StageHTML=function(){
+ const h=v21PriorStage();
+ if(page!=='stage-create')return h;
+ return h.replace('</div></div>', '</div></div>')+
+ '<div class="notice" style="margin-top:12px"><strong>総合の所見</strong>：過去のテーマ別文例を使い回さず、文章の順序を参考にして書けます。 <button class="btn softbtn" data-action="page" data-page="inquiry-structure">構成例を見る</button></div>';
+};
+const v21Style=document.createElement('style');
+v21Style.textContent='.v21-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}.v21-grid .field{min-width:0}.v21-band{padding:10px 12px;background:#f1f7f2;border:1px solid #d8e7da;border-radius:11px;font-weight:700;color:#3f6450;font-size:12px}.v21-note{margin-top:10px}.v21-section{padding:14px;margin:12px 0;border-radius:12px}.v21-copytext{padding:12px;border:1px solid #dbe7dc;border-radius:12px;background:#fffdf9;margin:9px 0;white-space:pre-wrap;line-height:1.85}.v21-structure{background:#eff6ed;padding:10px;border-radius:10px;font-weight:700;color:#426c53}@media(max-width:690px){.v21-grid{grid-template-columns:1fr}}';
+document.head.appendChild(v21Style);
+
+</script><script>
+/* bundled v22-example-search.js */
+/* 所見メーカー STUDIO v2.3: all-subject, all-grade search of approved built-in examples.
+ * Search is distinct from the user's editable bank; adding a result is an explicit action. */
+const V22_SEARCH={grade:3,subject:'国語',query:'',axis:'',limit:20};
+const V22_AXIS={knowledge:'知識・技能',thinking:'思考・判断・表現',attitude:'主体的に学習に取り組む態度',custom:'自作文例'};
+const V22_ALL_SUBJECTS=['国語','算数','理科','社会','生活','音楽','図工','体育','家庭','外国語活動','外国語','道徳','生活・特別活動','学習全般'];
+function v22Norm(x){return String(x||'').normalize('NFKC').toLowerCase().replace(/[\s　]/g,'').replace(/筆算/g,'ひっ算')}
+function v22MakeIndex(){
+ const collected=[];
+ const push=(grade,subject,unit,axis,text,source,details='')=>{
+  if(!String(text||'').trim()||/【実際の姿を確かめて|【実際の活動を確かめて/.test(text)||subject==='総合的な学習の時間')return;
+  collected.push({grade:Number(grade),subject,unit,axis:V22_AXIS[axis]||axis||'参考文例',criterion:V22_AXIS[axis]||axis||'',rawAxis:axis,text,source,details});
+ };
+ // Canonical reviewed samples. Do not confuse these with user-saved or generated examples.
+ for(const x of V20_CURATED)push(x.grade,x.subject,x.unit,x.axis,x.text,'校正済み文例',x.source);
+ // The original detailed teacher examples, including the science experiments.
+ for(const u of V6_EXAMPLES){
+  for(const axis of ['knowledge','thinking','attitude'])for(const text of u[axis]||[])
+   push(u.grade,u.subject,u.unit,axis,text,'単元別文例',u.publisher||'教材を照合');
+ }
+ // PE has its own rich field/skill navigation and is included for keyword search as well.
+ for(const x of V21_PE_ROWS){
+  for(const grade of (x.band==='low'?[1,2]:x.band==='mid'?[3,4]:[5,6]))
+   push(grade,'体育',x.sport,x.axis,x.text,'体育｜技・動き別',V21_BANDS[x.band]+'・'+x.domain+'・'+x.skill);
+ }
+ // User-saved bank stays untouched; only read it as an optional search source.
+ for(const b of S.bank||[]){
+  push(b.grade,b.subject,b.unit||'自由文例','custom',b.text,'保存済みの文例',b.tag||'自分の文例');
+ }
+ const seen=new Set(),out=[];
+ for(const x of collected){
+  const key=[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|');
+  if(seen.has(key))continue;seen.add(key);out.push({...x,index:out.length});
+ }
+ return out;
+}
+function v22Find(index){
+ let items=index.filter(x=>x.grade===Number(V22_SEARCH.grade));
+ if(V22_SEARCH.subject)items=items.filter(x=>x.subject===V22_SEARCH.subject);
+ if(V22_SEARCH.axis)items=items.filter(x=>x.rawAxis===V22_SEARCH.axis);
+ const terms=String(V22_SEARCH.query||'').split(/[／/、,・　\s]+/).map(v22Norm).filter(Boolean);
+ if(terms.length){
+  // A full unit title takes priority over a mention of that title in another lesson's comment.
+  const exact=terms.length===1?items.filter(x=>v22Norm(x.unit)===terms[0]):[];
+  if(exact.length)items=exact;
+  else items=items.filter(x=>{
+   const hay=v22Norm([x.subject,x.unit,x.text,x.source,x.details].join(' '));
+   return terms.every(term=>hay.includes(term));
+  });
+ }
+ return items;
+}
+function v22SearchHTML(){
+ const all=v22MakeIndex(),items=v22Find(all),show=items.slice(0,V22_SEARCH.limit);
+ const subjects=V22_ALL_SUBJECTS.filter(x=>all.some(v=>v.grade===Number(V22_SEARCH.grade)&&v.subject===x));
+ return header('校正済み文例を検索','体育だけでなく、国語・算数・理科なども、学年・教科・単元・言葉から探せます。')+
+ '<div class="panel wide v22-search">'+
+ '<div class="v22-controls">'+
+ field('学年','<select data-v22-filter="grade">'+[1,2,3,4,5,6].map(v=>option(v,V22_SEARCH.grade)).join('')+'</select>')+
+ field('教科','<select data-v22-filter="subject">'+['',...subjects].map(v=>'<option value="'+E(v)+'"'+(v===V22_SEARCH.subject?' selected':'')+'>'+E(v||'すべての教科')+'</option>').join('')+'</select>')+
+ field('評価観点','<select data-v22-filter="axis">'+[['','すべて'],...Object.entries(V22_AXIS)].map(([v,t])=>'<option value="'+E(v)+'"'+(V22_SEARCH.axis===v?' selected':'')+'>'+E(t)+'</option>').join('')+'</select>')+
+ '</div><div class="field v22-query"><label>単元名・技・キーワード</label><input data-v22-query="1" value="'+E(V22_SEARCH.query)+'" placeholder="例：すがたをかえる大豆／電気／友だちとの比較"><button class="btn primary" type="button" data-v22-action="search" style="margin-top:8px">検索する</button></div>'+
+ '<div class="inline between"><span class="small muted">検索結果：'+items.length+'件　（表示 '+show.length+'件）</span>'+
+ '<button class="btn softbtn" type="button" data-v22-action="reset">検索条件を戻す</button></div>'+
+ (V22_SEARCH.subject==='体育'?'<div class="notice small">体育はさらに「領域 → 種目 → 技」で探せます。 <button class="btn softbtn" type="button" data-v22-action="pe">体育の種目別検索へ</button></div>':'')+
+ (items.length?'<div class="v22-results">'+show.map(x=>
+  '<article class="v22-result"><div class="inline v22-tags"><span class="tag">'+x.grade+'年</span><span class="tag">'+E(x.subject)+'</span><span class="tag">'+E(x.axis)+'</span></div>'+
+  '<h3>'+E(x.unit)+'</h3><p class="v22-comment">'+E(x.text)+'</p>'+
+  '<p class="v22-source">'+E(x.source)+(x.details?' ／ '+E(x.details):'')+(x.sourceUrl?' ／ <a href="'+E(x.sourceUrl)+'" target="_blank" rel="noopener noreferrer">公式資料</a>':'')+'</p>'+
+  '<div class="inline"><button class="btn softbtn" data-v22-action="copy" data-v22-index="'+x.index+'">文章をコピー</button>'+
+  '<button class="btn" data-v22-action="save" data-v22-index="'+x.index+'">自分の文例バンクに追加</button></div></article>').join('')+'</div>'+
+  (show.length<items.length?'<button class="btn v22-more" data-v22-action="more">さらに表示する</button>':''):
+  '<div class="notice">この条件に合う校正済み文例はまだありません。別の単元名で探すか、検索条件を広げてください。内容の薄い自動ひな形は表示していません。</div>')+
+ '<div class="warning small">これらは所見の編集用参考文例です。教科書・単元と実際の児童の学習場面を確認して使ってください。自分の文例バンクへの追加はボタンを押したときだけ行います。</div>'+
+ '</div>';
+}
+const v22PriorRender=render;
+render=function(){
+ if(page==='examples-search'){renderTop();$('main').innerHTML=v22SearchHTML();return}
+ v22PriorRender();
+};
+V17_GROUPS['examples-search']='prepare';
+V17_TOOLNAMES['examples-search']='校正済み文例を検索';
+V17_TOOLPAGES.prepare.unshift('examples-search');
+const v22PriorStage=v17StageHTML;
+v17StageHTML=function(){
+ const h=v22PriorStage();
+ if(page!=='stage-prepare')return h;
+ return h.replace('<div class="v17-steps">',
+  '<div class="notice v22-quick"><strong>文例を探したいときはここから</strong>　国語・算数・理科・外国語活動などの校正済み文例を検索できます。'+
+  '<div style="margin-top:8px"><button class="btn primary" data-action="page" data-page="examples-search">学年・教科・単元から文例を検索 →</button></div></div>'+
+  '<div class="v17-steps">');
+};
+const v22PriorBank=bankHTML;
+bankHTML=function(){
+ return '<div class="notice v22-quick" style="margin-bottom:12px"><strong>文例が見つからないときは</strong>：この画面は自分で保存した文例の一覧です。校正済みの文例は別の検索画面で探せます。 '+
+ '<button class="btn primary" data-action="page" data-page="examples-search">校正済み文例を検索</button></div>'+v22PriorBank();
+};
+const v22PriorUnitHTML=v4UnitHTML;
+v4UnitHTML=function(){
+ if(v4Subject==='体育'&&v7PeMode==='実技')return v22PriorUnitHTML();
+ return '<div class="notice v22-quick"><strong>文例の横断検索</strong>　出版社の設定にかかわらず、校正済み文例を学年・教科・単元から探せます。 '+
+ '<button class="btn primary" data-v22-action="jump-search">文例を検索する</button></div>'+v22PriorUnitHTML();
+};
+const v22PriorSubjects=v8Subjects;
+v8Subjects=function(c,t){
+ const o=v22PriorSubjects(c,t);
+ if(t==='総合所見'&&c.grade>=3&&c.grade<=4&&!o.includes('外国語活動'))o.push('外国語活動');
+ return o;
+};
+const v22PriorEditHTML=editHTML;
+editHTML=function(){
+ return '<div class="notice v22-quick"><strong>文例が探せない場合</strong>　国語・算数・理科なども、校正済みの文例を横断検索できます。 <button class="btn primary" data-action="page" data-page="examples-search">文例検索へ</button></div>'+v22PriorEditHTML();
+};
+document.addEventListener('change',e=>{
+ const field=e.target.dataset?.v22Filter;if(!field)return;
+ V22_SEARCH[field]=field==='grade'?Number(e.target.value):e.target.value;
+ if(field==='grade')V22_SEARCH.subject='';
+ V22_SEARCH.limit=20;render();
+});
+document.addEventListener('input',e=>{
+ if(!e.target?.dataset?.v22Query)return;
+ V22_SEARCH.query=e.target.value;
+ const count=document.querySelector('.v22-query');
+ // Do not rerender while typing: that would interrupt Japanese IME composition.
+ if(count)count.classList.add('v22-edited');
+});
+document.addEventListener('change',e=>{
+ if(!e.target?.dataset?.v22Query)return;
+ V22_SEARCH.query=e.target.value;
+ V22_SEARCH.limit=20;render();
+});
+document.addEventListener('keydown',e=>{
+ if(e.key!=='Enter'||!e.target?.dataset?.v22Query)return;
+ e.preventDefault();e.target.blur();
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-v22-action]');if(!b)return;
+ const action=b.dataset.v22Action;
+ if(action==='jump-search'){
+  V22_SEARCH.grade=Number(v4Grade)||3;
+  V22_SEARCH.subject=v4Subject==='体育'?'体育':v4Subject;
+  V22_SEARCH.query='';V22_SEARCH.axis='';V22_SEARCH.limit=20;
+  page='examples-search';render();return;
+ }
+ if(action==='pe'){v4Subject='体育';v7PeMode='実技';v4Grade=Number(V22_SEARCH.grade);page='unit-bank';render();return}
+ if(action==='search'){V22_SEARCH.query=document.querySelector('[data-v22-query]')?.value||V22_SEARCH.query;V22_SEARCH.limit=20;render();return}
+ if(action==='reset'){V22_SEARCH.subject='国語';V22_SEARCH.query='';V22_SEARCH.axis='';V22_SEARCH.limit=20;render();return}
+ if(action==='more'){V22_SEARCH.limit+=20;render();return}
+ const entry=v22MakeIndex()[Number(b.dataset.v22Index)];
+ if(!entry)return;
+ if(action==='copy'){copyText(entry.text);return}
+ if(action==='save'){
+  if(S.bank.some(x=>Number(x.grade)===entry.grade&&x.subject===entry.subject&&v22Norm(x.text)===v22Norm(entry.text))){
+   toast('同じ文例はすでに自分のバンクにあります');return;
+  }
+  if(!confirm(entry.subject+'「'+entry.unit+'」の文例を自分のバンクに追加しますか？'))return;
+  const axis=['knowledge','thinking','attitude'].includes(entry.rawAxis)?entry.rawAxis:'';
+  S.bank.push({id:S.nextId++,grade:entry.grade,subject:entry.subject,unit:entry.unit,text:entry.text,
+   criterion:axis,tag:'検索から追加・内容要確認'});
+  toast('文例バンクに追加しました。実際の児童の姿に合わせて使ってください');
+ }
+});
+const v22CSS=document.createElement('style');
+v22CSS.textContent='.v22-search{padding:19px}.v22-controls{display:grid;grid-template-columns:1fr 1.3fr 1.4fr;gap:12px}.v22-query{margin:12px 0}.v22-query input{width:100%;padding:12px}.v22-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}.v22-result{border:1px solid #d9e5d9;border-radius:14px;background:#fffdfa;padding:14px;min-width:0}.v22-result h3{margin:8px 0;font-size:15px}.v22-tags{gap:6px;flex-wrap:wrap}.v22-comment{line-height:1.85;white-space:pre-wrap}.v22-source{font-size:11px;color:#688070;line-height:1.6}.v22-more{display:block;margin:14px auto}.v22-quick{margin-bottom:14px}.v22-pickerlink{margin:10px 0}.v22-edited input{outline-color:#87ab96}@media(max-width:740px){.v22-results{grid-template-columns:1fr}.v22-controls{grid-template-columns:1fr 1fr}.v22-controls>.field:nth-child(3){grid-column:1/-1}}';
+document.head.appendChild(v22CSS);
+
+/* STUDIO v2.3 - Art education: source-aware, original teacher-editable examples.
+ * Publisher materials: Nihon Bunkyo Shuppan R6 3-4 upper annual plan / assessment criteria.
+ * These are NOT official publisher-issued report comments; pupil evidence must be checked.
+ */
+const V23_ART_SOURCE='https://www.nichibun-g.co.jp/textbooks/zuko/download/r6/r6_zuko_nenkei_hyouka_34jo.pdf';
+const V23_ART=[];
+function v23Art(unit,activity,page,examples){
+ const prefix='図工の「'+unit+'」の学習では、';
+ for(const [axis,rows] of Object.entries(examples)){
+  for(const text of rows){
+   V23_ART.push({grade:3,subject:'図工',publisher:'日本文教出版',unit,axis,text:prefix+text,
+    activity,sourceUrl:V23_ART_SOURCE,sourceLabel:'日本文教出版 令和6年度版「3・4上」年間指導計画・評価規準（'+page+'）／文例は独自作成'});
+  }
+ }
+}
+// 3・4上：学校で使う出版社と、実施した活動を必ず照合する。
+v23Art('絵のぐ＋水＋ふで＝いいかんじ！','水彩絵の具・水の量・筆の動き・色づくり・鑑賞','p.10–11',{
+ knowledge:[
+ '水の量を変えると色の濃さが変わることに気付き、絵の具の濃淡を使い分けて描くことができました。',
+ '筆先や筆の側面を使い分け、細い線や幅の広い線を描くことができました。',
+ '絵の具を混ぜて色をつくり、色の組合せによって違う感じになることを確かめることができました。'],
+ thinking:[
+ '水を多く含ませたときの色の広がり方から表したい形を見付け、筆の動かし方を工夫して描いていました。',
+ '明るい色と暗い色を組み合わせ、表したい雰囲気が伝わるように色を選んでいました。',
+ '友だちがつくった色や筆の跡を見て、自分とは異なる表し方のよさを具体的に伝えていました。'],
+ attitude:[
+ '絵の具と水の割合を繰り返し変えながら、気に入った色や形を探していました。',
+ '色の混ぜ方や筆の動かし方を試し、自分が表したい感じに近付くように描き進めていました。']
+});
+v23Art('うごいて楽しいわりピンワールド','割りピンで動く仕組み・形・色・鑑賞','p.12–13',{
+ knowledge:[
+ '割りピンを使った動く仕組みを理解し、紙の部品を組み合わせて動かすことができました。',
+ 'はさみで切った形を割りピンでつなぎ、部品が動くことを確かめながら作品をつくることができました。',
+ '形の重なり方や割りピンを留める位置によって、動き方が変わることに気付くことができました。'],
+ thinking:[
+ '部品を動かして生まれる形から発想を広げ、動きを生かした作品を考えていました。',
+ '表したい動きに近付けるため、割りピンを留める位置や部品の大きさを工夫していました。',
+ '友だちの作品を実際に動かし、自分の作品とは違う仕組みや動きの面白さを伝えていました。'],
+ attitude:[
+ '部品をつなぐ位置を変えて何度も動かし、より面白い動きになるよう試していました。',
+ '思いどおりに動かない場面でも部品の形や重ね方を調整しながら、作品づくりを進めていました。']
+});
+v23Art('ひもでつないで','ひもで場所や物をつなぐ・形や色を考える','p.14–15',{
+ knowledge:[
+ 'ひもを結んだりつないだりして、身近な場所に新しい形をつくることができました。',
+ 'ひもの張り方や結ぶ位置によって形の見え方が変わることに気付き、場所に合わせて活動できました。',
+ 'ひもの長さや結び方を確かめ、つないだ形が保たれるようにすることができました。'],
+ thinking:[
+ '教室や校庭の形を生かし、ひもをどこにつなぐと面白い形になるか考えていました。',
+ 'ひもを交差させたり高さを変えたりして、空間の見え方が変わるよう工夫していました。',
+ '友だちとつくった空間をいろいろな方向から見て、形の重なりの面白さを伝えていました。'],
+ attitude:[
+ '場所を変えてひもをつなぎ直し、思い付いた形を進んで試していました。',
+ '友だちとつなぐ場所を相談しながら、できた形をさらに広げようとしていました。']
+});
+v23Art('立ち上がった絵のせかい','紙を立たせて表と裏の世界を表す','p.16–17',{
+ knowledge:[
+ '紙に折り目を付けたり切り込みを入れたりして、絵が立つ形をつくることができました。',
+ '絵の具やペンを使い、立たせた紙の表と裏に違う場面を描くことができました。',
+ '紙の形や折り方を工夫し、自分で立つように組み立てることができました。'],
+ thinking:[
+ '紙を立たせることで見える表と裏の違いから発想し、二つの場面をつなぐ作品を考えていました。',
+ '見る方向によって絵の印象が変わるように、紙の向きや配置を工夫していました。',
+ '友だちの作品を回り込んで鑑賞し、表と裏を生かした表現の面白さに気付いていました。'],
+ attitude:[
+ 'さまざまな紙の立たせ方を試し、思い付いた場面を形にしようとしていました。',
+ '立てた紙が倒れたときも折り方や置き方を見直しながら、表したい世界をつくり続けていました。']
+});
+v23Art('空きようきのへんしん','空き容器と紙粘土で使えるものを考える','p.18–19',{
+ knowledge:[
+ '空き容器の形を生かし、紙粘土を付けて表面の形を変えながら作品をつくることができました。',
+ '紙粘土と絵の具を使い、使い道に合った形や色に仕上げることができました。',
+ '容器の形や大きさを確かめ、安定して置けるように作品をつくることができました。'],
+ thinking:[
+ '何を入れて使うかを考え、空き容器の特徴に合った作品を発想していました。',
+ '手で触れたときの感じや使いやすさを考え、紙粘土の厚みや形を調整していました。',
+ '友だちの作品を見たり使い方を聞いたりして、形と使い道を結び付けた工夫に気付いていました。'],
+ attitude:[
+ '紙粘土を付ける量や位置を変えながら、思い描いた形に近付けようとしていました。',
+ '実際に使う場面を想像し、必要な部分を付け足すなどして作品をつくり進めていました。']
+});
+v23Art('あの日あの時の気もち','心に残った出来事・その時の気持ち・色と構図','p.20–21',{
+ knowledge:[
+ '絵の具やクレヨンを使い分け、表したい場面に合わせた色や線で描くことができました。',
+ '色の明るさや塗り方を工夫し、そのときの気持ちが伝わる画面に仕上げることができました。',
+ '人物や周囲の物の大きさを考え、場面の様子が分かるように描くことができました。'],
+ thinking:[
+ '心に残っている出来事を振り返り、特に伝えたい場面を選んで絵に表していました。',
+ 'うれしかったときの様子が伝わるよう、人物の表情や体の動きを工夫して描いていました。',
+ '友だちの作品を見て、色や人物の描き方からどのような気持ちが伝わるか話していました。'],
+ attitude:[
+ '思い出の場面を何度も振り返り、気持ちに合う色や描き方を考えながら取り組んでいました。',
+ '表したい様子に近付けようと、人物の位置や周りの描き方を見直しながら描き進めていました。']
+});
+v23Art('お気に入りの葉','葉の形・色・葉脈などの鑑賞、表現は実施した場合のみ','p.27–28',{
+ knowledge:[
+ '葉の形や色を比べ、縁の形や葉脈の違いに気付くことができました。',
+ '集めた葉を並べて観察し、同じように見える葉にも形や色の違いがあることを捉えていました。'],
+ thinking:[
+ 'お気に入りの葉を選んだ理由を、形や色の特徴と結び付けて友だちに伝えることができました。',
+ '葉の重なり方や色の組合せから面白さを見つけ、自分の感じたことを説明していました。',
+ 'ほかの葉と比べることで、自分が選んだ葉の特徴をさらに詳しく捉えていました。'],
+ attitude:[
+ '形や色の異なる葉を進んで探し、気に入った葉の特徴を確かめていました。',
+ '友だちが選んだ葉にも目を向け、自分では気付かなかった形や色のよさを見付けようとしていました。']
+});
+v23Art('クミクミックス','段ボールの板と切り込み・形の組合せ','p.40–41',{
+ knowledge:[
+ '段ボールの板に切り込みを入れ、接着剤を使わずに形を組み合わせることができました。',
+ '段ボールを切る用具を安全に扱い、板の向きや切り込みを調整して組み立てることができました。',
+ '切り込みの深さや向きによって、組み合わせた形の立ち方が変わることを確かめていました。'],
+ thinking:[
+ '組み合わせてできた形をいろいろな方向から見て、次につなげたい形を考えていました。',
+ '思い付いた形を立たせるため、段ボールの組み合わせ方や支え方を工夫していました。',
+ '友だちとつくった形を見合い、板の重なりや高さによる面白さを具体的に伝えていました。'],
+ attitude:[
+ '板が倒れたときに切り込みの位置を変え、組み合わせ方を何度も試していました。',
+ '友だちと協力して段ボールを組み合わせ、思い付いた形をさらに広げようとしていました。']
+});
+v23Art('いろいろうつして','版の材料・写す手順・色と配置','p.44–45',{
+ knowledge:[
+ '版に使う材料の形を生かし、絵の具を付けて紙に写すことができました。',
+ '写すときの絵の具の量や押さえ方を調整し、形がはっきり出るように工夫できました。',
+ '材料の表面によって写る模様が変わることに気付き、違いを生かして表していました。'],
+ thinking:[
+ '写してできた形を見て発想を広げ、次に写す位置や色を考えていました。',
+ '模様を重ねたときの見え方を確かめ、色や形の組合せを工夫していました。',
+ '友だちの作品を鑑賞し、版の材料の使い方や模様の重ね方のよさを見付けていました。'],
+ attitude:[
+ '同じ材料でも絵の具の量や写し方を変え、いろいろな模様を試していました。',
+ '思い付いた表し方を確かめるために繰り返し試し刷りをし、配置を見直していました。']
+});
+v23Art('マグネットマジック','磁石で動かす仕組み・工作・遊びながら鑑賞','p.46–47',{
+ knowledge:[
+ '磁石の引き合う性質を使い、紙の上の飾りを動かす工作をつくることができました。',
+ '磁石を取り付ける位置や厚紙の厚さを確かめ、思いどおりに動く仕組みをつくることができました。',
+ '紙や段ボールを切って形を組み合わせ、動きを生かした作品に仕上げることができました。'],
+ thinking:[
+ '磁石の動きから発想を広げ、動くと面白いものを考えて形や色を工夫していました。',
+ '思い描いた動きに近付けるため、磁石の位置や動かし方を試しながら作品を調整していました。',
+ '友だちの作品を動かして遊び、仕組みや表現の工夫を見付けて伝えていました。'],
+ attitude:[
+ 'うまく動かないときも磁石の向きや位置を変え、繰り返し動きを確かめていました。',
+ '遊ぶ人が楽しめるように、動き方や飾り方を見直しながら作品を仕上げていました。']
+});
+v23Art('絵を見て話そう','絵画の鑑賞・形や色を根拠に伝える','p.48–49',{
+ knowledge:[
+ '絵に使われている形や色の違いに気付き、気になった部分を指し示して伝えることができました。',
+ '絵の中の色の組合せや描き方による印象の違いに気付くことができました。'],
+ thinking:[
+ '絵の中で気に入ったところを選び、色や形を根拠に感じたことを話していました。',
+ '友だちの見方を聞いて、同じ絵にも異なる面白さがあることに気付いていました。',
+ '絵の中の人物や物の位置関係から、どのような場面か想像して伝えていました。'],
+ attitude:[
+ '気になる部分を繰り返し見直し、色や形の特徴を探していました。',
+ '友だちの発言を聞いて絵を見直し、新たに見付けたことを伝えようとしていました。']
+});
+
+
+// Search index is extended without mutating the learner's saved comments.
+let V23_PUBLISHER_FILTER='すべて';
+const v23OldSearchIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const all=v23OldSearchIndex(),seen=new Set(all.map(x=>[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|')));
+ for(const a of V23_ART){
+  const key=[a.grade,a.subject,v22Norm(a.unit),v22Norm(a.text)].join('|');
+  if(seen.has(key))continue;
+  seen.add(key);
+  all.push({grade:a.grade,subject:a.subject,unit:a.unit,axis:V22_AXIS[a.axis],criterion:V22_AXIS[a.axis],
+   rawAxis:a.axis,text:a.text,source:'公式資料を参照した独自文例',details:a.activity,
+   publisher:a.publisher,sourceUrl:a.sourceUrl,sourceLabel:a.sourceLabel,index:all.length});
+ }
+ return all;
+};
+const v23OldFind=v22Find;
+v22Find=function(idx){
+ let data=v23OldFind(idx);
+ if(V22_SEARCH.subject==='図工')data=[...data].sort((a,b)=>Number(b.publisher==='日本文教出版')-Number(a.publisher==='日本文教出版'));
+ if(V22_SEARCH.subject==='図工'&&V23_PUBLISHER_FILTER!=='すべて'){
+  data=data.filter(x=>V23_PUBLISHER_FILTER==='日本文教出版'?
+   x.publisher==='日本文教出版':!x.publisher);
+ }
+ return data;
+};
+function v23PublisherChoices(){
+ return '<div class="v23-source"><strong>図工の出版社・資料</strong>'+
+ '<label class="field">検索対象'+
+ '<select data-v23-publisher>'+
+ ['すべて','日本文教出版','過去の所見・出版社未確認'].map(x=>option(x,V23_PUBLISHER_FILTER)).join('')+
+ '</select></label>'+
+ '<p class="small muted">「日本文教出版」は令和6年度版3・4上の題材別指導計画・評価規準をもとに作成。過去の文例は出版社未照合なので区別して表示します。</p>'+
+ '<a href="'+V23_ART_SOURCE+'" target="_blank" rel="noopener noreferrer">出版社の年間指導計画・評価規準（公式PDF）を確認</a>'+
+ '</div>';
+}
+const v23OldSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ const html=v23OldSearchHTML();
+ if(V22_SEARCH.subject!=='図工')return html;
+ const marker='<div class="panel wide v22-search">';
+ return html.replace(marker,marker+v23PublisherChoices());
+};
+document.addEventListener('change',e=>{
+ if(!e.target?.dataset?.v23Publisher)return;
+ V23_PUBLISHER_FILTER=e.target.value;
+ V22_SEARCH.limit=20;render();
+});
+// Non-PE picker: retain freehand/saved examples and offer textbook-labelled unit examples.
+const v23OldAvailable=v8Available;
+v8Available=function(c,subject){
+ const current=v23OldAvailable(c,subject);
+ if(subject!=='図工'||Number(c.grade)!==3)return current;
+ const set=(S.textbooks||{})['3:図工']||'未設定';
+ if(set!=='未設定'&&set!=='日本文教出版')return current;
+ const groups=new Map();
+ for(const a of V23_ART){
+  if(!groups.has(a.unit))groups.set(a.unit,[]);
+  groups.get(a.unit).push(a);
+ }
+ for(const [unit,rows] of groups){
+  const old=current.find(x=>v22Norm(x.unit)===v22Norm(unit));
+  const saved=old?.choices.filter(x=>String(x.id).startsWith('bank:'))||[];
+  const target=old||{id:'v23|日本文教出版|'+unit,unit,publisher:'日本文教出版',domain:'出版社資料に基づく参考',choices:[]};
+  target.publisher='日本文教出版';target.domain='日本文教出版・3／4上';
+  target.choices=rows.map((x,i)=>({id:'v23:'+x.axis+':'+i,axis:V22_AXIS[x.axis]+'｜資料照合例',text:x.text})).concat(saved);
+  if(!old)current.push(target);
+ }
+ return current;
+};
+const v23OldUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ const old=v23OldUnitOptions();
+ if(v4Subject!=='図工'||Number(v4Grade)!==3||v4Pub(3,'図工')!=='日本文教出版')return old;
+ const units=[...new Set(V23_ART.map(x=>x.unit))];
+ for(const unit of units){
+  if(old.some(x=>v22Norm(x.unit)===v22Norm(unit)))continue;
+  old.push({grade:3,subject:'図工',unit,publisher:'日本文教出版',texts:[],domain:'出版社資料に基づく参考'});
+ }
+ return old;
+};
+const v23OldData=v6Data;
+v6Data=function(u){
+ if(u?.subject==='図工'&&Number(u.grade)===3&&u.publisher==='日本文教出版'){
+  const rows=V23_ART.filter(x=>v22Norm(x.unit)===v22Norm(u.unit));
+  if(rows.length)return {knowledge:rows.filter(x=>x.axis==='knowledge').map(x=>x.text),
+   thinking:rows.filter(x=>x.axis==='thinking').map(x=>x.text),
+   attitude:rows.filter(x=>x.axis==='attitude').map(x=>x.text)};
+ }
+ return v23OldData(u);
+};
+const v23Style=document.createElement('style');
+v23Style.textContent='.v23-source{padding:12px 14px;background:#f6faf3;border:1px solid #dce9da;border-radius:13px;margin-bottom:14px}.v23-source .field{display:inline-flex;flex-direction:column;gap:4px;max-width:340px;width:100%;margin:8px 0}.v23-source p{margin:6px 0 10px}.v23-source a{font-size:12px;color:#366a58;text-decoration:underline}';
+document.head.appendChild(v23Style);
+
+
+/* STUDIO v2.4: publisher-plan-grounded original report comments (3rd grade)
+ * NOT publisher-issued comments. Confirm actual pupil evidence before use.
+ * Official references:
+ * Mitsumura R6 3rd-grade Japanese annual curriculum/assessment:
+ * https://www.mitsumura-tosho.co.jp/kyokasho/s-kokugo/keikaku
+ * Tokyo Shoseki R6 3rd-grade mathematics:
+ * https://ten.tokyo-shoseki.co.jp/text/shou/sansu/data/sansu_keikaku_saian_3.pdf
+ * Tokyo Shoseki R6 3rd-grade science:
+ * https://ten.tokyo-shoseki.co.jp/text/shou/rika/data/rika_nenkankeikaku_3_saian.pdf
+ */
+const V24_SOURCE={
+ '国語':{publisher:'光村図書',url:'https://www.mitsumura-tosho.co.jp/kyokasho/s-kokugo/keikaku',label:'令和6年度版 3年 年間指導計画例・評価計画'},
+ '算数':{publisher:'東京書籍',url:'https://ten.tokyo-shoseki.co.jp/text/shou/sansu/data/sansu_keikaku_saian_3.pdf',label:'令和6年度版 新編 新しい算数3 年間指導計画・細案'},
+ '理科':{publisher:'東京書籍',url:'https://ten.tokyo-shoseki.co.jp/text/shou/rika/data/rika_nenkankeikaku_3_saian.pdf',label:'令和6年度版 新編 新しい理科3 年間指導計画・細案'}
+};
+const V24_UNITS=[];
+function v24Add(subject,unit,focus,examples){
+ const source=V24_SOURCE[subject],texts=[];
+ for(const [axis,list] of Object.entries(examples)){
+  for(const sentence of list){
+   if(!['knowledge','thinking','attitude'].includes(axis)||!/[。！]$/.test(sentence))throw Error('invalid example: '+unit+':'+sentence);
+   texts.push({axis,text:subject+'の「'+unit+'」の学習では、'+sentence});
+  }
+ }
+ V24_UNITS.push({grade:3,subject,unit,publisher:source.publisher,focus,sourceUrl:source.url,sourceLabel:source.label,
+  examples:texts});
+}
+// 国語: 読む・書く・話す聞くを教材ごとに分類。関連する教材も同じ名前で統合しない。
+v24Add('国語','こまを楽しむ','説明文の問いと答え・段落の役割・感想',{
+ knowledge:['文章を「はじめ・中・終わり」に分け、それぞれのまとまりに書かれた内容を整理することができました。'],
+ thinking:['問いに対する答えが書かれた部分を見つけ、こまの特徴を段落ごとに整理することができました。',
+ '遊んでみたいこまを選び、本文に書かれた特徴を理由にして自分の考えを伝えることができました。'],
+ attitude:['友だちが選んだこまと自分の選んだこまを比べ、理由の違いを確かめながら読み直していました。']
+});
+v24Add('国語','まいごのかぎ','主人公の心情の変化・言動を根拠に場面を読む',{
+ knowledge:['主人公の行動や気持ちを表す言葉を本文から集め、それぞれの言葉が表す様子の違いを捉えることができました。'],
+ thinking:['りいこの言動を表す言葉を手掛かりに、不思議な出来事を経験した後の気持ちの変化を説明することができました。',
+ '物語の初めと終わりを比べ、主人公の考え方が変わった理由を出来事と結び付けて考えることができました。'],
+ attitude:['好きな場面について友だちの感想を聞き、自分とは違う感じ方を本文に戻って確かめていました。']
+});
+v24Add('国語','仕事のくふう、見つけたよ','調べたことの報告・引用・段落・理由と事例',{
+ knowledge:['調べたことを段落ごとに分け、読みやすい改行や句読点を意識して文章を書くことができました。',
+ '本や資料から得た情報と自分で考えたことを区別し、引用の仕方に気を付けて書くことができました。'],
+ thinking:['調べた仕事の工夫について、工夫の内容とその理由が伝わる順序を考え、報告する文章にまとめることができました。',
+ '相手に伝えたい工夫を選び、具体例を添えて、その仕事のよさが分かるように書くことができました。'],
+ attitude:['伝わりにくい部分を読み直し、理由や具体例を付け足すなどして文章を整えようとしていました。']
+});
+v24Add('国語','ポスターを読もう','複数のポスターを比較・目的や表現の工夫を読み取る',{
+ knowledge:['二つのポスターの情報を比べ、共通する点と異なる点を整理することができました。'],
+ thinking:['文字の大きさや色、写真の使い方の違いに着目し、伝えたい相手に合わせた工夫を考えることができました。',
+ 'ポスターに書かれた中心となる情報を捉え、それぞれの伝え方の効果について自分の考えを話すことができました。'],
+ attitude:['友だちが注目した部分と自分が選んだ部分を比べ、ポスターの見方を広げていました。']
+});
+v24Add('国語','ちいちゃんのかげおくり','物語の二つの場面を比較・戦争・心情変化',{
+ knowledge:['登場人物の行動や情景を表す言葉に着目し、似た意味の言葉との違いを確かめながら語彙を広げることができました。'],
+ thinking:['二つの「かげおくり」の場面を比べ、周りの様子やちいちゃんの気持ちの違いを本文に基づいて考えることができました。',
+ 'ちいちゃんの行動や出来事の変化を捉え、気持ちが変わっていく理由を文章中の言葉と結び付けて説明できました。'],
+ attitude:['初めに書いた感想と読み終えた後の感想を比べ、読み方が変わったところを振り返っていました。']
+});
+v24Add('国語','おすすめの一さつを決めよう','司会・話し合い・理由の共通点と違い',{
+ knowledge:['司会や記録などの役割を知り、話合いの進め方を確かめることができました。'],
+ thinking:['おすすめする本のよさを理由とともに伝え、友だちの意見との共通点や違いを整理しながら話し合うことができました。'],
+ attitude:['司会の進行や友だちの意見を確かめ、話合いの目的に沿って考えをまとめようとしていました。']
+});
+v24Add('国語','すがたをかえる大豆','説明文を読む：中心となる文・事例の順序・分類',{
+ knowledge:['大豆からできる食品と加工の仕方を表に整理し、食品ごとの共通点や違いを捉えることができました。'],
+ thinking:['「中」の段落の中心となる文に着目し、大豆の姿の変え方を説明する事例の順序を読み取ることができました。',
+ '筆者が選んだ事例の並べ方に着目し、読み手に伝わりやすくするための工夫を本文から考えることができました。'],
+ attitude:['段落ごとの説明を読み比べ、分からないところを本文に戻って確かめようとしていました。']
+});
+v24Add('国語','食べ物のひみつを教えます','調べて説明文を書く：組立て・段落・言葉の選択',{
+ knowledge:['食品について調べた情報を仲間分けし、文章に必要な内容を整理することができました。'],
+ thinking:['選んだ食べ物について、材料や作り方の説明をどの順序で示すと分かりやすいか考え、段落を組み立てて書くことができました。',
+ '調べた内容から伝えたい事例を選び、中心となる内容が伝わる説明文にまとめることができました。'],
+ attitude:['自分が書いた説明文を読み返し、順序や言葉を見直して、読み手に伝わりやすい文章に近付けようとしていました。']
+});
+v24Add('国語','国語辞典を使おう','見出し語の五十音順・意味の調べ方',{
+ knowledge:['五十音順と見出し語の並び方を確かめ、調べたい言葉を国語辞典で探すことができました。'],
+ thinking:['同じ言葉に複数の意味がある場合、文章の前後を読んで合う意味を選ぶことができました。'],
+ attitude:['文章の中で意味が分からない言葉に出会うと、進んで辞典を開いて確かめていました。']
+});
+v24Add('国語','漢字の音と訓','音読みと訓読みを比べる・語句を使う',{
+ knowledge:['漢字に音読みと訓読みがあることを理解し、同じ漢字を使った言葉の読み方を確かめることができました。'],
+ thinking:['同じ漢字を使った言葉を集め、読み方の違いに注目して仲間分けすることができました。'],
+ attitude:['身の回りの言葉から既習漢字の読み方を探し、音読みと訓読みを確かめていました。']
+});
+// 算数: 東京書籍3年略案と細案の単元名・学習内容・観点別規準に照合。
+v24Add('算数','かけ算','かけ算のきまり・交換法則・数を分けて計算',{
+ knowledge:['かける数を一つ増やすと積がいくつ増えるかを理解し、九九の答えを確かめることができました。'],
+ thinking:['九九を超えるかけ算について、数を分けた式や図を使って答えを求める方法を説明できました。'],
+ attitude:['友だちの式と自分の式を比べ、数の分け方の違いを確かめながら考えていました。']
+});
+v24Add('算数','時こくと時間のもとめ方','時刻・経過時間・秒と分の関係',{
+ knowledge:['1分が60秒であることを理解し、時間を分と秒に直して表すことができました。'],
+ thinking:['時刻と時刻の間を数直線に表し、何分後・何分前かを順序立てて考えることができました。'],
+ attitude:['答えが実際の時間の長さと合うか、時計の目盛りを使って確かめ直していました。']
+});
+v24Add('算数','わり算','等分除と包含除・図と式を対応させる',{
+ knowledge:['同じ数ずつ分ける場面をわり算の式に表し、九九を使って答えを求めることができました。'],
+ thinking:['一人分の数を求める場合と何人に分けられるかを求める場合を絵や図で表し、式の意味を説明できました。'],
+ attitude:['分け方が分からない場面では、具体物や図を使って数の関係を確かめようとしていました。']
+});
+v24Add('算数','たし算とひき算の筆算','3桁の加減・繰り上がり・繰り下がり',{
+ knowledge:['3桁の数の位をそろえ、繰り上がりや繰り下がりに気を付けて筆算できました。'],
+ thinking:['繰り下がりが続く計算について、位ごとの数のまとまりを図や式に表して計算の仕方を説明できました。'],
+ attitude:['計算の間違いがないか、逆の計算や位ごとの確認を使って答えを確かめていました。']
+});
+v24Add('算数','長いものの長さのはかり方と表し方','巻尺・道のりと距離・kmとm',{
+ knowledge:['巻尺の目盛りを正しく読み取り、測った長さをmやcmで表すことができました。',
+ '1kmが1000mであることを理解し、長さをkmとmで表すことができました。'],
+ thinking:['測る場所の長さや形に合わせて、ものさしと巻尺のどちらが使いやすいか理由を考えて選びました。'],
+ attitude:['測る前に長さを予想し、測った結果と比べて違いを確かめようとしていました。']
+});
+v24Add('算数','ぼうグラフと表','項目分け・棒グラフの目盛り・二次元表',{
+ knowledge:['棒グラフの目盛りと項目を読み取り、数の多い項目や項目同士の差を正確に調べることができました。'],
+ thinking:['集めた資料を項目ごとに整理し、数の違いが伝わるよう目盛りをそろえて棒グラフに表すことができました。'],
+ attitude:['グラフに表した数と元の表を見比べ、目盛りや項目の書き間違いを確かめていました。']
+});
+v24Add('算数','暗算','2桁の加減計算・数の構成',{
+ knowledge:['十の位と一の位に分けて考え、2桁のたし算やひき算を暗算することができました。'],
+ thinking:['計算しやすい数のまとまりに分け、暗算の手順を式や言葉で説明することができました。'],
+ attitude:['友だちの暗算の仕方と自分の方法を比べ、より計算しやすいやり方を試していました。']
+});
+v24Add('算数','あまりのあるわり算','余りと除数・確かめ・場面に応じた処理',{
+ knowledge:['余りがわる数より小さくなることを理解し、商と余りを正しく求めることができました。',
+ '商とわる数をかけた数に余りをたして、答えが合っているかを確かめることができました。'],
+ thinking:['余りのあるわり算の答えを問題の場面に戻して考え、商をそのまま使うか一つ増やすかを理由とともに説明できました。',
+ '分ける場面を図に表し、余りが出る理由をわり算の式と結び付けて説明できました。'],
+ attitude:['計算で求めた余りの意味を問題文と照らし合わせ、答えが適切か確かめ直していました。']
+});
+v24Add('算数','大きい数のしくみ','一億までの位取り・数直線・10倍の関係',{
+ knowledge:['一億までの数を位取り表に正しく表し、数字を読んだり書いたりすることができました。'],
+ thinking:['一つの数を一万や千のまとまりに分け、数の大きさを位取り表を使って説明することができました。'],
+ attitude:['数字を並べてできた数を友だちの数と比べ、位による大きさの違いを確かめていました。']
+});
+v24Add('算数','かけ算の筆算(1)','2・3桁×1桁・位の意味・繰り上がり',{
+ knowledge:['2桁や3桁の数に1桁の数をかける筆算について、位をそろえて正確に計算できました。'],
+ thinking:['2桁の数を十の位と一の位に分け、筆算の途中の式が何を表すか説明できました。',
+ '繰り上がりのある筆算について、数のまとまりに着目して計算の順序を考えました。'],
+ attitude:['計算の途中で繰り上がりを確認し、答えが合うか別の方法でも確かめていました。']
+});
+v24Add('算数','大きい数のわり算、分数とわり算','何十÷一桁・分数と等分除',{
+ knowledge:['何十を1桁の数でわる計算について、十のまとまりで考えて答えを求めることができました。'],
+ thinking:['2桁の数を十の位と一の位に分け、わり算の計算の仕方を図や式に表すことができました。'],
+ attitude:['これまでに学んだわり算と比べ、数のまとまりを使える場面を探していました。']
+});
+v24Add('算数','円と球','中心・半径・直径・コンパス',{
+ knowledge:['中心からの長さをそろえ、コンパスを使って円を正確にかくことができました。'],
+ thinking:['円の中心から周りまでの長さが等しいことに着目し、半径と直径の関係を図で説明できました。'],
+ attitude:['コンパスの開きや針の位置を確かめ、円がずれないよう繰り返し練習していました。']
+});
+v24Add('算数','小数','小数第一位・位取り・加減計算',{
+ knowledge:['0.1をもとにした数の構成を理解し、小数第一位までの数を正しく表すことができました。'],
+ thinking:['小数のたし算について、0.1を何個分かで考え、整数の計算と同じように説明できました。'],
+ attitude:['小数点の位置を確かめ、計算結果が数直線上の大きさと合うか見直していました。']
+});
+v24Add('算数','重さのたんいとはかり方','g・kg・台ばかり・正味と容器',{
+ knowledge:['はかりの目盛りを正しく読み取り、重さをgやkgで表すことができました。'],
+ thinking:['容器と中身の重さの関係を図や式に整理し、中身だけの重さを求める方法を考えました。'],
+ attitude:['身近な物の重さを予想してから測り、実際の重さとの違いを確かめていました。']
+});
+v24Add('算数','分数','単位分数・同分母の加減・小数との関係',{
+ knowledge:['単位分数をいくつ集めた数かを考え、分数を図や数直線に表すことができました。'],
+ thinking:['同じ分母の分数のたし算について、単位分数の個数を使って計算の仕方を説明できました。'],
+ attitude:['分数の大きさが図と合っているか確かめ、友だちの表し方と比べていました。']
+});
+v24Add('算数','□を使った式','未知の数を□として式に表す',{
+ knowledge:['分からない数を□で表し、場面に合った式を立てることができました。'],
+ thinking:['問題の数の関係を図で整理し、□に入る数の求め方を理由とともに説明できました。'],
+ attitude:['求めた□の値を式に戻して、問題の条件に合うか確かめていました。']
+});
+v24Add('算数','かけ算の筆算(2)','2・3桁×2桁・部分積・位をずらす意味',{
+ knowledge:['2桁の数をかける筆算について、十の位にかけた結果の位をそろえて計算することができました。'],
+ thinking:['かける数を十の位と一の位に分け、筆算の二つの途中の式が何を表すか説明できました。'],
+ attitude:['途中の式の位がずれていないか確かめ、答えを見直しながら計算していました。']
+});
+v24Add('算数','倍の計算','比較量・基準量・倍の意味',{
+ knowledge:['何倍かを求める場面について、もとにする数と比べる数を捉え、式に表すことができました。'],
+ thinking:['線分図に数の関係を整理し、かけ算とわり算のどちらを使うか理由を説明することができました。'],
+ attitude:['求めた答えがもとの数と比べて妥当か、図に戻って確かめていました。']
+});
+v24Add('算数','三角形と角','二等辺三角形・正三角形・角の開き',{
+ knowledge:['定規とコンパスを使い、辺の長さをそろえて二等辺三角形や正三角形をかくことができました。'],
+ thinking:['角の大きさは辺の長さではなく開き具合で決まることに着目し、角の大小を説明することができました。'],
+ attitude:['作図した三角形の辺の長さを測り直し、条件に合っているか確かめていました。']
+});
+// 理科: 観察と結果に基づく思考を区別。使った道具・行動は本人に確認が必要。
+v24Add('理科','春の生き物','虫眼鏡・色や形の比較・観察記録',{
+ knowledge:['虫眼鏡を正しく使って身近な生き物を観察し、色や形、大きさの特徴を記録できました。'],
+ thinking:['見つけた生き物を比べ、似ているところと違うところを根拠に仲間分けしていました。'],
+ attitude:['見つけた生き物を友だちに紹介し、さらに調べたい特徴を探しながら観察していました。']
+});
+v24Add('理科','たねまき','種の観察・発芽・子葉・記録',{
+ knowledge:['種の形や大きさを観察し、特徴が伝わるように記録することができました。'],
+ thinking:['異なる種の形や大きさを比べ、育ち方の違いについて調べたいことを見つけていました。'],
+ attitude:['芽が出るまでの様子を気にかけ、変化を見つけるたびに観察記録に残していました。']
+});
+v24Add('理科','チョウのかんさつ','成長の順序・体のつくり・観察',{
+ knowledge:['卵・幼虫・さなぎ・成虫の変化を、観察記録をもとに順序よく説明できました。'],
+ thinking:['成長する前後のチョウの姿を比べ、体の形の変化を具体的に考察することができました。'],
+ attitude:['成長の様子が分かるように観察を続け、前回の記録と比べて変化を確かめていました。']
+});
+v24Add('理科','風やゴムのはたらき','送風の強さ・ゴムを伸ばす長さ・距離の比較',{
+ knowledge:['風の強さやゴムを伸ばす長さによって、車の進む距離が変わることを実験結果から理解できました。'],
+ thinking:['風の強さだけを変えた実験結果を比べ、強くすると車が遠くまで進む関係を説明できました。',
+ 'ゴムを伸ばした長さと車の進んだ距離を表やグラフで比べ、結果を根拠に考察することができました。'],
+ attitude:['結果が予想と違ったとき、車の動きをもう一度確かめ、条件をそろえて実験しようとしていました。']
+});
+v24Add('理科','こん虫のかんさつ','生息場所・体のつくり・成長の違い',{
+ knowledge:['昆虫の体が頭・胸・腹からできていることを理解し、図に表して説明できました。'],
+ thinking:['チョウとトンボなどの成長の様子を比べ、さなぎになるものとならないものがいることを捉えました。'],
+ attitude:['観察記録や友だちの調べた結果を見比べ、昆虫の体のつくりの共通点を確かめようとしていました。']
+});
+v24Add('理科','太陽とかげ','時刻と方位・影の向き・日なたと日かげの地面温度',{
+ knowledge:['時刻ごとの影の向きと太陽の位置を正しく記録し、両者が反対方向にあることを理解しました。'],
+ thinking:['朝・昼・午後の観察結果を比べ、太陽の位置が変わると影の向きも変わることを記録を根拠に説明できました。',
+ '日なたと日かげの地面の温度を時刻ごとに比べ、太陽の光と地面の温まり方の関係を数値を根拠に考察できました。'],
+ attitude:['ほかの班の記録と自分の班の結果を比べ、違いがあれば観察時刻や場所を確かめようとしていました。']
+});
+v24Add('理科','太陽の光','日光の反射・集光・明るさと温かさ',{
+ knowledge:['鏡で跳ね返した日光は直進することを理解し、光を当てる場所を変えて確かめることができました。'],
+ thinking:['日光を集めたときの明るさや温かさを比べ、光の集め方と温まり方の関係を考えることができました。'],
+ attitude:['日光の当たり方を変えながら結果を比べ、安全に気を付けて実験に取り組んでいました。']
+});
+v24Add('理科','音のせいしつ','音を出す物の振動・伝わり方',{
+ knowledge:['音が出ている物に触れて振動していることを確かめ、音と振動の関係を理解できました。'],
+ thinking:['音の大きさを変えたときの物の震え方を比べ、音の大きさと振動の関係を説明できました。'],
+ attitude:['音を出す方法を変えて実験し、振動の違いを見つけようとしていました。']
+});
+v24Add('理科','物の重さ','形や体積を変えても重さが同じ・同体積の素材差',{
+ knowledge:['物の形を変えても、物そのものの重さは変わらないことを測定結果から理解できました。'],
+ thinking:['粘土の形を変える前後の重さを比べ、測った数値を根拠に重さが変わらないことを説明できました。'],
+ attitude:['測定結果に疑問があるときははかりの目盛りを確かめ、繰り返し測ろうとしていました。']
+});
+v24Add('理科','電気の通り道','回路・豆電球・金属と非金属の導通',{
+ knowledge:['豆電球がつくつなぎ方を調べ、乾電池から豆電球まで電気の通り道が輪になることを理解できました。',
+ '身の回りの物が電気を通すか調べ、鉄やアルミニウムなどの金属が電気を通すことを理解しました。'],
+ thinking:['実験した物を豆電球がついたものとつかなかったものに分け、材質に注目して共通点を考察できました。',
+ '豆電球がつかなかった場合に、導線のつなぎ方や触れる位置を確かめ、原因を考えることができました。'],
+ attitude:['予想と違う結果が出たとき、導線を当てる場所を変えるなどして確かめ直そうとしていました。']
+});
+v24Add('理科','じしゃくのせいしつ','磁石に付く物・極の性質・着磁',{
+ knowledge:['磁石に付く物と付かない物を調べ、鉄の性質に注目して仲間分けできました。',
+ '磁石の同じ極は退け合い、違う極は引き合うことを実験から理解できました。'],
+ thinking:['磁石を近づける前後の物の動きを比べ、磁石が離れていても力を及ぼすことを説明できました。'],
+ attitude:['予想と違った物の材質を確かめ、ほかの物でも同じ結果になるか試していました。']
+});
+
+
+/* Integration: distinct source-backed suggestions, searchable and selectable without mutating saved comments. */
+function v24MatchesPublisher(subject,grade=3){
+ if(grade!==3||!V24_SOURCE[subject])return false;
+ const current=(S.textbooks||{})[grade+':'+subject]||'未設定';
+ return current==='未設定'||current===V24_SOURCE[subject].publisher;
+}
+function v24Matching(grade,subject){return Number(grade)===3?V24_UNITS.filter(x=>x.subject===subject&&v24MatchesPublisher(subject,grade)):[]}
+const v24OldMakeIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const old=v24OldMakeIndex();
+ const replaced=new Set(V24_UNITS.map(x=>'3|'+x.subject+'|'+v22Norm(x.unit)));
+ const kept=old.filter(x=>{
+  if(x.source==='保存済みの文例')return true;
+  if(!['国語','算数','理科'].includes(x.subject)||x.grade!==3||!v24MatchesPublisher(x.subject))return true;
+  return !replaced.has('3|'+x.subject+'|'+v22Norm(x.unit));
+ });
+ for(const u of V24_UNITS){
+  if(!v24MatchesPublisher(u.subject))continue;
+  for(const x of u.examples){
+   kept.push({grade:3,subject:u.subject,unit:u.unit,axis:V22_AXIS[x.axis],
+    criterion:V22_AXIS[x.axis],rawAxis:x.axis,text:x.text,source:'教科書会社の評価計画を参照した独自文例',
+    details:u.focus,publisher:u.publisher,sourceUrl:u.sourceUrl,sourceLabel:u.sourceLabel});
+  }
+ }
+ const seen=new Set(),out=[];
+ for(const x of kept){
+  const key=[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|');
+  if(seen.has(key))continue;
+  seen.add(key);out.push({...x,index:out.length});
+ }
+ return out;
+};
+const v24OldFind=v22Find;
+v22Find=function(idx){
+ const data=v24OldFind(idx);
+ if(!['国語','算数','理科'].includes(V22_SEARCH.subject)||Number(V22_SEARCH.grade)!==3)return data;
+ return [...data].sort((a,b)=>{
+  const rank=x=>x.source==='教科書会社の評価計画を参照した独自文例'?0:
+   x.source==='保存済みの文例'?1:2;
+  return rank(a)-rank(b);
+ });
+};
+const v24OldAvailable=v8Available;
+v8Available=function(c,subject){
+ const out=v24OldAvailable(c,subject);
+ const official=v24Matching(c.grade,subject);
+ for(const u of official){
+  let target=out.find(x=>v22Norm(x.unit)===v22Norm(u.unit));
+  if(!target){target={id:'v24|'+subject+'|'+u.unit,unit:u.unit,publisher:u.publisher,domain:'出版社資料を参照',choices:[]};out.push(target)}
+  const stored=target.choices.filter(x=>String(x.id).startsWith('bank:'));
+  target.domain=u.publisher+'・評価計画参照';
+  target.publisher=u.publisher;
+  target.choices=u.examples.map((x,i)=>({id:'v24:'+x.axis+':'+i,axis:V22_AXIS[x.axis]+'｜資料照合例',text:x.text})).concat(stored);
+ }
+ return out;
+};
+const v24OldUnitOptions=v4UnitOptions;
+v4UnitOptions=function(){
+ const out=v24OldUnitOptions();
+ if(Number(v4Grade)!==3||!v24MatchesPublisher(v4Subject))return out;
+ for(const u of v24Matching(v4Grade,v4Subject)){
+  if(out.some(x=>v22Norm(x.unit)===v22Norm(u.unit)))continue;
+  out.push({grade:u.grade,subject:u.subject,unit:u.unit,publisher:u.publisher,focus:u.focus,
+   sourceUrl:u.sourceUrl,source:u.sourceLabel,domain:'出版社資料を参照',texts:[]});
+ }
+ return out;
+};
+const v24OldData=v6Data;
+v6Data=function(u){
+ const unit=V24_UNITS.find(x=>Number(u?.grade)===3&&x.subject===u.subject&&
+   v22Norm(x.unit)===v22Norm(u.unit)&&x.publisher===u.publisher);
+ if(unit&&v24MatchesPublisher(unit.subject)){
+  return {knowledge:unit.examples.filter(x=>x.axis==='knowledge').map(x=>x.text),
+   thinking:unit.examples.filter(x=>x.axis==='thinking').map(x=>x.text),
+   attitude:unit.examples.filter(x=>x.axis==='attitude').map(x=>x.text)};
+ }
+ return v24OldData(u);
+};
+function v24SourceBar(){
+ if(!v24MatchesPublisher(V22_SEARCH.subject,V22_SEARCH.grade))return '';
+ const subject=V22_SEARCH.subject,source=V24_SOURCE[subject];
+ return '<div class="v24-source"><strong>'+E(source.publisher)+'・3年の公式評価計画に基づく独自文例</strong>'+
+ '<p class="small muted">教材名と学習活動に基づく例です。出版社が作った所見文ではありません。使用した授業と実際の児童の姿を確認してください。</p>'+
+ '<a href="'+E(source.url)+'" target="_blank" rel="noopener noreferrer">公式の年間指導計画・評価計画を確認</a></div>';
+}
+const v24OldSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ const base=v24OldSearchHTML();
+ if(!V24_SOURCE[V22_SEARCH.subject])return base;
+ return base.replace('<div class="panel wide v22-search">','<div class="panel wide v22-search">'+v24SourceBar());
+};
+const v24Style=document.createElement('style');
+v24Style.textContent='.v24-source{margin-bottom:14px;padding:12px 14px;background:#f3f8f2;border:1px solid #dae8d8;border-radius:13px}.v24-source p{margin:5px 0 8px}.v24-source a{font-size:12px;color:#356958;text-decoration:underline}';
+document.head.appendChild(v24Style);
+
+
+/* STUDIO v2.5: three-viewpoint proofing.
+ * All analysis runs locally. Rules are heuristic and never certify assessment validity
+ * or whether a pupil actually demonstrated the described achievement.
+ * No new storage fields or student identifiers. */
+const V25_RULES=[
+ {lens:'保護者',id:'vague',regex:/一生懸命(?:頑張|取り組)|頑張りました|努力しました|意欲的に取り組みました|よくできました/g,
+  title:'保護者視点：何をしたか、何ができたかを具体的にすると伝わりやすくなります'},
+ {lens:'保護者',id:'education-term',regex:/思考・判断・表現|主体的に学習に取り組む態度|資質・能力|メタ認知|形成的評価|概念的理解/g,
+  title:'保護者視点：評価用語を、児童が実際に行った活動の言葉に置き換えられるか確認'},
+ {lens:'管理職',id:'absolute',regex:/誰よりも|常に|絶対に|必ず|完璧に|一度も|全員の中で|どんなときも/g,
+  title:'管理職視点：強い断定や他児童との比較に、十分な根拠があるか確認'},
+ {lens:'管理職',id:'vague-result',regex:/力を高めることができました|力が身に付きました|理解を深めました/g,
+  title:'管理職視点：どんな学習活動や成果があったか、具体的に書けるか確認'}
+];
+function v25Hints(value){
+ const text=String(value||''),out=[];
+ if(!text.trim())return out;
+ const add=(lens,id,index,found,title)=>{
+  if(index<0||!found)return;
+  if(out.some(v=>v.id===id&&v.index===index))return;
+  out.push({lens,id,index,length:found.length,found,title});
+ };
+ for(const rule of V25_RULES){
+  for(const m of text.matchAll(rule.regex))add(rule.lens,rule.id,m.index,m[0],rule.title);
+ }
+ // The title refers to reading a source text; composing another food explanation
+ // belongs to the separate writing unit, not this reading unit.
+ if(text.includes('すがたをかえる大豆')){
+  for(const m of text.matchAll(/(?:資料を調べて.{0,22}文章|説明文を書|文章を書いて|文章を書くこと)/g)){
+   add('管理職','soy-reading-writing',m.index,m[0],
+    '管理職視点：「すがたをかえる大豆」は読む学習。書く活動の実績が別教材と混ざっていないか確認');
+  }
+ }
+ if(text.includes('食べ物のひみつを教えます')){
+  for(const m of text.matchAll(/(?:筆者の工夫|筆者の考え|本文の段落の役割|筆者が示した具体例)/g)){
+   add('管理職','food-writing-reading',m.index,m[0],
+    '管理職視点：「食べ物のひみつを教えます」は書く学習。読む教材との混同がないか確認');
+  }
+ }
+ for(const m of text.matchAll(/[^。！？\n]{105,}[。！？]/g)){
+  const sentence=m[0];const found=sentence.slice(0,Math.min(12,sentence.length));
+  add('保護者','long-sentence',m.index,found,
+   '保護者視点：一文が長めです。分けると読みやすくなる可能性があります');
+ }
+ return out.sort((a,b)=>a.index-b.index);
+}
+const v25BaseChecks=v14Checks;
+v14Checks=function(value){
+ const out=v25BaseChecks(value);
+ for(const issue of v25Hints(value)){
+  v14Push(out,'v25:'+issue.id,issue.index,issue.length,issue.found,issue.title,null,issue.lens);
+ }
+ return out.sort((a,b)=>a.index-b.index);
+};
+function v25Overview(){
+ return '<section class="v25-intro">'+
+ '<strong>🌸 3つの視点で仕上げる</strong>'+
+ '<div class="v25-trio">'+
+ '<div><b>保護者</b><span>どんな活動・工夫・成長があったか、無理なく伝わるか</span></div>'+
+ '<div><b>管理職</b><span>単元と評価の観点が合い、表現・断定に無理がないか</span></div>'+
+ '<div><b>担任</b><span>実際に見取った児童の姿と一致するかを最終確認</span></div>'+
+ '</div><p class="v25-limit">自動で探せるのは、曖昧な言葉・専門用語・断定表現・一部の教材混同などの<b>確認候補だけ</b>。検出0件でも品質・評価規準への一致や児童の事実を保証しません。保存済みの文章は自動変更しません。</p>'+
+ '</section>';
+}
+function v25LensHTML(record){
+ const p=record.issues.filter(x=>x.type==='保護者'),a=record.issues.filter(x=>x.type==='管理職');
+ const label=(count)=>count?'<span class="v25-attn">'+count+'件の確認候補</span>':'<span class="v25-neutral">自動検出なし（要目視）</span>';
+ return '<div class="v25-lenses">'+
+ '<div><b>👪 保護者</b>'+label(p.length)+'</div>'+
+ '<div><b>📋 管理職</b>'+label(a.length)+'</div>'+
+ '<div><b>✏️ 担任</b><span class="v25-neutral">実際の活動・成果と一致するか確認</span></div>'+
+ '</div>';
+}
+const v25PriorProofHTML=v14ProofHTML;
+v14ProofHTML=function(){
+ let html=v25PriorProofHTML();
+ const c=S.classes.find(x=>x.id===Number(v14ClassId))||cur();
+ const records=v14Records(c);
+ const shown=records.filter(x=>v14Filter==='all'||(v14Filter==='issues'?x.issues.length>0:!x.reviewed));
+ const loc='<div class="grid"><div class="panel wide"><div class="v14-filter">';
+ if(html.includes(loc))html=html.replace(loc,v25Overview()+loc);
+ let index=0;
+ html=html.replace(/<div class="v14-text">/g,()=>{
+  const row=shown[index++];
+  return (row?v25LensHTML(row):'')+'<div class="v14-text">';
+ });
+ html=html.replace('誤字脱字・表記チェック','所見の最終チェック');
+ html=html.replace('4種類の所見をまとめて点検。疑わしい表記を示し、修正と目視確認は先生が行います。',
+  '保護者・管理職・担任の3視点と、誤字脱字・表記をまとめて確認します。');
+ html=html.replaceAll('文章を目視確認済みにする','3視点を目視確認済みにする');
+ return html;
+};
+const v25PreviousExport=exportHTML;
+exportHTML=function(){
+ return '<div class="v25-export"><strong>最終確認は「保護者・管理職・担任」の3視点で</strong><p>文例検索や自動チェックは参考です。評価規準の内容、児童の実際の姿、所見の伝わりやすさは、書き出す前に先生が確かめてください。</p></div>'+v25PreviousExport();
+};
+const v25PreviousSearch=v22SearchHTML;
+v22SearchHTML=function(){
+ const html=v25PreviousSearch();
+ return html.replace('<div class="panel wide v22-search">',
+  '<div class="panel wide v22-search"><p class="v25-searchnote">文例は評価観点・学習活動を手掛かりに選び、<b>保護者に具体的に伝わる文章</b>へ調整してください。児童の実際の姿は先生が確認します。</p>');
+};
+const v25PreviousTop=renderTop;
+renderTop=function(){
+ v25PreviousTop();
+ const tabs=document.getElementById('tabs');
+ const btn=tabs?.querySelector('[data-action="page"][data-page="proof"]');
+ if(btn)btn.textContent='⌕ 所見の最終チェック';
+};
+V17_TOOLNAMES.proof='所見の最終チェック';
+const v25CSS=document.createElement('style');
+v25CSS.textContent='.v25-intro{border:1px solid #d8e5d9;background:#f7faf5;border-radius:15px;padding:15px;margin:0 0 14px;line-height:1.7}.v25-intro>strong{font-size:16px}.v25-trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:11px 0}.v25-trio>div{background:#fff;border:1px solid #e0e9df;border-radius:11px;padding:11px}.v25-trio b{display:block;color:#315d46;margin-bottom:4px}.v25-trio span{font-size:12px;color:#526f5c}.v25-limit{font-size:12px;color:#6b775d;margin:8px 0 0}.v25-lenses{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.v25-lenses>div{display:flex;align-items:center;flex-wrap:wrap;gap:7px;font-size:12px;background:#f6faf6;border:1px solid #e1eae0;border-radius:8px;padding:7px 10px}.v25-lenses b{color:#355b47}.v25-attn{color:#92572b;font-weight:700}.v25-neutral{color:#617267}.v25-export{padding:12px 15px;margin-bottom:12px;background:#f8faf4;border:1px solid #dce8dc;border-radius:12px;line-height:1.6}.v25-export p{margin:6px 0 0;font-size:12px;color:#5c7062}.v25-searchnote{font-size:12px;line-height:1.65;padding:10px 12px;margin:0 0 12px;background:#f4f8f0;border-radius:10px;color:#506a59}@media(max-width:750px){.v25-trio{grid-template-columns:1fr}}';
+document.head.appendChild(v25CSS);
+
+
+/* STUDIO v2.6: fill 3/4-upper art gaps and actionable everyday-life/learning examples.
+   Art is independently written based on the publisher's R6 curriculum and assessment criteria.
+   Observational categories are NOT textbook assessment criteria or evidence about a specific pupil. */
+const V26_ART_NOTES='日本文教出版「3・4上」令和6年度年間指導計画・題材別評価規準を参照。実際の実施活動・使用材料を確認してください。';
+function v26Art(unit,activity,page,examples){
+ v23Art(unit,activity,page,examples);
+}
+v26Art('切ってかき出しくっつけて','粘土の形を切り糸やかきべらで変え、組み合わせる','p.8–9',{
+ knowledge:['切り糸とかきべらを使い、粘土を切ったりかき出したりして形を変えることができました。'],
+ thinking:['切り口から見つけた形を生かし、粘土の置き方や組み合わせ方を工夫していました。',
+ '友だちの作品に見られる切り口や形の重なりの面白さを見つけ、感じたことを伝えていました。'],
+ attitude:['切ったりくっつけたりする方法を変えながら、思い付いた形を繰り返し試していました。']
+});
+v26Art('トントン どんどん くぎうって','金づち・釘・木切れ、釘を打った形から発想','p.22–23',{
+ knowledge:['金づちを安全に使い、木に釘を打って形を組み立てることができました。'],
+ thinking:['釘を打ってできた形を見て発想を広げ、木切れの組み合わせ方を工夫していました。',
+ '友だちの作品を見比べ、釘の打ち方や材料の組み合わせ方による面白さに気付いていました。'],
+ attitude:['釘を打つ位置や向きを確かめながら、思い付いた形に近付くよう作り直していました。']
+});
+v26Art('土をかんじて','さまざまな土の形・色・触れた感じを鑑賞','p.25–26',{
+ knowledge:['土の色や粒の大きさ、触ったときの感じを比べ、それぞれの違いに気付くことができました。'],
+ thinking:['土を手で触ったり目で見たりして、気に入った色や形の特徴を言葉で伝えていました。',
+ '友だちが見つけた土のよさを聞き、自分では気付かなかった色や手触りの面白さを見つけていました。'],
+ attitude:['種類の違う土を進んで探し、色や触り心地を繰り返し確かめていました。']
+});
+v26Art('ぬのでえがくと','布の形・色・模様を使い、並べたり組み合わせたりして絵に表す','p.30–31',{
+ knowledge:['布の形や模様を生かし、切ったり貼ったりして絵に表すことができました。'],
+ thinking:['布の色や模様を見て思い付いた場面を、布の重ね方や置き方を工夫して表していました。',
+ '友だちの作品を鑑賞し、布の模様をどのように生かしているかを見つけていました。'],
+ attitude:['布の置き方を何度も変え、表したいものに合う組み合わせを探していました。']
+});
+v26Art('ここがすみか','学校の隅・自然材料で想像したすみかをつくる','p.32–33',{
+ knowledge:['場所の形や広さに合わせて、枝や葉などの材料を組み合わせることができました。'],
+ thinking:['学校の一角を見て生き物のすみかを想像し、そこに合う形や材料を選んでいました。',
+ '友だちのつくったすみかを見て、場所の特徴を生かした工夫を見つけていました。'],
+ attitude:['材料の置き方を変えながら、想像したすみかになるように試していました。']
+});
+v26Art('これでかきたい','身近な材料を組み合わせて自分の筆やペンをつくる','p.36–37',{
+ knowledge:['枝や身近な材料を組み合わせ、絵をかくための道具をつくることができました。'],
+ thinking:['つくった道具のかき心地を確かめ、線や模様が面白く出るよう材料の選び方を工夫していました。',
+ '友だちの道具でかいた線を見て、使う材料によって表現が変わることに気付いていました。'],
+ attitude:['材料を付け替えて試しがきを重ね、自分が気に入る線をかける道具に近付けていました。']
+});
+v26Art('ことばから思いうかべて','詩や物語を読んで想像したことを絵にする','p.38–39',{
+ knowledge:['絵の具やクレヨンを使い分け、想像した場面に合う色や線で描くことができました。'],
+ thinking:['詩や物語の言葉から思い浮かべた様子を、色や人物の配置を工夫して絵に表していました。',
+ '同じ文章から生まれた友だちの作品を見て、感じ方や表し方の違いを伝えていました。'],
+ attitude:['文章を読み返して場面を思い浮かべ、表したい様子に近付くまで色や描き方を試していました。']
+});
+v26Art('だんボールの形をかえて','ぬらした段ボールの形を変えて立体に表す','p.42',{
+ knowledge:['ぬらした段ボールを曲げたり丸めたりして、形を変えて立体をつくることができました。'],
+ thinking:['段ボールの曲がり方から面白い形を見つけ、形の組み合わせ方を工夫していました。',
+ '友だちの作品をいろいろな方向から見て、曲線や重なりがつくる面白さを伝えていました。'],
+ attitude:['段ボールの曲げ方や支え方を変えながら、思い描いた形になるよう試していました。']
+});
+v26Art('ねん土マイタウン','住んでみたいまちを想像して油粘土でつくる','p.50–51',{
+ knowledge:['油粘土を丸めたり伸ばしたりして、建物や道などの形をつくることができました。'],
+ thinking:['住んでみたいまちを想像し、建物や道の形と配置を考えて表現していました。',
+ '友だちのつくったまちを見て、建物の形や配置に込められた工夫を見つけていました。'],
+ attitude:['まちの様子を思い浮かべながら建物をつくり足し、全体のつながりを確かめていました。']
+});
+// The two non-textbook categories have no publisher-based evaluation criteria.
+// "axis" names describe observed behaviors rather than formal curriculum judgments.
+V22_AXIS.activity='生活・活動の姿';
+V22_AXIS.learning='学習の姿';
+const V26_OBSERVATIONS=[];
+function v26Obs(subject,unit,gradeBand,text){
+ const grades=gradeBand==='all'?[1,2,3,4,5,6]:gradeBand==='mid'?[3,4]:gradeBand==='high'?[5,6]:[1,2];
+ if(!/[。！？]$/.test(text))throw Error('Incomplete observation example: '+unit);
+ for(const grade of grades)V26_OBSERVATIONS.push({grade,subject,unit,axis:subject==='学習全般'?'learning':'activity',text,
+  source:'生活・学習場面の観察に基づく編集用文例',details:'教科書会社の評価規準とは別の、具体的な児童の姿の例'});
+}
+const midLife={
+ '学級会・話合い':[
+  '学級会では、友だちの意見を聞いて自分の考えとの共通点を見つけ、話合いを進めていました。',
+  '学級会では、意見が分かれたときに、それぞれの考えのよさを整理して伝えていました。',
+  '学級会では、決まったことを実行するために、自分にできる役割を考えて行動していました。'],
+ '係活動':[
+  '係活動では、みんなが楽しめるように活動の内容や進め方を工夫していました。',
+  '係活動では、友だちと役割を分担し、準備から片付けまで協力して取り組んでいました。',
+  '係活動では、活動した後の反省を生かし、次の活動がよりよくなるように考えていました。'],
+ '当番活動':[
+  '当番活動では、必要な準備を自分から始め、最後まで責任をもって取り組んでいました。',
+  '給食当番では、周りの様子を見ながら配膳や片付けを進め、友だちを支えていました。',
+  '掃除では、汚れの残りやすい場所に気付き、用具を使い分けて丁寧に取り組んでいました。'],
+ '友だちとの関わり':[
+  '友だちが困っている様子に気付き、相手の話を聞いてから自分にできることを考えていました。',
+  '友だちと意見が違うときにも、理由を聞きながら互いに納得できる方法を探していました。',
+  '新しい友だちにも自分から声をかけ、一緒に活動できるようにしていました。'],
+ '行事・集会':[
+  '学年の集会では、自分の担当を確かめ、周りと動きを合わせて役割を果たしていました。',
+  '行事の準備では、全体の進み具合を見て、必要な仕事を見つけて手伝っていました。',
+  '行事の振り返りでは、できたことと次に改善したいことを具体的に伝えていました。'],
+ '生活の工夫':[
+  '次の時間の予定を見て必要な物をそろえ、落ち着いて授業に向かうことができました。',
+  '持ち物や机の中を整理し、必要な道具をすぐに取り出せるよう工夫していました。',
+  '予定が変わったときにも、周りの人と確認しながら自分の行動を切り替えていました。'],
+ '学級をよくする活動':[
+  '教室で困っていることに気付き、みんなが過ごしやすくなる方法を友だちに提案していました。',
+  '学級の約束を守る理由を考え、自分から周りに声をかけながら行動していました。',
+  '友だちのよい行動を見つけ、言葉で伝えることで学級の温かい雰囲気づくりに関わっていました。']
+};
+const midLearning={
+ '発言・説明':[
+  '授業では、自分の考えを理由や具体例と結び付け、友だちに分かりやすく説明していました。',
+  '授業では、図やノートを示しながら考えを伝え、聞き手に伝わるよう工夫していました。',
+  '友だちの発言につなげて自分の考えを述べ、話合いを深めていました。'],
+ '聞く・比べる':[
+  '友だちの考えを最後まで聞き、自分の考えとの共通点や違いを見つけていました。',
+  '自分と違う考えを聞くと、どこが違うのかを質問しながら理解しようとしていました。',
+  '交流の後には、友だちの考えを取り入れて自分の考えを見直していました。'],
+ 'ノート・記録':[
+  '板書を写すだけでなく、気付いたことや自分の考えを書き加えてノートをまとめていました。',
+  '学習した内容を図や表に整理し、後から見返しても分かるように記録していました。',
+  '自分の考えが変わったところをノートに残し、学びの深まりを振り返っていました。'],
+ '粘り強さ・試行錯誤':[
+  '難しい課題に出合っても、これまでに学んだことを使いながら別の方法を試していました。',
+  'すぐに答えが出ないときも、図に表したり友だちと確かめたりして考え続けていました。',
+  '間違えたところをそのままにせず、理由を確かめて解き直していました。'],
+ '見通し・振り返り':[
+  '学習のめあてを確かめ、どんな方法で調べるか見通しをもって取り組んでいました。',
+  '学習後には、分かったことと次に確かめたいことを区別して振り返っていました。',
+  '振り返りで見つけた課題を、次の授業での取り組み方に生かしていました。'],
+ '資料・ICTの活用':[
+  '資料の中から必要な情報を選び、理由が伝わるように整理して説明していました。',
+  'タブレットに記録した結果を見比べ、考えを確かめるために活用していました。',
+  '調べた情報をそのまま書き写さず、自分の言葉でまとめ直そうとしていました。'],
+ '協働的な学び':[
+  'グループ活動では、友だちの意見を取り入れながら、役割を分担して課題を進めていました。',
+  '話合いでは、発言しにくそうな友だちにも声をかけ、みんなの考えを生かそうとしていました。',
+  '友だちの説明を聞いて分からない点を質問し、互いの理解を深めていました。']
+};
+for(const [unit,items] of Object.entries(midLife))for(const text of items)v26Obs('生活・特別活動',unit,'mid',text);
+for(const [unit,items] of Object.entries(midLearning))for(const text of items)v26Obs('学習全般',unit,'mid',text);
+// General observations suited to first/second as well as upper grades.
+const universal={
+ '生活・特別活動':{
+  '友だちとの関わり':['困っている友だちに気付き、相手の話を聞いて手伝っていました。'],
+  '当番活動':['自分の当番を覚え、必要な仕事を最後まで丁寧に行っていました。'],
+  '係活動':['係の友だちと相談して、みんなが楽しめる活動を考えていました。'],
+  '学級会・話合い':['友だちの意見を最後まで聞き、自分の考えを言葉で伝えていました。']},
+ '学習全般':{
+  '発言・説明':['授業では、自分の考えを理由とともに友だちに伝えることができました。'],
+  '聞く・比べる':['友だちの考えを最後まで聞き、自分の考えと比べていました。'],
+  '粘り強さ・試行錯誤':['分からない問題も、学んだ方法を使って繰り返し考えていました。'],
+  '見通し・振り返り':['授業の終わりに、できるようになったことを自分の言葉で振り返っていました。']}
+};
+for(const [subject,units] of Object.entries(universal))for(const [unit,examples] of Object.entries(units))
+ for(const x of examples)v26Obs(subject,unit,'all',x);
+const upper={
+ '生活・特別活動':{
+  '委員会活動':['委員会では、担当する仕事だけでなく、活動が円滑に進むよう必要な準備を考えて行動していました。',
+  '委員会で課題になったことを話し合い、改善に向けて具体的な方法を提案していました。'],
+  '異学年交流':['下級生が安心して参加できるよう、相手の様子を見ながら説明や声かけを工夫していました。']},
+ '学習全般':{
+  '課題設定・探究':['課題を解決するために必要な情報を選び、複数の資料を比べて自分の考えをまとめていました。'],
+  '振り返り・改善':['自分の学習方法を振り返り、より効果的な方法に変えて次の活動に取り組んでいました。']}
+};
+for(const [subject,units] of Object.entries(upper))for(const [unit,examples] of Object.entries(units))
+ for(const x of examples)v26Obs(subject,unit,'high',x);
+// Search index only: never auto-add observations to S.bank, never use a curricular publisher label.
+const v26PreviousIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const list=v26PreviousIndex(),seen=new Set(list.map(x=>[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|')));
+ for(const v of V26_OBSERVATIONS){
+  const key=[v.grade,v.subject,v22Norm(v.unit),v22Norm(v.text)].join('|');
+  if(seen.has(key))continue;seen.add(key);
+  list.push({...v,rawAxis:v.axis,axis:V22_AXIS[v.axis],criterion:V22_AXIS[v.axis],index:list.length});
+ }
+ return list;
+};
+// Keep categories visible even when a chosen grade has no stored examples.
+// New observations make them available in every grade; no forced reclassification of saved bank.
+const v26PreviousSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ let html=v26PreviousSearchHTML();
+ if(['生活・特別活動','学習全般'].includes(V22_SEARCH.subject)){
+  const notice='<p class="v26-notice">ここは教科書の単元評価ではなく、日常の観察を文章にした参考文例です。児童の具体的な行動が見られた場合に使ってください。</p>';
+  html=html.replace('<div class="panel wide v22-search">','<div class="panel wide v22-search">'+notice);
+ }
+ return html;
+};
+const v26CSS=document.createElement('style');
+v26CSS.textContent='.v26-notice{margin:0 0 14px;padding:12px 13px;background:#f6f8f3;border:1px solid #dce6da;border-radius:10px;font-size:12px;line-height:1.8;color:#516b56}';
+document.head.appendChild(v26CSS);
+
+
+/* STUDIO v2.7 | 四分類＋キーワード＋長さ。中学年の観察に基づく編集用例。
+   Search-only. No changes to localStorage schema, saved bank or student records.
+   This is not an automated pupil assessment or certified curriculum score. */
+const V27_ROWS=[];
+function v27Add(subject,unit,tags,examples){
+ for(const grade of [3,4])for(const text of examples){
+  V27_ROWS.push({grade,subject,unit,text,rawAxis:'observation',axis:'活動・学びの姿',
+   criterion:'授業・生活で見取った行動',source:'中学年向け・編集用参考文例',
+   details:'児童の実際の姿を確認してください',keywords:tags.join(' ')});
+ }
+}
+v27Add('学習全般','自分の考えと理由',['根拠','理由','考える','説明'],[
+ '自分の考えをもつだけでなく、なぜそう考えたのかを理由とともに説明していました。']);
+v27Add('学習全般','根拠を大切にする',['根拠','資料','結果','説明'],[
+ '学習したことや調べた結果を根拠にして、自分の考えを分かりやすく伝えていました。']);
+v27Add('学習全般','友だちと比較する',['比較する','共通点','違い','友だち'],[
+ '友だちの考えを自分の考えと比べ、共通点や違いに着目しながら話を聞いていました。']);
+v27Add('学習全般','考えをつなげる',['友だち','発言','考えをつなぐ','理由'],[
+ '友だちの発言を受けて、自分の考えを付け加えたり、理由を説明したりしていました。']);
+v27Add('学習全般','考えを見直す',['比較する','見直す','交流','考えを深める'],[
+ '友だちとの交流を通して新しい見方に気付き、自分の考えを見直していました。']);
+v27Add('学習全般','考えを深める',['比較する','根拠','理由','考えを深める'],[
+ '友だちの考えと比べた後、もう一度自分の考えに戻り、理由を付け加えて説明していました。']);
+v27Add('学習全般','学びの変化を振り返る',['振り返り','考えを深める','理由','見直す'],[
+ '学習の初めと終わりで自分の考えを比べ、分かったことや考えが変わった理由を振り返っていました。']);
+v27Add('学習全般','他者を生かして学ぶ',['交流','友だち','聞く','考えを深める'],[
+ '自分とは違う考えにも耳を傾け、納得できるところを取り入れながら考えを深めていました。']);
+v27Add('学習全般','図やノートを使って説明する',['発言','説明','ノート','図'],[
+ '授業では、ノートにかいた図を指し示しながら、自分の考えやその理由を友だちに分かりやすく説明していました。']);
+// 行動の記録10観点。観点名だけで子どもの性格を断定しない。
+v27Add('生活面','基本的な生活習慣',['挨拶','基本的な生活習慣','朝','明るい雰囲気'],[
+ '毎朝自分から気持ちのよい挨拶をし、明るい雰囲気をつくっていました。']);
+v27Add('生活面','基本的な生活習慣',['時間','準備','基本的な生活習慣'],[
+ '時間を意識して次の活動の準備を進め、落ち着いて学習に取り組むことができました。']);
+v27Add('生活面','基本的な生活習慣',['安全','決まり','基本的な生活習慣'],[
+ '廊下の歩き方や教室での過ごし方に気を配り、自分や周りの人の安全を考えて行動していました。']);
+v27Add('生活面','健康・体力の向上',['健康','体力','休み時間','運動'],[
+ '休み時間には校庭で元気に体を動かし、友だちと楽しく運動に親しんでいました。']);
+v27Add('生活面','健康・体力の向上',['手洗い','清潔','健康'],[
+ '手洗いや身の回りの清潔を心がけ、健康に気を付けて生活していました。']);
+v27Add('生活面','健康・体力の向上',['練習','運動','健康','めあて'],[
+ '運動では、自分のめあてをもって繰り返し練習し、できることを増やそうと取り組んでいました。']);
+v27Add('生活面','自主・自律',['自主・自律','自分で考える','周りの状況','行動'],[
+ '学校生活の中で、周りの状況を見ながら、自分にできることを考えて行動する姿が見られました。']);
+v27Add('生活面','自主・自律',['自主・自律','相談','自分で考える'],[
+ '困ったことがあっても、まずは自分で解決する方法を考え、必要に応じて周りの人に相談していました。']);
+v27Add('生活面','自主・自律',['自主・自律','自分から','行動'],[
+ '次に必要なことを自分で考え、声をかけられる前に活動を始めていました。']);
+v27Add('生活面','責任感',['責任感','担当','やり遂げる'],[
+ '自分の担当する仕事を理解し、最後まで責任をもってやり遂げていました。']);
+v27Add('生活面','責任感',['責任感','当番','協力'],[
+ '当番の仕事を忘れずに行い、友だちと協力しながら最後までやり遂げていました。']);
+v27Add('生活面','責任感',['責任感','学級','役割','準備'],[
+ '学級の活動では、自分の担当する仕事に向けて進んで準備し、最後まで責任をもって取り組んでいました。']);
+v27Add('生活面','創意工夫',['創意工夫','係活動','アイデア'],[
+ '係活動では、みんなが楽しめるように新しいアイデアを出し、活動の内容を工夫していました。']);
+v27Add('生活面','創意工夫',['創意工夫','提案','学級'],[
+ '学級で困っていることに気付き、より過ごしやすくなる方法を考えて友だちに提案していました。']);
+v27Add('生活面','創意工夫',['創意工夫','改善','協力'],[
+ '活動が思うように進まないときにも、やり方を見直し、友だちと相談しながら改善していました。']);
+v27Add('生活面','思いやり・協力',['思いやり','友だち','声かけ'],[
+ '困っている友だちに気付くと、自分から声をかけ、相手の気持ちに寄り添って行動していました。']);
+v27Add('生活面','思いやり・協力',['思いやり','意見','聞く'],[
+ '友だちと意見が違うときにも、相手の話を最後まで聞き、互いの考えを大切にしていました。']);
+v27Add('生活面','思いやり・協力',['協力','グループ','友だち'],[
+ 'グループ活動では、友だちの様子を見ながら声をかけ合い、協力して活動を進めていました。']);
+v27Add('生活面','生命尊重・自然愛護',['生命尊重','自然愛護','植物','水やり'],[
+ '学級で育てている植物の様子を気にかけ、水やりや世話に丁寧に取り組んでいました。']);
+v27Add('生活面','生命尊重・自然愛護',['生命尊重','自然愛護','草花','観察','世話'],[
+ '身近な草花や生き物に親しみ、観察や世話などを通して、自然を大切にしていました。']);
+v27Add('生活面','生命尊重・自然愛護',['生命尊重','飼育','環境','すみか','工夫'],[
+ '飼育している生き物が過ごしやすいように、すみかの環境を工夫して整えていました。']);
+v27Add('生活面','生命尊重・自然愛護',['生命尊重','飼育','世話','こまめ'],[
+ '飼育している生き物の様子を日頃から気にかけ、必要な世話をこまめに行っていました。']);
+v27Add('生活面','生命尊重・自然愛護',['生命尊重','飼育','世話','観察','えさやり','掃除'],[
+ '飼育している生き物の様子をよく観察し、えさやりやすみかの掃除などの世話に進んで取り組んでいました。']);
+v27Add('生活面','勤労・奉仕',['勤労','奉仕','掃除','手伝い'],[
+ '掃除の時間には、自分の担当場所が終わった後も、汚れている場所を見つけて丁寧に掃除していました。']);
+v27Add('生活面','勤労・奉仕',['勤労','奉仕','整理','片付け'],[
+ 'みんなが使う物の整理や片付けに自分から取り組み、学級のために力を尽くしていました。']);
+v27Add('生活面','勤労・奉仕',['勤労','奉仕','友だち','手伝い'],[
+ '友だちが仕事に困っているときには、自分の仕事が終わってから進んで手伝っていました。']);
+v27Add('生活面','勤労・奉仕',['勤労','奉仕','目立たない仕事','整理'],[
+ 'みんなが使う物の整理や片付けなど、目立たない仕事にも丁寧に取り組んでいました。']);
+v27Add('生活面','公正・公平',['公正','公平','意見','グループ'],[
+ 'グループ活動では、特定の友だちだけでなく、みんなの意見を聞いて進めようとしていました。']);
+v27Add('生活面','公正・公平',['公正','公平','順番','遊び'],[
+ '遊びや活動の順番を決めるときには、友だちと相談し、みんなが納得できる方法を考えていました。']);
+v27Add('生活面','公正・公平',['公正','公平','意見','話合い'],[
+ '友だち同士で意見が分かれたときにも、一方の意見だけで判断せず、それぞれの話を聞いていました。']);
+v27Add('生活面','公共心・公徳心',['公共心','公徳心','道具','片付け'],[
+ '教室の道具やみんなで使う物を大切に扱い、次に使う人のことを考えて片付けていました。']);
+v27Add('生活面','公共心・公徳心',['公共心','公徳心','約束','決まり'],[
+ '学級の約束の意味を理解し、友だちと気持ちよく生活できるように行動していました。']);
+v27Add('生活面','公共心・公徳心',['公共心','公徳心','整理','共有'],[
+ '共用の場所が散らかっていることに気付くと、自分から整理し、みんなが使いやすい環境を整えていました。']);
+// 行事と特別活動。文例の重複を避け、実際に観察できる行動に絞る。
+v27Add('行事','運動会',['運動会','練習','振り返り','成長'],[
+ '運動会に向けた練習では、振り返りで見つけた課題を次の練習で意識し、動きをよりよくしていました。',
+ '運動会では、周りの友だちと動きやタイミングを合わせ、仲間と協力して演技に取り組んでいました。',
+ '運動会の係や準備では、担当する仕事を確かめ、必要な作業に進んで取り組んでいました。']);
+v27Add('行事','音楽会',['音楽会','演奏','練習','協力'],[
+ '音楽会に向けて、自分の演奏だけでなく友だちの音にも耳を傾け、みんなで音を合わせようとしていました。',
+ '音楽会の練習では、前回の演奏を振り返り、声の出し方や演奏の仕方を工夫していました。',
+ '音楽会では、これまで練習してきたことを生かし、友だちと気持ちを合わせて演奏していました。']);
+v27Add('行事','社会科見学',['社会科見学','見学','質問','記録'],[
+ '社会科見学では、見学先の方の話を聞き、初めて知ったことや気付いたことを記録していました。',
+ '社会科見学では、事前に考えた質問をもとに説明を聞き、自分の疑問を確かめていました。',
+ '社会科見学では、集団での行動を意識し、友だちと声をかけ合って活動していました。']);
+v27Add('行事','集会・交流',['集会','行事','異学年','交流'],[
+ '学年の集会では、自分の担当を確かめ、友だちと声をかけ合いながら活動を進めていました。',
+ '異学年との交流では、相手が参加しやすいよう説明の仕方や声のかけ方を工夫していました。']);
+v27Add('行事','行事の実行委員',['実行委員','行事','進行役','説明','責任感','リーダー'],[
+ '実行委員として、決まったことをみんなに分かりやすく説明したり、話合いの進行役を務めたりしていました。',
+ '実行委員として、活動の流れを確かめ、友だちと役割を分担しながら準備を進めていました。']);
+v27Add('特別活動','実行委員',['実行委員','進行役','説明','責任感','リーダー'],[
+ '実行委員として、決まったことをみんなに分かりやすく説明したり、話合いの進行役を務めたりしていました。']);
+v27Add('特別活動','学級会・話合い',['学級会','話合い','意見','進行'],[
+ '学級会では、友だちの意見のよいところを取り入れながら、学級がよりよくなる方法を考えていました。',
+ '学級会では、意見が分かれたときに、それぞれの考えを整理してみんなに伝えていました。']);
+v27Add('特別活動','係活動',['係活動','アイデア','工夫','協力'],[
+ '係活動では、みんなが楽しめるように友だちとアイデアを出し合い、活動内容を工夫していました。',
+ '係活動では、友だちと役割を分担し、準備から片付けまで協力して取り組んでいました。']);
+v27Add('特別活動','当番活動',['当番','責任感','協力'],[
+ '当番の仕事を忘れずに行い、友だちと協力しながら最後までやり遂げていました。']);
+v27Add('特別活動','グループ活動',['リーダー','協力','話合い','まとめる'],[
+ 'グループで活動するときには、友だちの意見を聞きながら、みんなが取り組めるように声をかけていました。',
+ '友だちの活動をよく見て、準備や片付けなど必要な仕事を見つけて協力していました。']);
+v27Add('特別活動','役割・責任',['責任感','準備','やり遂げる'],[
+ '学級の活動では、自分の担当する仕事に向けて進んで準備し、最後まで責任をもって取り組んでいました。']);
+// The previous overly broad "diagram and notebook" statement is superseded by the agreed wording.
+const V27_REPLACED=[
+ '授業では、図やノートを示しながら考えを伝え、聞き手に伝わるよう工夫していました。'
+];
+const v27PriorIndex=v22MakeIndex;
+v22MakeIndex=function(){
+ const existing=v27PriorIndex().filter(x=>x.source==='保存済みの文例'||!V27_REPLACED.includes(x.text));
+ const keys=new Set(existing.map(x=>[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|')));
+ for(const row of V27_ROWS){
+  const key=[row.grade,row.subject,v22Norm(row.unit),v22Norm(row.text)].join('|');
+  if(keys.has(key))continue;keys.add(key);existing.push({...row,index:existing.length});
+ }
+ return existing.map((x,i)=>({...x,index:i}));
+};
+const V27_CATEGORIES=[
+ {id:'学習全般',label:'学習全般',icon:'📚',tags:['根拠','比較する','考えを深める','説明','振り返り','粘り強さ','ノート','交流']},
+ {id:'生活面',label:'生活面',icon:'🌱',tags:['基本的な生活習慣','健康・体力の向上','自主・自律','責任感','創意工夫','思いやり・協力','生命尊重・自然愛護','勤労・奉仕','公正・公平','公共心・公徳心','挨拶','飼育']},
+ {id:'行事',label:'行事',icon:'🎵',tags:['運動会','音楽会','社会科見学','集会','実行委員','練習','成長']},
+ {id:'特別活動',label:'特別活動',icon:'🤝',tags:['係活動','当番活動','学級会','話合い','実行委員','進行役','リーダー','協力']}
+];
+let v27Category='',v27Query='',v27Length='all',v27Limit=20;
+function v27Normalize(t){return v22Norm(t).replace(/友達/g,'友だち').replace(/あいさつ/g,'挨拶').replace(/話し合い/g,'話合い')}
+function v27Of(x){
+ if(['学習全般','生活面','行事','特別活動'].includes(x.subject))return x.subject;
+ if(x.subject!=='生活・特別活動')return '';
+ const unit=v27Normalize(x.unit||'');
+ if(/行事|集会/.test(unit))return '行事';
+ if(/学級会|学級活動|係活動|当番活動|委員会|学級をよくする|異学年/.test(unit))return '特別活動';
+ return '生活面';
+}
+const V27_LEGACY_TAGS={
+ '学級会・話合い':'学級会 話合い 意見 協力 進行役',
+ '係活動':'係活動 工夫 役割 協力 責任感',
+ '当番活動':'当番活動 責任感 協力 奉仕',
+ '友だちとの関わり':'思いやり 協力 自主・自律 公正・公平',
+ '行事・集会':'行事 集会 学年 実行委員 協力',
+ '生活の工夫':'自主・自律 基本的な生活習慣 片付け 整理',
+ '学級をよくする活動':'創意工夫 公共心・公徳心 協力',
+ '学級活動':'学級会 話合い 意見'
+};
+function v27Match(x,query){
+ const terms=String(query||'').split(/[／/、,・　\s]+/).map(v27Normalize).filter(Boolean);
+ if(!terms.length)return true;
+ const hay=v27Normalize([x.subject,x.unit,x.text,x.keywords||'',V27_LEGACY_TAGS[x.unit]||''].join(' '));
+ return terms.every(t=>hay.includes(t));
+}
+function v27Results(){
+ let list=v22MakeIndex().filter(x=>x.grade===Number(V22_SEARCH.grade)&&v27Of(x)===v27Category&&v27Match(x,v27Query));
+ if(v27Length==='short')list=list.filter(x=>Array.from(x.text).length<=45);
+ if(v27Length==='long')list=list.filter(x=>Array.from(x.text).length>45);
+ // New mid-grade, reviewed examples first; older and saved examples remain accessible.
+ return list.sort((a,b)=>((a.source==='中学年向け・編集用参考文例'?0:1)-(b.source==='中学年向け・編集用参考文例'?0:1)));
+}
+function v27CategoryCards(){
+ return '<div class="v27-chooser"><strong>子どもの姿から所見を探す</strong><p class="small muted">まず分野を選んで、活動名やよさを選択。通常の教科検索はそのまま使えます。</p>'+
+ '<div class="v27-catgrid">'+V27_CATEGORIES.map(x=>'<button type="button" class="v27-catbtn'+(v27Category===x.id?' chosen':'')+'" data-v27="category" data-category="'+E(x.id)+'">'+x.icon+'　'+E(x.label)+'</button>').join('')+'</div>'+
+ '<button type="button" class="btn softbtn" data-v27="art">🎨 図工の題材を探す</button>'+
+ '<button type="button" class="btn softbtn" data-v27="subjects">教科・単元から探す</button></div>';
+}
+function v27SpecialHTML(){
+ const category=V27_CATEGORIES.find(x=>x.id===v27Category);
+ if(!category)return '';
+ const rows=v27Results(),show=rows.slice(0,v27Limit);
+ const opts=[['all','すべて'],['short','短め（45字以内）'],['long','詳しめ（46字以上）']];
+ return header('所見文例を検索','子どもの具体的な行動から探し、他の教科の文章と組み合わせて使えます。')+
+ '<div class="panel wide v22-search">'+v27CategoryCards()+
+ '<div class="v27-fields"><div class="field"><label>学年</label><select data-v27-grade="1">'+[1,2,3,4,5,6].map(n=>option(n,V22_SEARCH.grade)).join('')+'</select></div>'+
+ '<div class="field"><label>文例の長さ</label><select data-v27-length="1">'+opts.map(([v,t])=>'<option value="'+v+'"'+(v===v27Length?' selected':'')+'>'+t+'</option>').join('')+'</select></div></div>'+
+ '<p class="v27-subtitle"><strong>'+E(category.label)+'</strong>　どんなよさや活動を探す？</p>'+
+ '<div class="v27-tags">'+category.tags.map(t=>'<button type="button" class="v27-tag'+(v27Query===t?' chosen':'')+'" data-v27="tag" data-keyword="'+E(t)+'">'+E(t)+'</button>').join('')+'</div>'+
+ '<div class="field v27-searchfield"><label>キーワードを入力（複数語も可）</label><input data-v27-query="1" type="text" value="'+E(v27Query)+'" placeholder="例：'+E(category.tags[0])+'／'+E(category.tags[1])+'"/>'+
+ '<button type="button" class="btn primary" data-v27="search">検索する</button><button type="button" class="btn softbtn" data-v27="clear">条件をクリア</button></div>'+
+ '<div class="notice small">教科書の単元評価ではなく、児童の行動をもとにした編集用文例です。内容が実際に見られたかを必ず確かめてください。</div>'+
+ '<p class="small muted">検索結果 '+rows.length+'件（表示 '+show.length+'件）・文例の文字数は本文のみ</p>'+
+ (rows.length?'<div class="v22-results">'+show.map(x=>'<article class="v22-result"><div class="inline v22-tags"><span class="tag">'+x.grade+'年</span><span class="tag">'+E(v27Of(x))+'</span><span class="tag">'+E(x.unit)+'</span><span class="tag">'+Array.from(x.text).length+'字</span></div>'+
+ '<p class="v22-comment">'+E(x.text)+'</p><p class="v22-source">'+E(x.source)+'</p>'+
+ '<div class="inline"><button class="btn softbtn" data-v22-action="copy" data-v22-index="'+x.index+'">文章をコピー</button>'+
+ '<button class="btn" data-v22-action="save" data-v22-index="'+x.index+'">自分の文例バンクに追加</button></div></article>').join('')+'</div>'+
+ (rows.length>show.length?'<button type="button" class="btn v22-more" data-v27="more">さらに20件表示</button>':''):
+ '<div class="notice">この条件に合う文例はまだありません。別の言葉で検索するか、条件をクリアしてください。</div>')+'</div>';
+}
+const v27PreviousSearchHTML=v22SearchHTML;
+v22SearchHTML=function(){
+ if(v27Category)return v27SpecialHTML();
+ const old=v27PreviousSearchHTML();
+ return old.replace('<div class="panel wide v22-search">','<div class="panel wide v22-search">'+v27CategoryCards());
+};
+document.addEventListener('click',e=>{
+ const btn=e.target.closest('[data-v27]');if(!btn)return;
+ const action=btn.dataset.v27;
+ if(action==='category'){
+  v27Category=btn.dataset.category;v27Query='';v27Length='all';v27Limit=20;V22_SEARCH.axis='';V22_SEARCH.query='';page='examples-search';render();return;
+ }
+ if(action==='art'){
+  v27Category='';v27Query='';V22_SEARCH.subject='図工';V22_SEARCH.query='';V22_SEARCH.axis='';V22_SEARCH.limit=20;page='examples-search';render();return;
+ }
+ if(action==='subjects'){v27Category='';V22_SEARCH.query='';V22_SEARCH.axis='';page='examples-search';render();return}
+ if(action==='tag'){v27Query=v27Query===btn.dataset.keyword?'':btn.dataset.keyword;v27Limit=20;render();return}
+ if(action==='search'){v27Query=document.querySelector('[data-v27-query]')?.value||'';v27Limit=20;render();return}
+ if(action==='clear'){v27Query='';v27Length='all';v27Limit=20;render();return}
+ if(action==='more'){v27Limit+=20;render()}
+});
+document.addEventListener('input',e=>{if(e.target?.dataset?.v27Query)v27Query=e.target.value});
+document.addEventListener('change',e=>{
+ if(e.target?.dataset?.v27Grade){V22_SEARCH.grade=Number(e.target.value);v27Limit=20;render()}
+ if(e.target?.dataset?.v27Length){v27Length=e.target.value;v27Limit=20;render()}
+ if(e.target?.dataset?.v27Query){v27Query=e.target.value;v27Limit=20;render()}
+});
+document.addEventListener('keydown',e=>{
+ if(e.target?.dataset?.v27Query&&e.key==='Enter'&&!e.isComposing){v27Query=e.target.value;v27Limit=20;render()}
+});
+// A jump from the subject unit picker should always open that subject, not the previous life category.
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-v22-action="jump-search"]'))v27Category='';
+},true);
+const v27Style=document.createElement('style');
+v27Style.textContent='.v27-chooser{margin:0 0 18px;padding:14px;background:#f6faf4;border:1px solid #dae7d9;border-radius:14px}.v27-chooser>strong{font-size:16px;color:#315743}.v27-chooser p{margin:6px 0 13px}.v27-catgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:11px}.v27-catbtn{border:1px solid #cfdfd1;border-radius:11px;background:#fff;padding:14px 8px;font-size:13px;font-weight:bold;color:#365a45;cursor:pointer}.v27-catbtn.chosen,.v27-tag.chosen{background:#dbece0;border-color:#709d80}.v27-chooser>.btn{margin-right:7px;margin-top:3px}.v27-fields{display:grid;grid-template-columns:1fr 1.5fr;gap:12px}.v27-subtitle{margin:16px 0 10px}.v27-tags{display:flex;flex-wrap:wrap;gap:7px}.v27-tag{border:1px solid #d3e1d5;background:#fff;border-radius:20px;padding:7px 12px;font-size:12px;color:#345644;cursor:pointer}.v27-searchfield{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.v27-searchfield label{width:100%}.v27-searchfield input{min-width:210px;flex:1;padding:10px;border:1px solid #cad8cc;border-radius:9px}.v27-searchfield .btn{white-space:nowrap}@media(max-width:700px){.v27-catgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.v27-fields{grid-template-columns:1fr 1fr}}';
+document.head.appendChild(v27Style);
+
+</script><script>
+/* bundled v28-theme-switcher.js */
+/* SHOKEN STUDIO v2.8 | device-local visual themes only.
+   Never reads/writes student records, autosave, the example bank or export files. */
+(()=>{
+ 'use strict';
+ const KEY='shoken-studio.theme.v1';
+ const THEMES=[
+  {id:'original',name:'オリジナル',hint:'これまでの配色',swatch:'#2c584a'},
+  {id:'mint',name:'若草ミント',hint:'すっきり、落ち着く',swatch:'#6b9b80'},
+  {id:'pink',name:'さくらピンク',hint:'やさしく、華やか',swatch:'#ce829f'},
+  {id:'blue',name:'スカイブルー',hint:'爽やか、見やすい',swatch:'#679fcb'},
+  {id:'lavender',name:'ラベンダー',hint:'上品で、穏やか',swatch:'#9980c5'}
+ ];
+ let selected='original';
+ try{const stored=localStorage.getItem(KEY);if(THEMES.some(t=>t.id===stored))selected=stored}catch(_){}
+ const style=document.createElement('style');
+ style.id='v28-theme-styles';
+ style.textContent="\n:root{--theme-bg:#f6f4ee;--theme-panel:#fffefb;--theme-brand:#fffefa;--theme-accent:#719284;--theme-deep:#2c584a;--theme-light:#edf4ed;--theme-ink:#233d33;--theme-muted:#728078;--theme-line:#e6e7dc;--theme-highlight:#e2eee0;--theme-hero-start:#284e3c;--theme-hero-end:#5e816c;--theme-neutral:#f5f7f3}\n:root[data-studio-theme=\"mint\"]{--theme-bg:#f3f8f1;--theme-panel:#fffefb;--theme-brand:#fcfffb;--theme-accent:#5b977b;--theme-deep:#285943;--theme-light:#e7f2ea;--theme-ink:#263f31;--theme-muted:#657b6b;--theme-line:#dce7dc;--theme-highlight:#d5e9d9;--theme-hero-start:#294e3e;--theme-hero-end:#527b65;--theme-neutral:#f5f8f2}\n:root[data-studio-theme=\"pink\"]{--theme-bg:#fff3f6;--theme-panel:#fffafd;--theme-brand:#fff9fb;--theme-accent:#c77e9b;--theme-deep:#84445f;--theme-light:#fbe5ef;--theme-ink:#4a303d;--theme-muted:#80616f;--theme-line:#f0dce4;--theme-highlight:#f4d7e3;--theme-hero-start:#713e56;--theme-hero-end:#b17792;--theme-neutral:#fff5f9}\n:root[data-studio-theme=\"blue\"]{--theme-bg:#eef7fe;--theme-panel:#fff;--theme-brand:#fafdff;--theme-accent:#679fc2;--theme-deep:#305e7f;--theme-light:#e2f1fb;--theme-ink:#283f50;--theme-muted:#5f788c;--theme-line:#d7e7f1;--theme-highlight:#d2e9f7;--theme-hero-start:#2c5677;--theme-hero-end:#548eaf;--theme-neutral:#f3f9fe}\n:root[data-studio-theme=\"lavender\"]{--theme-bg:#f6f0fd;--theme-panel:#fffcff;--theme-brand:#fefaff;--theme-accent:#9884be;--theme-deep:#624d86;--theme-light:#eee6fa;--theme-ink:#3e3550;--theme-muted:#746785;--theme-line:#e6dff1;--theme-highlight:#e2d8f3;--theme-hero-start:#584674;--theme-hero-end:#9280b6;--theme-neutral:#f9f5ff}\nhtml[data-studio-theme]{--bg:var(--theme-bg);--panel:var(--theme-panel);--sage:var(--theme-accent);--sage-deep:var(--theme-deep);--sage-light:var(--theme-light);--ink:var(--theme-ink);--muted:var(--theme-muted);--line:var(--theme-line)}\nhtml[data-studio-theme] body{background:var(--theme-bg);color:var(--theme-ink)}\nhtml[data-studio-theme] h1,html[data-studio-theme] h2,html[data-studio-theme] h3{color:var(--theme-ink)}\nhtml[data-studio-theme] .hero h1{color:#fff}\nhtml[data-studio-theme] .brandbar{background:var(--theme-brand);border-bottom-color:var(--theme-line)}\nhtml[data-studio-theme] .mark{background:var(--theme-deep);box-shadow:none}\nhtml[data-studio-theme] .logo strong,html[data-studio-theme] #headline .micro-top strong{color:var(--theme-deep)}\nhtml[data-studio-theme] .logo-overline,html[data-studio-theme] .muted{color:var(--theme-muted)}\nhtml[data-studio-theme] .pill{background:var(--theme-light);border-color:var(--theme-line);color:var(--theme-deep)}\nhtml[data-studio-theme] .tabs{border-color:var(--theme-line)}\nhtml[data-studio-theme] .tab.active{background:var(--theme-light);color:var(--theme-deep);border-bottom-color:var(--theme-accent)}\nhtml[data-studio-theme] .tab:hover:not(.active){background:var(--theme-neutral);color:var(--theme-deep)}\nhtml[data-studio-theme] .panel,html[data-studio-theme] .card,html[data-studio-theme] .bankcard,html[data-studio-theme] .quick-panel,html[data-studio-theme] .workspace-panel,html[data-studio-theme] .safety-card{background:var(--theme-panel);border-color:var(--theme-line)}\nhtml[data-studio-theme] .btn{color:var(--theme-deep);border-color:var(--theme-line)}\nhtml[data-studio-theme] .btn.primary{color:#fff;background:var(--theme-deep);border-color:var(--theme-deep)}\nhtml[data-studio-theme] .btn.softbtn{color:var(--theme-deep);background:var(--theme-light);border-color:var(--theme-line)}\nhtml[data-studio-theme] .hero{background:linear-gradient(120deg,var(--theme-hero-start) 2%,var(--theme-deep) 48%,var(--theme-hero-end) 100%)}\nhtml[data-studio-theme] .hero .btn.primary{color:var(--theme-deep);background:#fff6e8;border-color:#fff6e8}\nhtml[data-studio-theme] .hero p{color:#fff}\nhtml[data-studio-theme] .progress-ring{background:conic-gradient(var(--theme-accent) calc(var(--percent)*1%),var(--theme-line) 0)}\nhtml[data-studio-theme] .progress-value,html[data-studio-theme] .workspace-panel .stat .n,html[data-studio-theme] .stat .n,html[data-studio-theme] .step-card strong,html[data-studio-theme] .progress-legend b,html[data-studio-theme] .action-link{color:var(--theme-deep)}\nhtml[data-studio-theme] .progress-panel,html[data-studio-theme] .step-card,html[data-studio-theme] .stat,html[data-studio-theme] .workspace-panel .stat,html[data-studio-theme] .soft,html[data-studio-theme] .notice,html[data-studio-theme] .v27-chooser{background:var(--theme-neutral);border-color:var(--theme-line)}\nhtml[data-studio-theme] .progress-ring::before{background:var(--theme-neutral)}\nhtml[data-studio-theme] .tag,html[data-studio-theme] th{background:var(--theme-light);color:var(--theme-deep)}\nhtml[data-studio-theme] .tag.need{background:#faf0dd;color:#9b6840}\nhtml[data-studio-theme] .tag.draft{background:#edf1f8;color:#5b6f86}\nhtml[data-studio-theme] .tag.done{background:#e2f1e6;color:#416b57}\nhtml[data-studio-theme] .field label,html[data-studio-theme] .v27-chooser>strong{color:var(--theme-deep)}\nhtml[data-studio-theme] .field input:focus,html[data-studio-theme] .field select:focus,html[data-studio-theme] .field textarea:focus,html[data-studio-theme] textarea.celltext:focus{border-color:var(--theme-accent);box-shadow:0 0 0 3px var(--theme-light)}\nhtml[data-studio-theme] .v27-catbtn,html[data-studio-theme] .v27-tag{color:var(--theme-deep);border-color:var(--theme-line)}\nhtml[data-studio-theme] .v27-catbtn.chosen,html[data-studio-theme] .v27-tag.chosen{background:var(--theme-light);border-color:var(--theme-accent)}\nhtml[data-studio-theme] .workflow-banner{background:linear-gradient(115deg,var(--theme-light),var(--theme-neutral));border-color:var(--theme-line)}\nhtml[data-studio-theme] .workflow-banner .symbol{background:var(--theme-highlight);color:var(--theme-deep)}\nhtml[data-studio-theme] .status-dot{background:var(--theme-accent);box-shadow:0 0 0 4px var(--theme-light)}\n.top-meta{position:relative}\n.v28-toggle{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}\n.v28-menu{position:absolute;top:calc(100% + 13px);right:0;z-index:600;width:min(360px,calc(100vw - 24px));padding:15px;background:var(--theme-panel);color:var(--theme-ink);border:1px solid var(--theme-line);border-radius:18px;box-shadow:0 16px 48px #203d3640}\n.v28-menu[hidden]{display:none!important}\n.v28-menu-head{font-weight:800;font-size:14px;margin:0 0 9px}\n.v28-menu-sub{font-size:11px;color:var(--theme-muted);margin:0 0 13px}\n.v28-theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}\n.v28-option{display:flex;gap:9px;align-items:center;text-align:left;padding:12px 9px;min-width:0;border:2px solid var(--theme-line);border-radius:13px;background:var(--theme-neutral);color:var(--theme-ink);cursor:pointer}\n.v28-option[aria-pressed=\"true\"]{border-color:var(--theme-accent);background:var(--theme-light)}\n.v28-dot{display:block;flex:0 0 25px;width:25px;height:25px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #0000001c}\n.v28-option strong{font-size:12px;display:block}\n.v28-option small{font-size:10px;color:var(--theme-muted);display:block;line-height:1.5}\n.v28-saved-note{font-size:10px;line-height:1.6;color:var(--theme-muted);margin:12px 0 0}\n@media(max-width:560px){.v28-toggle{padding:8px!important;min-width:38px}.v28-toggle .v28-text{display:none}.v28-option{padding:9px 7px}.v28-option strong{font-size:11px}}\n@media(prefers-reduced-motion:no-preference){html[data-studio-theme] body,html[data-studio-theme] .brandbar{transition:background-color .2s ease}}\n";
+ document.head.appendChild(style);
+ function setStatus(message){
+  const target=document.getElementById('v28-theme-status');
+  if(target)target.textContent=message;
+ }
+ function setTheme(id,persist){
+  if(!THEMES.some(t=>t.id===id))return;
+  selected=id;
+  if(id==='original')document.documentElement.removeAttribute('data-studio-theme');
+  else document.documentElement.setAttribute('data-studio-theme',id);
+  document.querySelectorAll('.v28-option').forEach(button=>{
+   button.setAttribute('aria-pressed',String(button.dataset.v28Theme===id));
+  });
+  if(persist){
+   try{localStorage.setItem(KEY,id);setStatus('この端末に色を保存しました。')}
+   catch(_){setStatus('色は切り替えました。この端末では選択を保存できません。')}
+  }
+ }
+ const toggle=document.getElementById('v28-theme-toggle');
+ if(!toggle){setTheme(selected,false);return}
+ const menu=document.createElement('section');
+ menu.className='v28-menu';
+ menu.id='v28-theme-menu';
+ menu.setAttribute('aria-label','画面のテーマカラー');
+ menu.hidden=true;
+ menu.innerHTML='<p class="v28-menu-head">🎨 テーマカラー</p>'+
+  '<p class="v28-menu-sub">気分に合わせて色を選べます。所見の文章や保存データは変わりません。</p>'+
+  '<div class="v28-theme-grid" role="group" aria-label="選べる5色">'+
+  THEMES.map(t=>'<button type="button" class="v28-option" data-v28-theme="'+t.id+'" aria-pressed="'+(t.id===selected)+'">'+
+   '<span class="v28-dot" style="background:'+t.swatch+'" aria-hidden="true"></span>'+
+   '<span><strong>'+t.name+'</strong><small>'+t.hint+'</small></span></button>').join('')+
+  '</div><p class="v28-saved-note" id="v28-theme-status" role="status" aria-live="polite">選んだ色を、この端末に保存します。</p>';
+ toggle.parentElement.appendChild(menu);
+ setTheme(selected,false);
+ function openMenu(open){
+  menu.hidden=!open;
+  toggle.setAttribute('aria-expanded',String(open));
+ }
+ toggle.addEventListener('click',e=>{e.stopPropagation();openMenu(menu.hidden)});
+ menu.addEventListener('click',e=>{
+  const button=e.target.closest('[data-v28-theme]');
+  if(!button)return;
+  setTheme(button.dataset.v28Theme,true);
+ });
+ document.addEventListener('click',e=>{
+  if(!menu.hidden&&!menu.contains(e.target)&&!toggle.contains(e.target))openMenu(false);
+ });
+ document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!menu.hidden){openMenu(false);toggle.focus()}
+ });
+})();
+
+</script><script>render();</script></body></html>
