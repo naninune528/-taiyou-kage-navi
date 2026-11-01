@@ -88,12 +88,12 @@ editHTML=function(){
   const textarea='<textarea class="celltext" data-bind="row-text" data-n="'+n+'" placeholder="文例を選んで配置、または直接入力">'+E(x.text)+'</textarea>'+
   '<div class="textcount">'+len+'字</div><div class="v8-mini" data-v8-flag="'+n+'">'+(valid?'✓ 文字数クリア':'文字数条件未達')+'（'+lengthLimit.min+'〜'+lengthLimit.max+'字）</div>';
   const status='<label class="small">状態 <select data-bind="row-status" data-n="'+n+'">'+['未作成','下書き','要検討','確定'].map(s=>option(s,x.status)).join('')+'</select></label>';
-  return '<section id="v8-num-'+n+'" class="v8-row"><div class="inline between" style="margin-bottom:12px"><strong>仮番号 '+n+'</strong><span class="tag '+(x.status==='確定'?'done':x.status==='要検討'?'need':'draft')+'">'+(missing?'欠番':E(x.status))+'</span></div>'+
+  return '<section id="v8-num-'+n+'" class="v8-row"><div class="inline between" style="margin-bottom:12px"><strong>作業番号 '+n+'</strong><span class="tag '+(x.status==='確定'?'done':x.status==='要検討'?'need':'draft')+'">'+(missing?'欠番':E(x.status))+'</span></div>'+
   (missing?'<p class="muted">欠番のため編集・集計の対象外</p>':
    '<div class="v8-row-main"><div>'+sub+v8Picker(c,t,n)+'</div><div><div class="field"><label>所見（選んだ後も修正できます）</label>'+textarea+'</div>'+
    '<div class="v8-row-tools">'+status+(x.text.trim()?'<button class="btn" data-action="save-from-row" data-n="'+n+'">この文章を文例にする ↗</button>':'')+'</div></div></div>')+'</section>';
  }).join('');
- return header('一覧編集','仮番号ごとに「教科 → 単元 → 文例」を選択。文章は後から自由に修正できます。')+
+ return header('一覧編集','作業番号ごとに「教科 → 単元 → 文例」を選択。文章は後から自由に修正できます。')+
  '<div class="grid"><div class="panel wide">'+headerBlock+html+
  '<div class="warning small">実際の児童情報に対応させる場合は、学校の承認された端末・保存先でのみ利用してください。</div></div></div>';
 };
@@ -116,9 +116,9 @@ document.addEventListener('click',e=>{
  if(!choice||c.missing.includes(n)){toast('単元と文例を選んでください');return}
  const row=getEnt(c,activeType,n),text=choice.text;
  if(row.text.includes(text)){toast('同じ文例がすでに入っています');return}
- if(st.mode==='replace'&&row.text.trim()&&!confirm('仮番号'+n+'の文章を置き換えますか？'))return;
+ if(st.mode==='replace'&&row.text.trim()&&!confirm('作業番号'+n+'の文章を置き換えますか？'))return;
  const value=st.mode==='replace'||!row.text.trim()?text:row.text.trimEnd()+'\n'+text;
  editEnt(c,activeType,n,{text:value,status:'下書き',touched:true});
  const scroll=window.scrollY||0;render();window.scrollTo?.(0,scroll);
- toast('仮番号'+n+'へ配置しました。本文を直接修正できます');
+ toast('作業番号'+n+'へ配置しました。本文を直接修正できます');
 });
