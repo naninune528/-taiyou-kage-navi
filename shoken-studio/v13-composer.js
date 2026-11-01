@@ -61,7 +61,7 @@ function v13StructureHTML(){
  const hidden=config.slots.filter(x=>!x.on&&String(draft.parts[x.id]||'').trim());
  const actual=String(row.text||''),oldChar=v8Length(actual);
  return header('総合所見の構成別編集','学習面と生活面を分けて入力。学校の順番と改行設定で仕上げてから、本文に反映します。')+
- '<div class="inline" style="margin:0 0 16px"><span class="tag">'+E(labelClass(c))+'</span><span class="tag">仮番号 '+draft.number+'</span>'+
+ '<div class="inline" style="margin:0 0 16px"><span class="tag">'+E(labelClass(c))+'</span><span class="tag">作業番号 '+draft.number+'</span>'+
  '<span class="tag">'+E(row.status)+'</span><button class="btn" data-v13="back">一覧編集に戻る</button></div>'+
  (locked?'<div class="v13-stale">この番号は確定済みです。修正する場合は、先に一覧編集で「下書き」または「要検討」に戻してください。</div>':'')+
  (stale?'<div class="v13-stale"><strong>この文章は、前回の構成入力後にほかの画面で更新されています。</strong><p style="margin:6px 0">上書き事故を防ぐため、このまま反映できません。現在の本文を「既存の文章」へ引き継ぐか、保存済みの構成を再開するか選んでください。</p>'+
@@ -92,7 +92,7 @@ const v13OldEdit=editHTML;
 editHTML=function(){
  const s=v13OldEdit();
  if(activeType!=='総合所見')return s;
- return s.replace(/(<strong>仮番号 (\d+)<\/strong>)/g,(whole,tag,n)=>{
+ return s.replace(/(<strong>作業番号 (\d+)<\/strong>)/g,(whole,tag,n)=>{
   const c=cur(),row=getEnt(c,'総合所見',Number(n)),len=v8Length(row.text),lim=v8Limits('総合所見');
   const status=len>=lim.min&&len<=lim.max?'✓':'△';
   const p=row.comprehensiveParts;
