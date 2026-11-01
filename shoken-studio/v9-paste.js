@@ -15,7 +15,7 @@ function v9ParseRows(raw,c){
  const items=[],errors=[],seen=new Set();
  lines.forEach((line,i)=>{
   if(!line.trim())return;
-  if(/^(?:仮番号|番号|No\.?)\s*[\t,、]/i.test(line.trim()))return;
+  if(/^(?:作業番号|仮番号|番号|No\.?)\s*[\t,、]/i.test(line.trim()))return;
   let n=0,txt='';
   const fields=line.split('\t');
   if(fields.length>=2&&/^\s*\d{1,2}\s*$/.test(fields[0])){
@@ -37,7 +37,7 @@ function v9PreviewHTML(){
  if(!v9Preview)return '<div class="notice">貼り付け後に「内容を確認」を押すと、登録前にプレビューできます。内容は外部に送信されません。</div>';
  const p=v9Preview;
  const label=v9Mode==='examples'?'文例':'番号';
- return '<div class="v9-preview"><div class="inline between"><strong>取り込み候補 '+p.items.length+'件</strong><span class="tag">'+(v9Mode==='examples'?'文例バンク':'仮番号ごと')+'</span></div>'+
+ return '<div class="v9-preview"><div class="inline between"><strong>取り込み候補 '+p.items.length+'件</strong><span class="tag">'+(v9Mode==='examples'?'文例バンク':'作業番号ごと')+'</span></div>'+
  p.items.slice(0,20).map(x=>'<div class="v9-preview-row"><strong>'+label+' '+x.number+'</strong><span>'+E(x.text)+'</span></div>').join('')+
  (p.items.length>20?'<div class="hint" style="margin-top:10px">ほか '+(p.items.length-20)+'件</div>':'')+'</div>'+
  (p.errors.length?'<div class="v9-alert">確認が必要な行：'+p.errors.length+'件<br>'+p.errors.slice(0,10).map(E).join('<br>')+(p.errors.length>10?'<br>ほか '+(p.errors.length-10)+'件':'')+'</div>':'')+
