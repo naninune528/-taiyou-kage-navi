@@ -54,7 +54,9 @@ function v16Schedule(){
 }
 function v16Flush(){
  if(v16Timer!==null){clearTimeout(v16Timer);v16Timer=null}
- if(v16Enabled&&v16Dirty)v16Write();
+ if(!v16Enabled||!v16StorageAvailable||v16Broken)return false;
+ if(v16Dirty)return v16Write();
+ return v16State==='saved';
 }
 window.SHOKEN_AUTOSAVE_FLUSH=v16Flush;
 function v16RestoreLocal(){
@@ -135,8 +137,14 @@ restoreJSON=function(file){
    S.nextId=Math.max(Number(S.nextId)||1,...S.bank.map(b=>Number(b.id)||0).slice(0,50000))+1;
    activeClass=S.classes[0].id;activeType='総合所見';page='home';v16Broken=false;v16State='pending';
    render();
-   v16Flush();
-   toast('JSONから復元しました'+(v16Enabled?'。端末にも保存しました':'。JSONバックアップを保管してください'));
+   const deviceSaved=v16Flush();
+   if(!v16Enabled){
+    toast('JSONから復元しました。端末には自動保存されません。JSONバックアップを保管してください');
+   }else if(deviceSaved){
+    toast('JSONから復元しました。端末にも保存しました');
+   }else{
+    toast('JSONから復元しましたが、端末への自動保存に失敗しました。JSONバックアップを保存してください');
+   }
   }catch(e){alert('復元できませんでした：'+e.message)}
  };
  rd.onerror=()=>alert('ファイルを読み取れませんでした');
