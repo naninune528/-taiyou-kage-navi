@@ -15,7 +15,7 @@ function v9ParseRows(raw,c){
  const items=[],errors=[],seen=new Set();
  lines.forEach((line,i)=>{
   if(!line.trim())return;
-  if(/^(?:作業番号|作業番号|番号|No\.?)\s*[\t,、]/i.test(line.trim()))return;
+  if(/^(?:作業番号|仮番号|番号|No\.?)\s*[\t,、]/i.test(line.trim()))return;
   let n=0,txt='';
   const fields=line.split('\t');
   if(fields.length>=2&&/^\s*\d{1,2}\s*$/.test(fields[0])){
