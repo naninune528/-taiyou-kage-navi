@@ -13,4 +13,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node shoken-studio/tests/safety-smoke.cjs
+      - name: Verify JSON backup and restore
+        run: node shoken-studio/tests/safety-smoke.cjs
+      - name: Package review-only Cloudflare files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import re
+          p=Path("shoken-studio")
+          html=(p/"index.html").read_text(encoding="utf-8")
+          names=["index.html", *re.findall(r'<script src="([^"]+)"',html)]
+          names.append("SAFETY-CHECK-v29.md")
+          names=list(dict.fromkeys(names))
+          with ZipFile("shoken-studio-v29-review.zip","w",ZIP_DEFLATED) as z:
+              for name in names:
+                  f=p/name
+                  assert f.is_file(), f"Missing {f}"
+                  z.write(f,name)
+          print("PACKAGED",len(names),"files")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shoken-studio-v29-review
+          path: shoken-studio-v29-review.zip
+          if-no-files-found: error
