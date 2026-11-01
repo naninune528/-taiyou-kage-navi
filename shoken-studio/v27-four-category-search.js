@@ -5,7 +5,7 @@ const V27_ROWS=[];
 function v27Add(subject,unit,tags,examples){
  for(const grade of [3,4])for(const text of examples){
   V27_ROWS.push({grade,subject,unit,text,rawAxis:'observation',axis:'活動・学びの姿',
-   criterion:'授業・生活で見取った行動',source:'中学年向け・確認済みの編集用文例',
+   criterion:'授業・生活で見取った行動',source:'中学年向け・編集用参考文例',
    details:'児童の実際の姿を確認してください',keywords:tags.join(' ')});
  }
 }
@@ -134,7 +134,7 @@ const V27_REPLACED=[
 ];
 const v27PriorIndex=v22MakeIndex;
 v22MakeIndex=function(){
- const existing=v27PriorIndex().filter(x=>!V27_REPLACED.includes(x.text));
+ const existing=v27PriorIndex().filter(x=>x.source==='保存済みの文例'||!V27_REPLACED.includes(x.text));
  const keys=new Set(existing.map(x=>[x.grade,x.subject,v22Norm(x.unit),v22Norm(x.text)].join('|')));
  for(const row of V27_ROWS){
   const key=[row.grade,row.subject,v22Norm(row.unit),v22Norm(row.text)].join('|');
@@ -176,10 +176,10 @@ function v27Match(x,query){
 }
 function v27Results(){
  let list=v22MakeIndex().filter(x=>x.grade===Number(V22_SEARCH.grade)&&v27Of(x)===v27Category&&v27Match(x,v27Query));
- if(v27Length==='short')list=list.filter(x=>Array.from(x.text).length<=50);
- if(v27Length==='long')list=list.filter(x=>Array.from(x.text).length>50);
+ if(v27Length==='short')list=list.filter(x=>Array.from(x.text).length<=45);
+ if(v27Length==='long')list=list.filter(x=>Array.from(x.text).length>45);
  // New mid-grade, reviewed examples first; older and saved examples remain accessible.
- return list.sort((a,b)=>((a.source==='中学年向け・確認済みの編集用文例'?0:1)-(b.source==='中学年向け・確認済みの編集用文例'?0:1)));
+ return list.sort((a,b)=>((a.source==='中学年向け・編集用参考文例'?0:1)-(b.source==='中学年向け・編集用参考文例'?0:1)));
 }
 function v27CategoryCards(){
  return '<div class="v27-chooser"><strong>子どもの姿から所見を探す</strong><p class="small muted">まず分野を選んで、活動名やよさを選択。通常の教科検索はそのまま使えます。</p>'+
@@ -191,7 +191,7 @@ function v27SpecialHTML(){
  const category=V27_CATEGORIES.find(x=>x.id===v27Category);
  if(!category)return '';
  const rows=v27Results(),show=rows.slice(0,v27Limit);
- const opts=[['all','すべて'],['short','短め（50字以内）'],['long','詳しめ（51字以上）']];
+ const opts=[['all','すべて'],['short','短め（45字以内）'],['long','詳しめ（46字以上）']];
  return header('所見文例を検索','子どもの具体的な行動から探し、他の教科の文章と組み合わせて使えます。')+
  '<div class="panel wide v22-search">'+v27CategoryCards()+
  '<div class="v27-fields"><div class="field"><label>学年</label><select data-v27-grade="1">'+[1,2,3,4,5,6].map(n=>option(n,V22_SEARCH.grade)).join('')+'</select></div>'+
@@ -239,12 +239,6 @@ document.addEventListener('change',e=>{
 document.addEventListener('keydown',e=>{
  if(e.target?.dataset?.v27Query&&e.key==='Enter'&&!e.isComposing){v27Query=e.target.value;v27Limit=20;render()}
 });
-// If another search view is opened through the original unit-bank shortcut,
-// clear special category so the original subject navigation remains reliable.
-const v27PreviousUnitHtml=v4UnitHTML;
-v4UnitHTML=function(){
- return v27PreviousUnitHtml();
-};
 const v27Style=document.createElement('style');
 v27Style.textContent='.v27-chooser{margin:0 0 18px;padding:14px;background:#f6faf4;border:1px solid #dae7d9;border-radius:14px}.v27-chooser>strong{font-size:16px;color:#315743}.v27-chooser p{margin:6px 0 13px}.v27-catgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:11px}.v27-catbtn{border:1px solid #cfdfd1;border-radius:11px;background:#fff;padding:14px 8px;font-size:13px;font-weight:bold;color:#365a45;cursor:pointer}.v27-catbtn.chosen,.v27-tag.chosen{background:#dbece0;border-color:#709d80}.v27-chooser>.btn{margin-right:7px;margin-top:3px}.v27-fields{display:grid;grid-template-columns:1fr 1.5fr;gap:12px}.v27-subtitle{margin:16px 0 10px}.v27-tags{display:flex;flex-wrap:wrap;gap:7px}.v27-tag{border:1px solid #d3e1d5;background:#fff;border-radius:20px;padding:7px 12px;font-size:12px;color:#345644;cursor:pointer}.v27-searchfield{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.v27-searchfield label{width:100%}.v27-searchfield input{min-width:210px;flex:1;padding:10px;border:1px solid #cad8cc;border-radius:9px}.v27-searchfield .btn{white-space:nowrap}@media(max-width:700px){.v27-catgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.v27-fields{grid-template-columns:1fr 1fr}}';
 document.head.appendChild(v27Style);
