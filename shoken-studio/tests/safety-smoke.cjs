@@ -63,7 +63,7 @@ assert.match(calls.alerts.at(-1),/復元できませんでした/);
 failKey=false;
 vm.runInContext(script29,ctx,{filename:'v29-safety-maintenance.js'});
 sandbox.jsonBackup();
-assert.match(calls.downloads.at(-1).name,/^所見メーカー_バックアップ_\\d{8}_\\d{6}\\.json$/);
+assert.match(calls.downloads.at(-1).name,/^所見メーカー_バックアップ_\d{8}_\d{6}\.json$/);
 calls.downloads.at(-1).blob.text().then(t=>{
  const saved=JSON.parse(t);
  assert.equal(saved.version,1);
